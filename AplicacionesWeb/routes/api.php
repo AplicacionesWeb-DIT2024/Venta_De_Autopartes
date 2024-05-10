@@ -14,6 +14,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});*/
+
+
+Route::post('/autopartes', function () {
+    return 'Creando Autopartes';
+});
+
+Route::put('/autopartes/{id}', function () {
+    return 'Actualizando una Autoparte';
+});
+
+Route::get('/autopartes', function () {
+    return 'Mostrando listado de Autopartes';
+});
+
+Route::get('/autopartes/{id}', function () {
+    return 'Mostrando una Autoparte';
+});
+
+
+Route::delete('/autopartes/{id}', function () {
+    return 'Eliminando una Autopartes';
 });
