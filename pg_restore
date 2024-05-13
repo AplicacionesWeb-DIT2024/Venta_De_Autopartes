@@ -1,0 +1,2 @@
+
+pg_restore -d "postgres://default:mgbiUXCv49ND@ep-sparkling-waterfall-a4ghbvb6.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require" < autopartes.dump
