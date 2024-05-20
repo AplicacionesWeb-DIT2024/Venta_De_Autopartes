@@ -11,7 +11,7 @@ class AutopartController extends Controller
 {
     public function create()
     {
-        return view('autoparts.create');
+        return view('autopartes.create');
     }
 
     public function store(Request $request)

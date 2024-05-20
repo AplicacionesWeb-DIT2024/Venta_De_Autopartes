@@ -14,7 +14,7 @@
             </div>
         @endif
 
-        <form action="{{ route('autoparts.store') }}" method="POST">
+        <form action="{{ route('autopartes.store') }}" method="POST">
             @csrf
             <div class="form-group">
                 <label for="autoparte">Autoparte:</label>
