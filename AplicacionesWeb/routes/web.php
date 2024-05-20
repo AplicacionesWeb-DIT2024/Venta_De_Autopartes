@@ -1,18 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\AutopartController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Ruta para mostrar el formulario de creación
+Route::get('/autoparts/create', [AutopartController::class, 'create'])->name('autoparts.create');
+
+// Ruta para manejar el formulario de creación
+Route::post('/autoparts', [AutopartController::class, 'store'])->name('autoparts.store');

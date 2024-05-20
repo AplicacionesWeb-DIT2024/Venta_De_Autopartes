@@ -1,29 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Autopart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class autopartController extends Controller
+class AutopartController extends Controller
 {
-    public function index()
+    public function create()
     {
-        $autopart = Autopart::all();
-
-        $data = [
-            'autopart' => $autopart,
-            'status' => 200
-        ];
-
-        return response()->json($data, 200);
+        return view('autoparts.create');
     }
 
     public function store(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'autoparte' => 'required|max:255',
             'marca' => 'required|max:255',
@@ -34,43 +25,30 @@ class autopartController extends Controller
             'precio' => 'required|numeric|between:0,5000000',
             'color' => 'required|max:15'
         ]);
-        
 
         if ($validator->fails()) {
-            $data = [
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ];
-            return response()->json($data, 400);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $autopart = Autopart::create([
-            'autoparte' => $request->autoparte,
-            'marca' => $request->marca,
-            'modelo' => $request->modelo,
-            'añoVehiculo' => $request->añoVehiculo,
-            'codigo' => $request->codigo,
-            'estado' => $request->estado,
-            'precio' => $request->precio,
-            'color' => $request->color,
-        ]);
+        $autopart = Autopart::create($request->all());
 
         if (!$autopart) {
-            $data = [
-                'message' => 'Error al crear la autoparte',
-                'status' => 500
-            ];
-            return response()->json($data, 500);
+            return redirect()->back()->with('error', 'Error al crear la autoparte');
         }
+
+        return redirect()->route('autoparts.create')->with('success', 'Autoparte creada exitosamente');
+    }
+
+    public function index()
+    {
+        $autopart = Autopart::all();
 
         $data = [
             'autopart' => $autopart,
-            'status' => 201
+            'status' => 200
         ];
 
-        return response()->json($data, 201);
-
+        return response()->json($data, 200);
     }
 
     public function show($id)
@@ -104,7 +82,7 @@ class autopartController extends Controller
             ];
             return response()->json($data, 404);
         }
-        
+
         $autopart->delete();
 
         $data = [
@@ -165,7 +143,6 @@ class autopartController extends Controller
         ];
 
         return response()->json($data, 200);
-
     }
 
     public function updatePartial(Request $request, $id)
@@ -242,5 +219,4 @@ class autopartController extends Controller
 
         return response()->json($data, 200);
     }
-
 }

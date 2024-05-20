@@ -9,8 +9,6 @@ class Autopart extends Model
 {
     use HasFactory;
 
-    protected $table = 'autopart';
-
     protected $fillable = [
         'autoparte',
         'marca',
@@ -19,6 +17,6 @@ class Autopart extends Model
         'codigo',
         'estado',
         'precio',
-        'color',
+        'color'
     ];
 }
