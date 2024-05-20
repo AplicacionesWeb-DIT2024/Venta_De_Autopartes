@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('autopart', function (Blueprint $table) {
             $table->id();
+            $table->string("autoparte");
             $table->string("marca");
             $table->string("modelo");
             $table->string("añoVehiculo");

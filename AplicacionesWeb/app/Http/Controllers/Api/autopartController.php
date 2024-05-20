@@ -25,6 +25,7 @@ class autopartController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
+            'autoparte' => 'required|max:255',
             'marca' => 'required|max:255',
             'modelo' => 'required|max:255',
             'añoVehiculo' => 'required|digits:4',
@@ -45,6 +46,7 @@ class autopartController extends Controller
         }
 
         $autopart = Autopart::create([
+            'autoparte' => $request->autoparte,
             'marca' => $request->marca,
             'modelo' => $request->modelo,
             'añoVehiculo' => $request->añoVehiculo,
@@ -126,6 +128,7 @@ class autopartController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
+            'autoparte' => 'required|max:255',
             'marca' => 'required|max:255',
             'modelo' => 'required|max:255',
             'añoVehiculo' => 'required|digits:4',
@@ -144,6 +147,7 @@ class autopartController extends Controller
             return response()->json($data, 400);
         }
 
+        $autopart->autoparte = $request->autoparte;
         $autopart->marca = $request->marca;
         $autopart->modelo = $request->modelo;
         $autopart->añoVehiculo = $request->añoVehiculo;
@@ -177,6 +181,7 @@ class autopartController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
+            'autoparte' => 'required|max:255',
             'marca' => 'required|max:255',
             'modelo' => 'required|max:255',
             'añoVehiculo' => 'required|digits:4',
@@ -193,6 +198,10 @@ class autopartController extends Controller
                 'status' => 400
             ];
             return response()->json($data, 400);
+        }
+
+        if ($request->has('autoparte')) {
+            $autopart->autoparte = $request->autoparte;
         }
 
         if ($request->has('marca')) {

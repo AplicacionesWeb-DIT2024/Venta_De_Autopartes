@@ -12,6 +12,7 @@ class Autopart extends Model
     protected $table = 'autopart';
 
     protected $fillable = [
+        'autoparte',
         'marca',
         'modelo',
         'añoVehiculo',
