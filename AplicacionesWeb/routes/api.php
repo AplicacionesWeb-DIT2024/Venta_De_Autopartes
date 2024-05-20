@@ -3,39 +3,17 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
+use App\Http\Controllers\Api\autopartController;
 
 
-Route::post('/autopartes', function () {
-    return 'Creando Autopartes';
-});
+Route::get('/autopart', [autopartController::class, 'index']);
 
-Route::put('/autopartes/{id}', function () {
-    return 'Actualizando una Autoparte';
-});
+Route::get('/autopart/{id}', [autopartController::class, 'show']);
 
-Route::get('/autopartes', function () {
-    return 'Mostrando listado de Autopartes';
-});
+Route::post('/autopart', [autopartController::class, 'store']);
 
-Route::get('/autopartes/{id}', function () {
-    return 'Mostrando una Autoparte';
-});
+Route::put('/autopart/{id}', [autopartController::class, 'update']);
 
+Route::patch('/autopart/{id}', [autopartController::class, 'updatePartial']);
 
-Route::delete('/autopartes/{id}', function () {
-    return 'Eliminando una Autopartes';
-});
+Route::delete('/autopart/{id}', [autopartController::class, 'destroy']);
