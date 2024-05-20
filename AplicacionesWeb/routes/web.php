@@ -11,4 +11,4 @@ Route::get('/', function () {
 Route::get('/autoparts/create', [AutopartController::class, 'create'])->name('autoparts.create');
 
 // Ruta para manejar el formulario de creación
-Route::post('/autoparts', [AutopartController::class, 'store'])->name('autoparts.store');
+//Route::post('/autoparts', [AutopartController::class, 'store'])->name('autoparts.store');

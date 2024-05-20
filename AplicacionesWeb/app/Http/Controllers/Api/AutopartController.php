@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Autopart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Controller;
 
 class AutopartController extends Controller
 {
@@ -15,6 +16,7 @@ class AutopartController extends Controller
 
     public function store(Request $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'autoparte' => 'required|max:255',
             'marca' => 'required|max:255',
@@ -29,6 +31,7 @@ class AutopartController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        
 
         $autopart = Autopart::create($request->all());
 
@@ -36,7 +39,7 @@ class AutopartController extends Controller
             return redirect()->back()->with('error', 'Error al crear la autoparte');
         }
 
-        return redirect()->route('autoparts.create')->with('success', 'Autoparte creada exitosamente');
+        return response('Creado existosamente', 200);
     }
 
     public function index()
