@@ -22,7 +22,7 @@ class AutopartController extends Controller
             'marca' => 'required|max:255',
             'modelo' => 'required|max:255',
             'añoVehiculo' => 'required|digits:4',
-            'codigo' => 'required|max:10',
+            'codigo' => 'required|max:100',
             'estado' => 'required|in:Muy bueno,Bueno,Malo,Muy malo',
             'precio' => 'required|numeric|between:0,5000000',
             'color' => 'required|max:15'
@@ -113,7 +113,7 @@ class AutopartController extends Controller
             'marca' => 'required|max:255',
             'modelo' => 'required|max:255',
             'añoVehiculo' => 'required|digits:4',
-            'codigo' => 'required|max:10',
+            'codigo' => 'required|max:100',
             'estado' => 'required|in:Muy bueno,Bueno,Malo,Muy malo',
             'precio' => 'required|numeric|between:0,5000000',
             'color' => 'required|max:15'
@@ -165,7 +165,7 @@ class AutopartController extends Controller
             'marca' => 'required|max:255',
             'modelo' => 'required|max:255',
             'añoVehiculo' => 'required|digits:4',
-            'codigo' => 'required|max:10',
+            'codigo' => 'required|max:100',
             'estado' => 'required|in:Muy bueno,Bueno,Malo,Muy malo',
             'precio' => 'required|numeric|between:0,5000000',
             'color' => 'required|max:15'
