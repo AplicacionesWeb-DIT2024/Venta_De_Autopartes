@@ -2,11 +2,36 @@
 <html>
 <head>
     <title>Agregar Autoparte</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            max-width: 600px; /* Limitar el ancho del contenedor */
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Agregar Nueva Autoparte</h1>
+        <h1 class="text-center">Agregar Nueva Autoparte</h1>
+        <hr>
 
         @if(session('success'))
             <div class="alert alert-success">
@@ -48,7 +73,7 @@
                 <label for="color">Color:</label>
                 <input type="text" id="color" name="color" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary">Agregar</button>
+            <button type="submit" class="btn btn-primary btn-block">Agregar</button>
         </form>
     </div>
 </body>
