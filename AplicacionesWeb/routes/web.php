@@ -15,7 +15,6 @@ Route::get('/autoparts/create', [AutopartController::class, 'create'])->name('au
 Route::post('/autoparts', [AutopartController::class, 'store'])->name('autopartes.store');
 
 
-
 // Ruta para ver el listado de autopartes.
 Route::get('/autoparts', [AutopartController::class, 'showAutoparts'])->name('autopartes.index');
 

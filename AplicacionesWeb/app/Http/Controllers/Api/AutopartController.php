@@ -9,19 +9,17 @@ use App\Http\Controllers\Controller;
 
 class AutopartController extends Controller
 {
-
-    
-
     public function showAutoparts()
     {
         $autoparts = Autopart::all();
-        return view('autopartes.index', compact('autoparts'));
-    }
-    
+        return view('autopartes.autopartes', compact('autoparts'));
+        //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php"
+    }   
 
     public function create()
     {
         return view('autopartes.create');
+        //"autopartes.create" es el nombre de la vista, en este caso "create.blade.php"
     }
 
     public function store(Request $request)
@@ -41,7 +39,6 @@ class AutopartController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        
 
         $autopart = Autopart::create($request->all());
 
