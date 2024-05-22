@@ -9,6 +9,16 @@ use App\Http\Controllers\Controller;
 
 class AutopartController extends Controller
 {
+
+    
+
+    public function showAutoparts()
+    {
+        $autoparts = Autopart::all();
+        return view('autopartes.index', compact('autoparts'));
+    }
+    
+
     public function create()
     {
         return view('autopartes.create');
