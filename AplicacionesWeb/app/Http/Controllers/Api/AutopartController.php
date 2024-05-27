@@ -11,7 +11,7 @@ class AutopartController extends Controller
 {
     public function showAutoparts()
     {
-        $autoparts = Autopart::all();
+        $autoparts = Autopart::orderBy ('id')->get();// para ordenar el listado por ID
         return view('autopartes.autopartes', compact('autoparts'));
         //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php"
     }   
@@ -21,6 +21,26 @@ class AutopartController extends Controller
         return view('autopartes.create');
         //"autopartes.create" es el nombre de la vista, en este caso "create.blade.php"
     }
+
+    public function edit($id)
+    {
+    $autopart = Autopart::findOrFail($id);
+    return view('autopartes.edit', compact('autopart'));
+    }
+
+public function destroy($id)
+{
+    $autopart = Autopart::findOrFail($id);
+
+    if (!$autopart) {
+        return redirect()->back()->with('error', 'Autoparte no encontrada');
+    }
+
+    $autopart->delete();
+
+    return redirect()->route('autopartes.index')->with('success', 'Autoparte eliminada');
+}
+
 
     public function store(Request $request)
     {
@@ -45,13 +65,14 @@ class AutopartController extends Controller
         if (!$autopart) {
             return redirect()->back()->with('error', 'Error al crear la autoparte');
         }
-
-        return response('Creado existosamente', 200);
+        return redirect()->route('autopartes.index');
+        //return response('Creado existosamente', 200);
     }
 
     public function index()
     {
         $autopart = Autopart::all();
+        
 
         $data = [
             'autopart' => $autopart,
@@ -59,6 +80,8 @@ class AutopartController extends Controller
         ];
 
         return response()->json($data, 200);
+
+
     }
 
     public function show($id)
@@ -75,28 +98,6 @@ class AutopartController extends Controller
 
         $data = [
             'autopart' => $autopart,
-            'status' => 200
-        ];
-
-        return response()->json($data, 200);
-    }
-
-    public function destroy($id)
-    {
-        $autopart = Autopart::find($id);
-
-        if (!$autopart) {
-            $data = [
-                'message' => 'Autoparte no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
-
-        $autopart->delete();
-
-        $data = [
-            'message' => 'Autoparte eliminada',
             'status' => 200
         ];
 
@@ -133,6 +134,7 @@ class AutopartController extends Controller
                 'status' => 400
             ];
             return response()->json($data, 400);
+            
         }
 
         $autopart->autoparte = $request->autoparte;
@@ -152,7 +154,8 @@ class AutopartController extends Controller
             'status' => 200
         ];
 
-        return response()->json($data, 200);
+        //return response()->json($data, 200);
+        return redirect()->route('autopartes.index');
     }
 
     public function updatePartial(Request $request, $id)

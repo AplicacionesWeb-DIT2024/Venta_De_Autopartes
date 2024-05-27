@@ -27,6 +27,7 @@
                         <th>Estado</th>
                         <th>Precio</th>
                         <th>Color</th>
+                        <th>Acciones</th> <!-- Nueva columna para los botones -->
                     </tr>
                 </thead>
                 <tbody>
@@ -41,6 +42,14 @@
                             <td>{{ $autopart->estado }}</td>
                             <td>{{ $autopart->precio }}</td>
                             <td>{{ $autopart->color }}</td>
+                            <td>
+                                <a href="{{ route('autopartes.edit', $autopart->id) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="{{ route('autopartes.destroy', $autopart->id) }}" method="POST" style="display:inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
