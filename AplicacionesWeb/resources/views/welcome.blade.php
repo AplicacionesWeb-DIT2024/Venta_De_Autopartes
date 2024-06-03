@@ -31,7 +31,6 @@
         <p>Desde frenos hasta luces, y todo lo que necesitas para mantener tu automóvil en perfecto estado.</p>
         <p>¡Explora nuestro catálogo y encuentra las mejores opciones para tu vehículo!</p>
         <p><a href="{{ route('autopartes.index') }}">Ir al catálogo de productos</a></p>
-        <p><a href="{{ route('carrito.index') }}">Ir al carrito</a></p>
     </div>
 </body>
 </html>

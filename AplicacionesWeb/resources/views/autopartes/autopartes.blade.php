@@ -13,6 +13,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Lista de Autopartes</h1>
             <a href="{{ route('autopartes.create') }}" class="btn btn-primary">Agregar Nueva Autoparte</a>
+            <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a></p>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -45,6 +46,11 @@
                             <td>
                                 <a href="{{ route('autopartes.edit', $autopart->id) }}" class="btn btn-warning btn-sm">Editar</a>
                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" data-id="{{ $autopart->id }}">Eliminar</button>
+                                <form action="{{ route('carrito.index') }}" method="POST" style="display: inline;">
+                                    
+                                    <input type="hidden" name="id" value="{{ $autopart->id }}">
+                                    <button type="submit" class="btn btn-success btn-sm">Agregar al Carrito</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach

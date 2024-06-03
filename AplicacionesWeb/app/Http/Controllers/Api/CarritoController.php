@@ -19,33 +19,34 @@ class CarritoController extends Controller
     public function create()
 {
     $autoparts = Autopart::all(); // Obtener todas las autopartes
-    $pedidos = Pedido::all(); // Obtener todos los pedidos
-    return view('carrito.create', compact('autoparts', 'pedidos'));
+    return view('carrito.create', compact('autoparts'));
 }
 
-    
 
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'autoparte' => 'required|exists:autoparts,autoparte',
-            'cantidad' => 'required|integer|min:1'
-        ]);
+public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'autoparte' => 'required|exists:autoparts,autoparte',
+        'cantidad' => 'required|integer|min:1'
+    ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
-        $autoparte = Autopart::where('autoparte', $request->autoparte)->firstOrFail();
-
-        $pedido = new Pedido();
-        $pedido->autoparte = $autoparte->autoparte;
-        $pedido->precio = $autoparte->precio;
-        $pedido->cantidad = $request->cantidad;
-        $pedido->save();
-
-        return redirect()->route('carrito.index')->with('success', 'Pedido creado con éxito');
+    if ($validator->fails()) {
+        return redirect()->back()->withErrors($validator)->withInput();
     }
+
+    $autoparte = Autopart::where('autoparte', $request->autoparte)->firstOrFail();
+
+    $pedido = new Pedido();
+    $pedido->autoparte = $autoparte->autoparte;
+    $pedido->precio = $autoparte->precio;
+    $pedido->cantidad = $request->cantidad;
+    $pedido->save();
+
+    return redirect()->route('carrito.create')->with('success', 'Pedido creado con éxito');
+}
+
+
+   
 
     public function edit($id)
     {
