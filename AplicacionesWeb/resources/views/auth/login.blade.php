@@ -58,8 +58,8 @@
 </body>
 </html>
 
-<form method="POST" action="{{ route('login') }}">
-    @csrf
+<form method="POST" action="{{ route('autopartes.index') }}">    
+@csrf
     <!-- Email and Password fields -->
 
     <div>
