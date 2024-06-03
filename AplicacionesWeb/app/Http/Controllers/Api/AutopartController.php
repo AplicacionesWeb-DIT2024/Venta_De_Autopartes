@@ -13,13 +13,21 @@ class AutopartController extends Controller
     {
         $autoparts = Autopart::orderBy ('id')->get();// para ordenar el listado por ID
         return view('autopartes.autopartes', compact('autoparts'));
-        //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php"
+        //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php" en la carpeta "autopartes"
     }   
+
+    public function showCarrito()
+    {
+        $pedidos = Autopart::orderBy ('id')->get();// para ordenar el listado por ID
+        return view('carrito.carrito', compact('pedidos'));
+        //"autopartes.carrito" es el nombre de la vista, en este caso "carrito.blade.php" en la carpeta "carrito"
+    }
+
 
     public function create()
     {
         return view('autopartes.create');
-        //"autopartes.create" es el nombre de la vista, en este caso "create.blade.php"
+        //"autopartes.create" es el nombre de la vista,  "create.blade.php" en la carpeta "autopartes"
     }
 
     public function edit($id)
@@ -60,7 +68,7 @@ public function destroy($id)
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $autopart = Autopart::create($request->all());
+        $autopart = Autopart::create($request->all()); //Crea la instancia de la autoparte
 
         if (!$autopart) {
             return redirect()->back()->with('error', 'Error al crear la autoparte');
