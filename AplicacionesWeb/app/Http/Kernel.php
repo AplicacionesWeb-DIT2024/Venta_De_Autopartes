@@ -13,6 +13,14 @@ class Kernel extends HttpKernel
      *
      * @var array<int, class-string|string>
      */
+
+     // app/Http/Kernel.php
+
+protected $routeMiddleware = [
+    // ...
+    'rolekey' => \App\Http\Middleware\RoleKeyMiddleware::class,
+];
+
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,

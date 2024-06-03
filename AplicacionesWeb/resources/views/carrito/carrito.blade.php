@@ -1,0 +1,1 @@
+Acá habria un listado de pedidos viejos, a parte del pedido actual con la opción de eliminar el producto agregado del pedido.
