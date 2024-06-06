@@ -46,9 +46,9 @@
                             <td>
                                 <a href="{{ route('autopartes.edit', $autopart->id) }}" class="btn btn-warning btn-sm">Editar</a>
                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" data-id="{{ $autopart->id }}">Eliminar</button>
-                                <form action="{{ route('carrito.index') }}" method="POST" style="display: inline;">
-                                    
-                                    <input type="hidden" name="id" value="{{ $autopart->id }}">
+                                <form action="{{ route('carrito.store') }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    <input type="hidden" name="autopart_id" value="{{ $autopart->id }}">
                                     <button type="submit" class="btn btn-success btn-sm">Agregar al Carrito</button>
                                 </form>
                             </td>
@@ -58,7 +58,6 @@
             </table>
         </div>
     </div>
-
     <!-- Modal de Confirmación de Eliminación -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Pedidos</title>
+    <title>Carrito</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- Agregar Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -11,10 +11,17 @@
 <body>
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Listado de Pedidos</h1>
+            <h1>Carrito</h1>
             <!-- Botón para agregar nuevo pedido -->
             <a href="{{ route('autopartes.index') }}" class="btn btn-primary">Agregar Otro Producto</a>
         </div>
+        
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+        
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
@@ -23,11 +30,32 @@
                         <th>Autoparte</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
-                        <th>Acciones</th> <!-- Aquí podrías agregar botones de acción, por ejemplo, para editar o eliminar -->
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Aquí irían los pedidos, pero como inicialmente estará vacío, no habrá filas en la tabla -->
+                    @if (session('cart'))
+                        @foreach (session('cart') as $autopart)
+                            <tr>
+                                <td>{{ $autopart->id }}</td>
+                                <td>{{ $autopart->autoparte }}</td>
+                                <td>{{ $autopart->precio }}</td>
+                                <td>1</td>
+                                <td>
+                                    <!-- Aquí podrías agregar botones de acción, por ejemplo, para eliminar -->
+                                    <form action="{{ route('carrito.destroy', $autopart->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5">No hay autopartes en el carrito.</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

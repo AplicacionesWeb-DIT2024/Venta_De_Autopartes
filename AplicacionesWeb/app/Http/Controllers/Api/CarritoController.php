@@ -25,24 +25,22 @@ class CarritoController extends Controller
 
 public function store(Request $request)
 {
-    $validator = Validator::make($request->all(), [
-        'autoparte' => 'required|exists:autoparts,autoparte',
-        'cantidad' => 'required|integer|min:1'
-    ]);
+    // Validar la solicitud
+    //$request->validate([
+      //  'autopart_id' => 'required|exists:autoparts,id',
+    //]);
 
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-    }
+    // Obtener la autoparte seleccionada
+    $autopart = Autopart::find($request->autopart_id);
 
-    $autoparte = Autopart::where('autoparte', $request->autoparte)->firstOrFail();
+    // Agregar la autoparte al carrito (puedes almacenar en sesión, base de datos, etc.)
+    // Aquí se asume que usaremos la sesión para simplicidad
+    $cart = session()->get('cart', []);
+    $cart[$autopart->id] = $autopart;
+    session(['cart' => $cart]);
 
-    $pedido = new Pedido();
-    $pedido->autoparte = $autoparte->autoparte;
-    $pedido->precio = $autoparte->precio;
-    $pedido->cantidad = $request->cantidad;
-    $pedido->save();
-
-    return redirect()->route('carrito.create')->with('success', 'Pedido creado con éxito');
+    // Redirigir al carrito con un mensaje de éxito
+    return redirect()->route('carrito.index')->with('success', 'Autoparte agregada al carrito');
 }
 
 
@@ -79,11 +77,15 @@ public function store(Request $request)
     }
 
     public function destroy($id)
-    {
-        $pedido = Pedido::findOrFail($id);
-        $pedido->delete();
-        return redirect()->route('carrito.index')->with('success', 'Pedido eliminado con éxito');
+{
+    $cart = session()->get('cart', []);
+    if(isset($cart[$id])) {
+        unset($cart[$id]);
+        session(['cart' => $cart]);
     }
+    return redirect()->route('carrito.index')->with('success', 'Autoparte eliminada del carrito');
+}
+
 
     public function show($id)
     {
