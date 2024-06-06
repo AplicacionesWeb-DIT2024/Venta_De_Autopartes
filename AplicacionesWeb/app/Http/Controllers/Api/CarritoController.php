@@ -11,10 +11,12 @@ use App\Http\Controllers\Controller;
 class CarritoController extends Controller
 {
     public function index()
-    {
-        $pedidos = Pedido::orderBy('id')->get();
-        return view('carrito.index', compact('pedidos'));
-    }
+{
+    $carritoItems = Carrito::with('autopart')->get();
+
+    return view('carrito.index', compact('carritoItems'));
+}
+
 
     public function create()
 {
@@ -26,18 +28,23 @@ class CarritoController extends Controller
 public function store(Request $request)
 {
     // Validar la solicitud
-    //$request->validate([
-      //  'autopart_id' => 'required|exists:autoparts,id',
-    //]);
+    $request->validate([
+        'autopart_id' => 'required|exists:autoparts,id',
+    ]);
 
-    // Obtener la autoparte seleccionada
-    $autopart = Autopart::find($request->autopart_id);
+    // Verificar si la autoparte ya está en el carrito
+    $existingItem = CarritoController::where('autopart_id', $request->autopart_id)->first();
 
-    // Agregar la autoparte al carrito (puedes almacenar en sesión, base de datos, etc.)
-    // Aquí se asume que usaremos la sesión para simplicidad
-    $cart = session()->get('cart', []);
-    $cart[$autopart->id] = $autopart;
-    session(['cart' => $cart]);
+    if ($existingItem) {
+        // Incrementar la cantidad si ya existe
+        $existingItem->increment('cantidad');
+    } else {
+        // Agregar la autoparte al carrito
+        Carrito::create([
+            'autopart_id' => $request->autopart_id,
+            'cantidad' => 1
+        ]);
+    }
 
     // Redirigir al carrito con un mensaje de éxito
     return redirect()->route('carrito.index')->with('success', 'Autoparte agregada al carrito');
@@ -78,11 +85,9 @@ public function store(Request $request)
 
     public function destroy($id)
 {
-    $cart = session()->get('cart', []);
-    if(isset($cart[$id])) {
-        unset($cart[$id]);
-        session(['cart' => $cart]);
-    }
+    $carritoItem = Carrito::findOrFail($id);
+    $carritoItem->delete();
+
     return redirect()->route('carrito.index')->with('success', 'Autoparte eliminada del carrito');
 }
 

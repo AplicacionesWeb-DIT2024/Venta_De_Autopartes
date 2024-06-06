@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pedido extends Model
+class Carrito extends Model
 {
     use HasFactory;
 
+    protected $table = 'carrito';
+
     protected $fillable = [
-        'autoparte',
-        'precio',
-        'cantidad'
+        'autopart_id',
+        'cantidad',
     ];
 
-    public function autoparte()
+    public function autopart()
     {
-        return $this->belongsTo(Autopart::class, 'autoparte', 'autoparte');
+        return $this->belongsTo(Autopart::class);
     }
 }

@@ -34,28 +34,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (session('cart'))
-                        @foreach (session('cart') as $autopart)
-                            <tr>
-                                <td>{{ $autopart->id }}</td>
-                                <td>{{ $autopart->autoparte }}</td>
-                                <td>{{ $autopart->precio }}</td>
-                                <td>1</td>
-                                <td>
-                                    <!-- Aquí podrías agregar botones de acción, por ejemplo, para eliminar -->
-                                    <form action="{{ route('carrito.destroy', $autopart->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
+                    @foreach ($carritoItems as $item)
                         <tr>
-                            <td colspan="5">No hay autopartes en el carrito.</td>
+                            <td>{{ $item->id }}</td>
+                            <td>{{ $item->autopart->autoparte }}</td>
+                            <td>{{ $item->autopart->precio }}</td>
+                            <td>{{ $item->cantidad }}</td>
+                            <td>
+                                <!-- Aquí podrías agregar botones de acción, por ejemplo, para eliminar -->
+                                <form action="{{ route('carrito.destroy', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
+                            </td>
                         </tr>
-                    @endif
+                    @endforeach
                 </tbody>
             </table>
         </div>
