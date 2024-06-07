@@ -9,7 +9,12 @@ class Carrito extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['autopart_id', 'cantidad'];
+    protected $table = 'carrito';
+
+    protected $fillable = [
+        'autopart_id',
+        'quantity',
+    ];
 
     public function autopart()
     {

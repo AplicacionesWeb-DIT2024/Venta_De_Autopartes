@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 
 
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -40,7 +41,7 @@ Route::middleware(['auth', 'rolekey'])->group(function () {
 });
 
 // Ruta para ver el listado de pedidos
-Route::get('/carrito', [AutopartController::class, 'showCarrito'])->name('carrito.index');
+Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
 
 // Rutas de creación de pedidos
 //Route::get('/carrito/create', [CarritoController::class, 'create'])->name('carrito.create');
@@ -52,5 +53,5 @@ Route::get('/carrito/{id}/edit', [AutopartController::class, 'edit'])->name('car
 
 
 // Rutas de eliminación de pedidos
-//Route::delete('/carrito/{id}', [AutopartController::class, 'destroy'])->name('carrito.destroy');
-//Route::resource('carrito', CarritoController::class);
+Route::delete('/carrito/{id}', [AutopartController::class, 'destroy'])->name('carrito.destroy');
+Route::resource('carrito', CarritoController::class);
