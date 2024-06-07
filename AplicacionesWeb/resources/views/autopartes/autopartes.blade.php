@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Autopartes</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <!-- Agregar Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -13,7 +12,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Lista de Autopartes</h1>
             <a href="{{ route('autopartes.create') }}" class="btn btn-primary">Agregar Nueva Autoparte</a>
-            <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a></p>
+            <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -28,7 +27,7 @@
                         <th>Estado</th>
                         <th>Precio</th>
                         <th>Color</th>
-                        <th>Acciones</th> <!-- Nueva columna para los botones -->
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,6 +57,7 @@
             </table>
         </div>
     </div>
+
     <!-- Modal de Confirmación de Eliminación -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -88,14 +88,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Script para manejar el ID de la autoparte a eliminar -->
+    <!-- Aquí podrías agregar scripts adicionales si los necesitas -->
     <script>
+        // Script para manejar el modal de confirmación de eliminación
         $('#deleteModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var id = button.data('id');
-            var action = '{{ route('autopartes.destroy', '') }}' + '/' + id;
-            var modal = $(this);
-            modal.find('#deleteForm').attr('action', action);
+            var action = '{{ route('autopartes.destroy', '') }}/' + id;
+            var form = $('#deleteForm');
+            form.attr('action', action);
         });
     </script>
 </body>

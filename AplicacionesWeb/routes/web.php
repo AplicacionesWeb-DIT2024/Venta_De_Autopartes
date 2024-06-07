@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\AutopartController;
 use App\Http\Controllers\Api\CarritoController;
 use App\Http\Controllers\HomeController;
 
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -41,7 +43,7 @@ Route::middleware(['auth', 'rolekey'])->group(function () {
 Route::get('/carrito', [AutopartController::class, 'showCarrito'])->name('carrito.index');
 
 // Rutas de creación de pedidos
-Route::get('/carrito/create', [CarritoController::class, 'create'])->name('carrito.create');
+//Route::get('/carrito/create', [CarritoController::class, 'create'])->name('carrito.create');
 Route::post('/carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
 
 // Rutas de edición de autopartes
@@ -50,4 +52,5 @@ Route::get('/carrito/{id}/edit', [AutopartController::class, 'edit'])->name('car
 
 
 // Rutas de eliminación de pedidos
-Route::delete('/carrito/{id}', [AutopartController::class, 'destroy'])->name('carrito.destroy');
+//Route::delete('/carrito/{id}', [AutopartController::class, 'destroy'])->name('carrito.destroy');
+//Route::resource('carrito', CarritoController::class);
