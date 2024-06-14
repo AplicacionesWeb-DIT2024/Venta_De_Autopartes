@@ -23,6 +23,14 @@ class AutopartController extends Controller
         //"autopartes.carrito" es el nombre de la vista, en este caso "carrito.blade.php" en la carpeta "carrito"
     }
 
+   
+    public function show($id)
+    {
+        $autopart = Autopart::findOrFail($id);
+        return view('autopartes.producto', compact('autopart'));
+    }
+
+
 
     public function create()
     {
@@ -92,7 +100,7 @@ public function destroy($id)
 
     }
 
-    public function show($id)
+    /*public function show($id)
     {
         $autopart = Autopart::find($id);
 
@@ -110,7 +118,7 @@ public function destroy($id)
         ];
 
         return response()->json($data, 200);
-    }
+    }*/
 
     public function update(Request $request, $id)
     {

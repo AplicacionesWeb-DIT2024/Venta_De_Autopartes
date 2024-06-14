@@ -48,6 +48,13 @@ class CarritoController extends Controller
         return redirect()->route('carrito.index')->with('success', 'Autoparte agregada al carrito');
     }
 
+    public function show($id)
+    {
+        $autopart = Autopart::findOrFail($id);
+        return view('autopartes.producto', compact('autopart'));
+    }
+
+
     public function destroy($id)
 {
     $item = Carrito::find($id);

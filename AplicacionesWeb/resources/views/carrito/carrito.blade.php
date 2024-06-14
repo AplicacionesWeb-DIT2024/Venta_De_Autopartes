@@ -34,7 +34,7 @@
                             <td>{{ $item->autopart->codigo }}</td>
                             <td>{{ $item->autopart->precio }}</td>
                             <td>
-                                Detalles -
+                            <a href="{{ route('autopartes.show', $item->autopart->id) }}" class="btn btn-info btn-sm">Ver Detalles</a>
                                 <form action="{{ route('carrito.destroy', $item->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')

@@ -42,6 +42,7 @@
                                     <input type="hidden" name="autopart_id" value="{{ $autopart->id }}">
                                     <button type="submit" class="btn btn-success btn-sm">Agregar al Carrito</button>
                                 </form>
+                                <a href="{{ route('autopartes.show', $autopart->id) }}" class="btn btn-info btn-sm">Ver Detalles</a>
                             </td>
                         </tr>
                     @endforeach
