@@ -49,6 +49,9 @@
         <div class="d-flex justify-content-end">
             <h4>Subtotal: ${{ number_format($carritoItems->sum('autopart.precio'), 2) }}</h4> <!--Suma de todos los costos.-->
         </div>
+        <div class="d-flex justify-content-end mt-3">
+            <a href="{{ route('pagar') }}" class="btn btn-success">Proceder al Pago</a>
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

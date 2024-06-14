@@ -21,7 +21,6 @@
                         <th>Autoparte</th>
                         <th>Marca</th>
                         <th>Modelo</th>
-                        <th>Código</th>
                         <th>Precio</th>
                         <th>Acciones</th>
                     </tr>
@@ -32,7 +31,6 @@
                             <td>{{ $autopart->autoparte }}</td>
                             <td>{{ $autopart->marca }}</td>
                             <td>{{ $autopart->modelo }}</td>
-                            <td>{{ $autopart->codigo }}</td>
                             <td>{{ $autopart->precio }}</td>
                             <td>
                                 <a href="{{ route('autopartes.edit', $autopart->id) }}" class="btn btn-warning btn-sm">Editar</a>
