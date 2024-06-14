@@ -17,9 +17,10 @@
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                     <tr>
-                        <th>ID</th>
-                        <th>Código</th>
                         <th>Autoparte</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Código</th>
                         <th>Precio</th>
                         <th>Acciones</th>
                     </tr>
@@ -27,9 +28,10 @@
                 <tbody>
                     @foreach ($carritoItems as $item)
                         <tr>
-                            <td>{{ $item->autopart->id }}</td>
-                            <td>{{ $item->autopart->codigo }}</td>
                             <td>{{ $item->autopart->autoparte }}</td>
+                            <td>{{ $item->autopart->marca }}</td>
+                            <td>{{ $item->autopart->modelo }}</td>
+                            <td>{{ $item->autopart->codigo }}</td>
                             <td>{{ $item->autopart->precio }}</td>
                             <td>
                                 Detalles -

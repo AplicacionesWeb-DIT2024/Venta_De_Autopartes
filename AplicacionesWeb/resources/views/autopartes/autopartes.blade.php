@@ -18,30 +18,22 @@
             <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Autoparte</th>
                         <th>Marca</th>
                         <th>Modelo</th>
-                        <th>Año Vehículo</th>
                         <th>Código</th>
-                        <th>Estado</th>
                         <th>Precio</th>
-                        <th>Color</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($autoparts as $autopart)
                         <tr>
-                            <td>{{ $autopart->id }}</td>
                             <td>{{ $autopart->autoparte }}</td>
                             <td>{{ $autopart->marca }}</td>
                             <td>{{ $autopart->modelo }}</td>
-                            <td>{{ $autopart->añoVehiculo }}</td>
                             <td>{{ $autopart->codigo }}</td>
-                            <td>{{ $autopart->estado }}</td>
                             <td>{{ $autopart->precio }}</td>
-                            <td>{{ $autopart->color }}</td>
                             <td>
                                 <a href="{{ route('autopartes.edit', $autopart->id) }}" class="btn btn-warning btn-sm">Editar</a>
                                 <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" data-id="{{ $autopart->id }}">Eliminar</button>
