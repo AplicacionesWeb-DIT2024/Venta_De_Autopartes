@@ -13,7 +13,6 @@ class Carrito extends Model
 
     protected $fillable = [
         'autopart_id',
-        'quantity',
     ];
 
     public function autopart()

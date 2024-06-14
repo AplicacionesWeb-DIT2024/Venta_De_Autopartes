@@ -18,9 +18,9 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
+                        <th>Código</th>
                         <th>Autoparte</th>
                         <th>Precio</th>
-                        <th>Cantidad</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -28,16 +28,24 @@
                     @foreach ($carritoItems as $item)
                         <tr>
                             <td>{{ $item->autopart->id }}</td>
+                            <td>{{ $item->autopart->codigo }}</td>
                             <td>{{ $item->autopart->autoparte }}</td>
                             <td>{{ $item->autopart->precio }}</td>
-                            <td>{{ $item->cantidad }}</td>
                             <td>
-                                <!-- Botones de acción si es necesario -->
+                                Detalles -
+                                <form action="{{ route('carrito.destroy', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar del Carrito</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="d-flex justify-content-end">
+            <h4>Subtotal: ${{ number_format($carritoItems->sum('autopart.precio'), 2) }}</h4> <!--Suma de todos los costos.-->
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

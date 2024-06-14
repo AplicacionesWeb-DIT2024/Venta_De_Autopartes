@@ -47,4 +47,15 @@ class CarritoController extends Controller
         // Redirigir al carrito con un mensaje de éxito
         return redirect()->route('carrito.index')->with('success', 'Autoparte agregada al carrito');
     }
+
+    public function destroy($id)
+{
+    $item = Carrito::find($id);
+    if ($item) {
+        $item->delete();
+    }
+    return redirect()->route('carrito.index')->with('success', 'Item eliminado del carrito.');
+}
+
+
 }

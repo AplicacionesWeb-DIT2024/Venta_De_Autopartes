@@ -55,3 +55,7 @@ Route::get('/carrito/{id}/edit', [AutopartController::class, 'edit'])->name('car
 // Rutas de eliminación de pedidos
 Route::delete('/carrito/{id}', [AutopartController::class, 'destroy'])->name('carrito.destroy');
 Route::resource('carrito', CarritoController::class);
+
+//Ruta de eliminación de productos del carrito
+Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+Route::delete('/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
