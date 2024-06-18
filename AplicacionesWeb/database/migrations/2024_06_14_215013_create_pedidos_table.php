@@ -14,13 +14,12 @@ class CreatePedidosTable extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->string('autoparte');
-            $table->string('marca');
-            $table->string('modelo');
-            $table->string('codigo');
-            $table->decimal('precio', 8, 2);
+            $table->string('numero_pedido')->unique();
+            $table->timestamp('fecha_cierre');
+            $table->decimal('costo_total', 8, 2);
+            $table->string('tipo_pago');
             $table->timestamps();
-        });
+        });        
     }
 
     /**

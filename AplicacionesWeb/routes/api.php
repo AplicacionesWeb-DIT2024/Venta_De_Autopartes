@@ -1,9 +1,11 @@
 <?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AutopartController;
 use App\Http\Controllers\Api\CarritoController;
 use App\Http\Controllers\Api\CompraController;
+use App\Http\Controllers\Api\PedidoController;
 
 Route::get('/autoparts', [AutopartController::class, 'index']);
 Route::post('/autoparts', [AutopartController::class, 'store']);

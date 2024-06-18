@@ -51,6 +51,7 @@
         </div>
         <div class="d-flex justify-content-end mt-3">
             <a href="{{ route('pagar') }}" class="btn btn-success">Proceder al Pago</a>
+            <a href="{{ route('pedidos.index') }}" class="btn btn-primary ml-2">Ver Pedidos</a> <!-- Agregar botón para ver pedidos -->
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

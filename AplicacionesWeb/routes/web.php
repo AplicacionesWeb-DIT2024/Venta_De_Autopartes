@@ -2,6 +2,7 @@
 use App\Http\Controllers\Api\AutopartController;
 use App\Http\Controllers\Api\CarritoController;
 use App\Http\Controllers\Api\CompraController;
+use App\Http\Controllers\Api\PedidoController;
 use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
@@ -59,3 +60,7 @@ Route::get('/autopartes/{id}', [AutopartController::class, 'show'])->name('autop
 // Rutas para confirmar el pago
 Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
 Route::post('/comprar', [CompraController::class, 'comprar'])->name('comprar');
+
+
+Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
