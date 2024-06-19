@@ -10,6 +10,6 @@ class Pedido extends Model
     use HasFactory;
 
     protected $fillable = [
-        'autoparte', 'marca', 'modelo', 'codigo', 'precio'
+        'numero_pedido','fecha_cierre','costo_total','tipo_pago'
     ];
 }
