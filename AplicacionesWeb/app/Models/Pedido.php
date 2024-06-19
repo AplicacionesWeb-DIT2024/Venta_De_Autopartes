@@ -20,4 +20,9 @@ class Pedido extends Model
     {
         return $this->hasMany(Carrito::class);
     }
+
+    public function detalles()
+    {
+        return $this->hasMany(DetallePedido::class, 'pedido_id');
+    }
 }

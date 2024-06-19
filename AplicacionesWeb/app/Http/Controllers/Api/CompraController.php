@@ -7,6 +7,8 @@ use App\Models\Carrito;
 use Illuminate\Http\Request;
 use App\Models\Autopart;
 use App\Models\Pedido;
+use App\Models\DetallePedido;
+
 
 class CompraController extends Controller
 {
@@ -16,31 +18,36 @@ class CompraController extends Controller
         return view('carrito.pagar', compact('carritoItems'));
     }
 
-    public function comprar(Request $request)
-    {
-        // Procesar la compra según la forma de pago seleccionada
-        // Aquí puedes agregar lógica adicional para procesar la compra
+    
 
-        // Obtener todos los productos en el carrito
-        $carritoItems = Carrito::with('autopart')->get();
 
-        // Crear un nuevo registro en la tabla pedidos
-        $pedido = Pedido::create([
-            'numero_pedido' => Pedido::max('id') + 1, // Generar un número de pedido único y ascendente
-            'fecha_cierre' => now(), // Fecha y hora actual
-            'costo_total' => $carritoItems->sum('autopart.precio'), // Sumar los precios de todas las autopartes en el carrito
-            'tipo_pago' => $request->forma_pago, // Forma de pago seleccionada
+public function comprar(Request $request)
+{
+    // Obtener todos los productos en el carrito
+    $carritoItems = Carrito::with('autopart')->get();
+
+    // Crear un nuevo pedido y asociar los detalles de pedido
+    $pedido = Pedido::create([
+        'numero_pedido' => uniqid(), // Generar un número de pedido único
+        'fecha_cierre' => now(), // Fecha y hora actual
+        'costo_total' => $carritoItems->sum('autopart.precio'), // Suma total de los precios
+        'tipo_pago' => $request->forma_pago, // Forma de pago seleccionada
+    ]);
+
+    // Guardar los detalles de los productos asociados al pedido
+    foreach ($carritoItems as $item) {
+        $pedido->detalles()->create([
+            'autoparte' => $item->autopart->autoparte,
+            'marca' => $item->autopart->marca,
+            'modelo' => $item->autopart->modelo,
+            'codigo' => $item->autopart->codigo,
+            'precio' => $item->autopart->precio,
         ]);
-
-        foreach ($carritoItems as $item) {
-            // Asignar el pedido a cada item del carrito
-            $item->pedido_id = $pedido->id;
-            $item->save();
-
-            // Eliminar la autoparte del carrito
-            $item->delete();
-        }
-
-        return redirect()->route('autopartes.index')->with('success', 'Compra realizada con éxito.');
     }
+
+    // Eliminar todos los productos del carrito
+    Carrito::truncate();
+
+    return redirect()->route('pedidos.show', $pedido->id)->with('success', 'Compra realizada con éxito.');
+}
 }

@@ -26,15 +26,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($pedido->carritoItems as $item)
-                        <tr>
-                            <td>{{ $item->autopart->autoparte }}</td>
-                            <td>{{ $item->autopart->marca }}</td>
-                            <td>{{ $item->autopart->modelo }}</td>
-                            <td>{{ $item->autopart->codigo }}</td>
-                            <td>{{ $item->autopart->precio }}</td>
-                        </tr>
-                    @endforeach
+                @foreach ($detalles as $detalle)
+                    <tr>
+                        <td>{{ $detalle->autoparte }}</td>
+                        <td>{{ $detalle->marca }}</td>
+                        <td>{{ $detalle->modelo }}</td>
+                        <td>{{ $detalle->codigo }}</td>
+                        <td>{{ $detalle->precio }}</td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
