@@ -12,4 +12,10 @@ class Pedido extends Model
     protected $fillable = [
         'numero_pedido','fecha_cierre','costo_total','tipo_pago'
     ];
+
+
+    public function carritoItems()
+    {
+        return $this->hasMany(Carrito::class);
+    }
 }

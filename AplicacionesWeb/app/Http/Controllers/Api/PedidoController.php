@@ -17,4 +17,11 @@ class PedidoController extends Controller
 
         return view('pedidos.index', compact('pedidos'));
     }
+
+
+    public function show($id) //Función que muestra el detalle de los pedidos.
+    {
+        $pedido = Pedido::findOrFail($id);
+        return view('pedidos.show', compact('pedido'));
+    }
 }

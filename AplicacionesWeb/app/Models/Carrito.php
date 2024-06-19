@@ -19,4 +19,11 @@ class Carrito extends Model
     {
         return $this->belongsTo(Autopart::class);
     }
+
+    
+
+    public function pedido()
+    {
+        return $this->belongsTo(Pedido::class);
+    }
 }

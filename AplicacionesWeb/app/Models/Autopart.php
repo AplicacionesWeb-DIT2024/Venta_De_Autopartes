@@ -19,4 +19,9 @@ class Autopart extends Model
         'precio',
         'color'
     ];
+
+    public function carrito()
+    {
+        return $this->hasMany(Carrito::class);
+    }
 }
