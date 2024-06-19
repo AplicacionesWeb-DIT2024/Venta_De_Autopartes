@@ -10,9 +10,11 @@ class Pedido extends Model
     use HasFactory;
 
     protected $fillable = [
-        'numero_pedido','fecha_cierre','costo_total','tipo_pago'
+        'numero_pedido',
+        'fecha_cierre',
+        'costo_total',
+        'tipo_pago'
     ];
-
 
     public function carritoItems()
     {

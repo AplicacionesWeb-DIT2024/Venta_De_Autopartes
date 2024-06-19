@@ -13,14 +13,14 @@ class Carrito extends Model
 
     protected $fillable = [
         'autopart_id',
+        'pedido_id',
+        'quantity'
     ];
 
     public function autopart()
     {
         return $this->belongsTo(Autopart::class);
     }
-
-    
 
     public function pedido()
     {

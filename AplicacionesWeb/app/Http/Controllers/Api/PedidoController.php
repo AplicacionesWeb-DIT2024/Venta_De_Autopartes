@@ -19,9 +19,9 @@ class PedidoController extends Controller
     }
 
 
-    public function show($id) //Función que muestra el detalle de los pedidos.
+    public function show($id)
     {
-        $pedido = Pedido::findOrFail($id);
+        $pedido = Pedido::with('carritoItems.autopart')->findOrFail($id);
         return view('pedidos.show', compact('pedido'));
     }
 }
