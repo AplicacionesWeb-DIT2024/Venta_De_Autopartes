@@ -18,36 +18,30 @@ class CompraController extends Controller
         return view('carrito.pagar', compact('carritoItems'));
     }
 
-    
+    public function comprar(Request $request)
+    {
+        $carritoItems = Carrito::with('autopart')->get();
 
-
-public function comprar(Request $request)
-{
-    // Obtener todos los productos en el carrito
-    $carritoItems = Carrito::with('autopart')->get();
-
-    // Crear un nuevo pedido y asociar los detalles de pedido
-    $pedido = Pedido::create([
-        'numero_pedido' => uniqid(), // Generar un número de pedido único
-        'fecha_cierre' => now(), // Fecha y hora actual
-        'costo_total' => $carritoItems->sum('autopart.precio'), // Suma total de los precios
-        'tipo_pago' => $request->forma_pago, // Forma de pago seleccionada
-    ]);
-
-    // Guardar los detalles de los productos asociados al pedido
-    foreach ($carritoItems as $item) {
-        $pedido->detalles()->create([
-            'autoparte' => $item->autopart->autoparte,
-            'marca' => $item->autopart->marca,
-            'modelo' => $item->autopart->modelo,
-            'codigo' => $item->autopart->codigo,
-            'precio' => $item->autopart->precio,
+        // Crear el pedido
+        $pedido = Pedido::create([
+            'fecha_cierre' => now(),
+            'costo_total' => $carritoItems->sum('autopart.precio'),
+            'tipo_pago' => $request->forma_pago,
         ]);
+
+        // Crear los detalles del pedido
+        foreach ($carritoItems as $item) {
+            DetallePedido::create([
+                'pedido_id' => $pedido->id,
+                'autoparte' => $item->autopart->autoparte,
+                'marca' => $item->autopart->marca,
+                'modelo' => $item->autopart->modelo,
+                'codigo' => $item->autopart->codigo,
+                'precio' => $item->autopart->precio,
+            ]);
+            $item->delete();  // Eliminar el item del carrito
+        }
+
+        return redirect()->route('pedidos.show', $pedido->id)->with('success', 'Compra realizada con éxito.');
     }
-
-    // Eliminar todos los productos del carrito
-    Carrito::truncate();
-
-    return redirect()->route('pedidos.show', $pedido->id)->with('success', 'Compra realizada con éxito.');
-}
 }
