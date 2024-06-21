@@ -7,6 +7,8 @@ use App\Models\Carrito;
 use Illuminate\Http\Request;
 use App\Models\Autopart;
 use App\Models\Pedido;
+use App\Models\DetallePedido;
+
 
 class CompraController extends Controller
 {
@@ -18,30 +20,28 @@ class CompraController extends Controller
 
     public function comprar(Request $request)
     {
-        // Procesar la compra según la forma de pago seleccionada
-        // Aquí puedes agregar lógica adicional para procesar la compra
-
-        // Obtener todos los productos en el carrito
         $carritoItems = Carrito::with('autopart')->get();
 
-        // Guardar los pedidos en la tabla pedidos y eliminar las autopartes y el carrito de la base de datos
+        // Crear el pedido
+        $pedido = Pedido::create([
+            'fecha_cierre' => now(),
+            'costo_total' => $carritoItems->sum('autopart.precio'),
+            'tipo_pago' => $request->forma_pago,
+        ]);
+
+        // Crear los detalles del pedido
         foreach ($carritoItems as $item) {
-            // Crear un nuevo registro en la tabla pedidos
-            Pedido::create([
+            DetallePedido::create([
+                'pedido_id' => $pedido->id,
                 'autoparte' => $item->autopart->autoparte,
                 'marca' => $item->autopart->marca,
                 'modelo' => $item->autopart->modelo,
                 'codigo' => $item->autopart->codigo,
                 'precio' => $item->autopart->precio,
             ]);
-
-            // Eliminar la autoparte
-            $item->autopart->delete();
-
-            // Eliminar el item del carrito
-            $item->delete();
+            $item->delete();  // Eliminar el item del carrito
         }
 
-        return redirect()->route('autopartes.index')->with('success', 'Compra realizada con éxito.');
+        return redirect()->route('pedidos.show', $pedido->id)->with('success', 'Compra realizada con éxito.');
     }
 }

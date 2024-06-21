@@ -5,29 +5,18 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePedidosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->string('autoparte');
-            $table->string('marca');
-            $table->string('modelo');
-            $table->string('codigo');
-            $table->decimal('precio', 8, 2);
+            $table->unsignedBigInteger('numero_pedido')->nullable()->unique(); // número de pedido como secuencia única
+            $table->timestamp('fecha_cierre');
+            $table->decimal('costo_total', 8, 2);
+            $table->string('tipo_pago');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('pedidos');

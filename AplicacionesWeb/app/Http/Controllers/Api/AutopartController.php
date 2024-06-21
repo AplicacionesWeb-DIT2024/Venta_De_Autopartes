@@ -100,26 +100,6 @@ public function destroy($id)
 
     }
 
-    /*public function show($id)
-    {
-        $autopart = Autopart::find($id);
-
-        if (!$autopart) {
-            $data = [
-                'message' => 'Autoparte no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
-        }
-
-        $data = [
-            'autopart' => $autopart,
-            'status' => 200
-        ];
-
-        return response()->json($data, 200);
-    }*/
-
     public function update(Request $request, $id)
     {
         $autopart = Autopart::find($id);
