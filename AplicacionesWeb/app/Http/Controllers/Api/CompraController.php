@@ -39,6 +39,10 @@ class CompraController extends Controller
                 'codigo' => $item->autopart->codigo,
                 'precio' => $item->autopart->precio,
             ]);
+            
+            // Eliminar la autoparte del listado de autopartes
+            $item->autopart->delete();
+            
             $item->delete();  // Eliminar el item del carrito
         }
 
