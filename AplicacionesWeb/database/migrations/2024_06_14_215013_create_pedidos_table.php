@@ -1,24 +1,34 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePedidosTable extends Migration
-{
-    public function up()
+return new class extends Migration {
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
-        Schema::create('pedidos', function (Blueprint $table) {
+        Schema::create('autopart', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('numero_pedido')->nullable()->unique(); // número de pedido como secuencia única
-            $table->timestamp('fecha_cierre');
-            $table->decimal('costo_total', 8, 2);
-            $table->string('tipo_pago');
+            $table->string("autoparte");
+            $table->string("marca");
+            $table->string("modelo");
+            $table->string("añoVehiculo");
+            $table->string("codigo")->unique(); // Hacer que el código sea único
+            $table->string("estado");
+            $table->string("precio");
+            $table->string("color");
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
-        Schema::dropIfExists('pedidos');
+        Schema::dropIfExists('autopart');
     }
-}
+};
