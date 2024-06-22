@@ -6,21 +6,20 @@ use App\Models\Autopart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\QueryException; // Importa QueryException
 
 class AutopartController extends Controller
 {
     public function showAutoparts()
     {
         $autoparts = Autopart::orderBy('id')->get();// para ordenar el listado por ID
-        return view('autopartes.autopartes', compact('autoparts'));
-        //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php" en la carpeta "autopartes"
+        return view('autopartes.autopartes', compact('autoparts')); //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php" en la carpeta "autopartes"
     }
 
     public function showCarrito()
     {
         $pedidos = Autopart::orderBy('id')->get();// para ordenar el listado por ID
-        return view('carrito.carrito', compact('pedidos'));
-        //"autopartes.carrito" es el nombre de la vista, en este caso "carrito.blade.php" en la carpeta "carrito"
+        return view('carrito.carrito', compact('pedidos')); //"autopartes.carrito" es el nombre de la vista, en este caso "carrito.blade.php" en la carpeta "carrito"
     }
 
 
@@ -34,8 +33,7 @@ class AutopartController extends Controller
 
     public function create()
     {
-        return view('autopartes.create');
-        //"autopartes.create" es el nombre de la vista,  "create.blade.php" en la carpeta "autopartes"
+        return view('autopartes.create'); //"autopartes.create" es el nombre de la vista,  "create.blade.php" en la carpeta "autopartes"
     }
 
     public function edit($id)
@@ -83,8 +81,6 @@ class AutopartController extends Controller
             return redirect()->back()->with('error', 'Ocurrió un error al agregar la autoparte.')->withInput();
         }
     }
-
-
 
     public function index()
     {
