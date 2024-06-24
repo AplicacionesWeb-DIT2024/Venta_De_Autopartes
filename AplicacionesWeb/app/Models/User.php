@@ -47,9 +47,3 @@ class User extends Authenticatable
 
 
 
-class User extends Authenticatable
-{
-    use HasRoles; //para crear los roles
-
-    // ...
-}
