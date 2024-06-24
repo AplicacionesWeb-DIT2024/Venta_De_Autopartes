@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,12 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Lista de Autopartes</h1>
-            <a href="{{ route('autopartes.create') }}" class="btn btn-primary">Agregar Nueva Autoparte</a>
-            <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a>
+
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -33,20 +34,25 @@
                             <td>{{ $autopart->modelo }}</td>
                             <td>{{ $autopart->precio }}</td>
                             <td>
-                                <a href="{{ route('autopartes.edit', $autopart->id) }}" class="btn btn-warning btn-sm">Editar</a>
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal" data-id="{{ $autopart->id }}">Eliminar</button>
+                                <a href="{{ route('autopartes.edit', $autopart->id) }}"
+                                    class="btn btn-warning btn-sm">Editar</a>
+                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
+                                    data-id="{{ $autopart->id }}">Eliminar</button>
                                 <form action="{{ route('carrito.store') }}" method="POST" style="display: inline;">
                                     @csrf
                                     <input type="hidden" name="autopart_id" value="{{ $autopart->id }}">
                                     <button type="submit" class="btn btn-success btn-sm">Agregar al Carrito</button>
                                 </form>
-                                <a href="{{ route('autopartes.show', $autopart->id) }}" class="btn btn-info btn-sm">Ver Detalles</a>
+                                <a href="{{ route('autopartes.show', $autopart->id) }}" class="btn btn-info btn-sm">Ver
+                                    Detalles</a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
+        <a href="{{ route('autopartes.create') }}" class="btn btn-primary">Agregar Nueva Autoparte</a>
+        <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a>
     </div>
 
     <!-- Modal de Confirmación de Eliminación -->
@@ -91,4 +97,5 @@
         });
     </script>
 </body>
+
 </html>

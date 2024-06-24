@@ -6,24 +6,23 @@ use App\Models\Autopart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Database\QueryException; // Importa QueryException
 
 class AutopartController extends Controller
 {
     public function showAutoparts()
     {
-        $autoparts = Autopart::orderBy ('id')->get();// para ordenar el listado por ID
-        return view('autopartes.autopartes', compact('autoparts'));
-        //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php" en la carpeta "autopartes"
-    }   
+        $autoparts = Autopart::orderBy('id')->get();// para ordenar el listado por ID
+        return view('autopartes.autopartes', compact('autoparts')); //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php" en la carpeta "autopartes"
+    }
 
     public function showCarrito()
     {
-        $pedidos = Autopart::orderBy ('id')->get();// para ordenar el listado por ID
-        return view('carrito.carrito', compact('pedidos'));
-        //"autopartes.carrito" es el nombre de la vista, en este caso "carrito.blade.php" en la carpeta "carrito"
+        $pedidos = Autopart::orderBy('id')->get();// para ordenar el listado por ID
+        return view('carrito.carrito', compact('pedidos')); //"autopartes.carrito" es el nombre de la vista, en este caso "carrito.blade.php" en la carpeta "carrito"
     }
 
-   
+
     public function show($id)
     {
         $autopart = Autopart::findOrFail($id);
@@ -34,61 +33,59 @@ class AutopartController extends Controller
 
     public function create()
     {
-        return view('autopartes.create');
-        //"autopartes.create" es el nombre de la vista,  "create.blade.php" en la carpeta "autopartes"
+        return view('autopartes.create'); //"autopartes.create" es el nombre de la vista,  "create.blade.php" en la carpeta "autopartes"
     }
 
     public function edit($id)
     {
-    $autopart = Autopart::findOrFail($id);
-    return view('autopartes.edit', compact('autopart'));
+        $autopart = Autopart::findOrFail($id);
+        return view('autopartes.edit', compact('autopart'));
     }
 
-public function destroy($id)
-{
-    $autopart = Autopart::findOrFail($id);
+    public function destroy($id)
+    {
+        $autopart = Autopart::findOrFail($id);
 
-    if (!$autopart) {
-        return redirect()->back()->with('error', 'Autoparte no encontrada');
+        if (!$autopart) {
+            return redirect()->back()->with('error', 'Autoparte no encontrada');
+        }
+
+        $autopart->delete();
+
+        return redirect()->route('autopartes.index')->with('success', 'Autoparte eliminada');
     }
-
-    $autopart->delete();
-
-    return redirect()->route('autopartes.index')->with('success', 'Autoparte eliminada');
-}
 
 
     public function store(Request $request)
     {
-        
-        $validator = Validator::make($request->all(), [
-            'autoparte' => 'required|max:255',
-            'marca' => 'required|max:255',
-            'modelo' => 'required|max:255',
-            'añoVehiculo' => 'required|digits:4',
-            'codigo' => 'required|max:100',
-            'estado' => 'required|in:Muy bueno,Bueno,Malo,Muy malo',
-            'precio' => 'required|numeric|between:0,5000000',
-            'color' => 'required|max:15'
+        $request->validate([
+            'autoparte' => 'required|string|max:255',
+            'marca' => 'required|string|max:255',
+            'modelo' => 'required|string|max:255',
+            'añoVehiculo' => 'required|string|max:255',
+            'codigo' => 'required|string|max:255|unique:autopart,codigo',
+            'estado' => 'required|string|max:255',
+            'precio' => 'required|string|max:255',
+            'color' => 'required|string|max:255',
+        ], [
+            'codigo.unique' => 'El código de la autoparte ya está en uso.',
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        try {
+            Autopart::create($request->all());
+            return redirect()->route('autopartes.index')->with('success', 'Autoparte agregada con éxito.');
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 23505) { // Código de error para entrada duplicada en PostgreSQL
+                return redirect()->back()->with('error', 'El código de la autoparte ya existe.')->withInput();
+            }
+            return redirect()->back()->with('error', 'Ocurrió un error al agregar la autoparte.')->withInput();
         }
-
-        $autopart = Autopart::create($request->all()); //Crea la instancia de la autoparte
-
-        if (!$autopart) {
-            return redirect()->back()->with('error', 'Error al crear la autoparte');
-        }
-        return redirect()->route('autopartes.index');
-        //return response('Creado existosamente', 200);
     }
 
     public function index()
     {
         $autopart = Autopart::all();
-        
+
 
         $data = [
             'autopart' => $autopart,
@@ -130,7 +127,7 @@ public function destroy($id)
                 'status' => 400
             ];
             return response()->json($data, 400);
-            
+
         }
 
         $autopart->autoparte = $request->autoparte;
