@@ -10,16 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('autopart', function (Blueprint $table) {
+        Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
-            $table->string("autoparte");
-            $table->string("marca");
-            $table->string("modelo");
-            $table->string("añoVehiculo");
-            $table->string("codigo")->unique(); // Hacer que el código sea único
-            $table->string("estado");
-            $table->string("precio");
-            $table->string("color");
+            $table->unsignedBigInteger('numero_pedido');
+            $table->date('fecha_cierre')->nullable();
+            $table->decimal('costo_total', 8, 2);
+            $table->string('tipo_pago');
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('autopart');
+        Schema::dropIfExists('pedidos');
     }
 };
