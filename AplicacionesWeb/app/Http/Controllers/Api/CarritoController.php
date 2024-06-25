@@ -12,6 +12,11 @@ use App\Models\Autopart;
 
 class CarritoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:cliente');
+    }
     public function index()
     {
         // Obtener todos los ítems del carrito
@@ -22,26 +27,26 @@ class CarritoController extends Controller
     }
 
     public function store(Request $request)
-{
-    // Validar la solicitud
-    $request->validate([
-        'autopart_id' => 'required|exists:autopart,id',
-    ]);
-
-    // Buscar un ítem existente en el carrito
-    $existingItem = Carrito::where('autopart_id', $request->autopart_id)->first();
-
-    if ($existingItem) {
-        // Actualizar la cantidad si el ítem ya existe en el carrito
-        $existingItem->quantity += 1; // o la cantidad deseada
-        $existingItem->save();
-    } else {
-        // Crear un nuevo ítem en el carrito
-        Carrito::create([
-            'autopart_id' => $request->autopart_id,
-            'quantity' => 1, // o la cantidad deseada
+    {
+        // Validar la solicitud
+        $request->validate([
+            'autopart_id' => 'required|exists:autopart,id',
         ]);
-    }
+
+        // Buscar un ítem existente en el carrito
+        $existingItem = Carrito::where('autopart_id', $request->autopart_id)->first();
+
+        if ($existingItem) {
+            // Actualizar la cantidad si el ítem ya existe en el carrito
+            $existingItem->quantity += 1; // o la cantidad deseada
+            $existingItem->save();
+        } else {
+            // Crear un nuevo ítem en el carrito
+            Carrito::create([
+                'autopart_id' => $request->autopart_id,
+                'quantity' => 1, // o la cantidad deseada
+            ]);
+        }
 
         // Redirigir al carrito con un mensaje de éxito
         return redirect()->route('carrito.index')->with('success', 'Autoparte agregada al carrito');
@@ -55,13 +60,13 @@ class CarritoController extends Controller
 
 
     public function destroy($id)
-{
-    $item = Carrito::find($id);
-    if ($item) {
-        $item->delete();
+    {
+        $item = Carrito::find($id);
+        if ($item) {
+            $item->delete();
+        }
+        return redirect()->route('carrito.index')->with('success', 'Item eliminado del carrito.');
     }
-    return redirect()->route('carrito.index')->with('success', 'Item eliminado del carrito.');
-}
 
 
 }
