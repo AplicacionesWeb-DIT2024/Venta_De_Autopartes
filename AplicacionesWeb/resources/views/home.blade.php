@@ -1,14 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Bienvenido</h1>
-    <form method="GET" action="{{ route('cliente') }}">
-        <input type="hidden" name="key" value="cliente">
-        <button type="submit">Acceso Cliente</button>
-    </form>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Dashboard') }}</div>
 
-    <form method="GET" action="{{ route('empleado') }}">
-        <input type="hidden" name="key" value="empleado">
-        <button type="submit">Acceso Empleado</button>
-    </form>
+                <div class="card-body">
+                    {{ __('You are logged in!') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
