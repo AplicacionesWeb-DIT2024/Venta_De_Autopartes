@@ -18,6 +18,12 @@ class CompraController extends Controller
         return view('carrito.pagar', compact('carritoItems'));
     }
 
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:Cliente')->except('index', 'show');
+    }
     public function comprar(Request $request)
     {
         $carritoItems = Carrito::with('autopart')->get();
@@ -39,10 +45,10 @@ class CompraController extends Controller
                 'codigo' => $item->autopart->codigo,
                 'precio' => $item->autopart->precio,
             ]);
-            
+
             // Eliminar la autoparte del listado de autopartes
             $item->autopart->delete();
-            
+
             $item->delete();  // Eliminar el item del carrito
         }
 

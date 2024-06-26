@@ -10,6 +10,13 @@ use Illuminate\Database\QueryException; // Importa QueryException
 
 class AutopartController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:Empleado')->except('index', 'show');
+    }
+
+
     public function showAutoparts()
     {
         $autoparts = Autopart::orderBy('id')->get();// para ordenar el listado por ID
