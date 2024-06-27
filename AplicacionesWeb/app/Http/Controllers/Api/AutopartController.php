@@ -19,8 +19,8 @@ class AutopartController extends Controller
 
     public function showAutoparts()
     {
-        $autoparts = Autopart::orderBy('id')->get();// para ordenar el listado por ID
-        return view('autopartes.autopartes', compact('autoparts')); //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php" en la carpeta "autopartes"
+        $autoparts = Autopart::orderBy('id')->get();
+        return view('autopartes.autopartes', compact('autoparts'));
     }
 
     public function showCarrito()

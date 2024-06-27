@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -26,17 +24,11 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => bcrypt($request->password),
+            'role' => 'Cliente', // Asignar el rol de Cliente
         ]);
 
-        // Asignar el rol de Cliente
-        $clienteRole = Role::where('name', 'Cliente')->first();
-        if ($clienteRole) {
-            $user->assignRole($clienteRole);
-        }
-
-        // Redirigir al login
-        return redirect()->route('login')->with('success', 'Registro exitoso. Por favor, inicie sesión.');
+        return redirect()->route('login')->with('success', 'Registration successful. Please login.');
     }
 
     public function showLoginForm()
@@ -49,11 +41,13 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('home');
+            // Autenticación exitosa
+            return redirect()->intended('/autoparts');
         }
 
+        // Autenticación fallida
         return back()->withErrors([
-            'email' => 'Las credenciales no coinciden con nuestros registros.',
+            'email' => 'Las credenciales proporcionadas no son válidas.',
         ]);
     }
 

@@ -80,6 +80,11 @@
         </div>
     </div>
 
+    @if(Auth::check() && Auth::user()->hasRole('Cliente'))
+        <a href="{{ route('carrito.store', ['id' => $autoparte->id]) }}" class="btn btn-primary">Agregar al carrito</a>
+    @endif
+
+
     <!-- Agregar JS de Bootstrap y jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

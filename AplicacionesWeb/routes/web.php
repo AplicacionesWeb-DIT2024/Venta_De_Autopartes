@@ -43,3 +43,32 @@ Route::middleware(['auth', 'role:Cliente'])->group(function () {
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
     Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
 });
+
+/*Esto es lo que me dio Chat GPT para logearme
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AutopartController; // Asegúrate de importar el controlador completo
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/autoparts', [AutopartController::class, 'index'])->name('autoparts.index');
+    Route::get('/autoparts/{id}', [AutopartController::class, 'show'])->name('autoparts.show');
+
+    Route::middleware('role:Cliente')->group(function () {
+        Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+        Route::post('/carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
+        Route::delete('/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
+
+        Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+        Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
+
+        Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
+        Route::post('/comprar', [CompraController::class, 'comprar'])->name('comprar');
+    });
+});
+
+Route::middleware('role:Empleado')->group(function () {
+    Route::get('/autoparts/create', [AutopartController::class, 'create'])->name('autoparts.create');
+    Route::post('/autoparts', [AutopartController::class, 'store'])->name('autoparts.store');
+});
+ */

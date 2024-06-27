@@ -2,27 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
     ];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    // Método para verificar si el usuario tiene un rol específico
+    public function hasRole($role)
+    {
+        return $this->role === $role; // Verifica si el rol del usuario coincide con el rol especificado
+    }
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    // Otros métodos y relaciones del modelo...
 }
+
