@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -29,12 +29,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $role = Role::where('name', 'Empleado')->first();
-        $user->assignRole($role);
+        // Asignar el rol de Cliente
+        $clienteRole = Role::where('name', 'Cliente')->first();
+        if ($clienteRole) {
+            $user->assignRole($clienteRole);
+        }
 
-        Auth::login($user);
-
-        return redirect()->route('home')->with('success', 'Empleado registrado y logeado con éxito.');
+        // Redirigir al login
+        return redirect()->route('login')->with('success', 'Registro exitoso. Por favor, inicie sesión.');
     }
 
     public function showLoginForm()
@@ -44,23 +46,20 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+        $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('home')->with('success', 'Empleado logeado con éxito.');
+        if (Auth::attempt($credentials)) {
+            return redirect()->intended('home');
         }
 
         return back()->withErrors([
-            'email' => 'Credenciales incorrectas',
+            'email' => 'Las credenciales no coinciden con nuestros registros.',
         ]);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::logout();
-        return redirect()->route('login')->with('success', 'Empleado deslogeado con éxito.');
+        return redirect()->route('login');
     }
 }

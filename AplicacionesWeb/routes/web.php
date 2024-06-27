@@ -8,21 +8,15 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Rutas de autenticación
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Ruta de home accesible para todos los usuarios autenticados
-Route::middleware('auth')->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-});
+// Redirigir a los usuarios al listado de autopartes después de iniciar sesión
+Route::get('/home', [AutopartController::class, 'showAutoparts'])->name('home');
 
 // Rutas para el rol Empleado
 Route::middleware(['auth', 'role:Empleado'])->group(function () {
