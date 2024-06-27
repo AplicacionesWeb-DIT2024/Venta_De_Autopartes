@@ -31,6 +31,7 @@ Route::middleware(['auth', 'role:Cliente'])->group(function () {
     Route::put('/carrito/{id}', [CarritoController::class, 'update'])->name('carrito.update');
     Route::get('/carrito/{id}/edit', [CarritoController::class, 'edit'])->name('carrito.edit');
 
+    Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
     Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
     Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
 

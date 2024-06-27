@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -26,36 +28,49 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($carritoItems as $item)
+                    @if($carrito && $carrito->autopartes->count() > 0)
+                        @foreach ($carrito->autopartes as $autopart)
+                            <tr>
+                                <td>{{ $autopart->autoparte }}</td>
+                                <td>{{ $autopart->marca }}</td>
+                                <td>{{ $autopart->modelo }}</td>
+                                <td>{{ $autopart->codigo }}</td>
+                                <td>{{ $autopart->precio }}</td>
+                                <td>
+                                    <a href="{{ route('autopartes.show', $autopart->id) }}" class="btn btn-info btn-sm">Ver
+                                        Detalles</a>
+                                    <form action="{{ route('carrito.destroy', $autopart->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Eliminar del Carrito</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr>
-                            <td>{{ $item->autopart->autoparte }}</td>
-                            <td>{{ $item->autopart->marca }}</td>
-                            <td>{{ $item->autopart->modelo }}</td>
-                            <td>{{ $item->autopart->codigo }}</td>
-                            <td>{{ $item->autopart->precio }}</td>
-                            <td>
-                            <a href="{{ route('autopartes.show', $item->autopart->id) }}" class="btn btn-info btn-sm">Ver Detalles</a>
-                                <form action="{{ route('carrito.destroy', $item->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar del Carrito</button>
-                                </form>
-                            </td>
+                            <td colspan="6" class="text-center">No tienes autopartes en tu carrito.</td>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
-        <div class="d-flex justify-content-end">
-            <h4>Subtotal: ${{ number_format($carritoItems->sum('autopart.precio'), 2) }}</h4> <!--Suma de todos los costos.-->
-        </div>
-        <div class="d-flex justify-content-end mt-3">
-            <a href="{{ route('pagar') }}" class="btn btn-success">Proceder al Pago</a>
-            <a href="{{ route('pedidos.index') }}" class="btn btn-primary ml-2">Ver Pedidos</a> <!-- Agregar botón para ver pedidos -->
-        </div>
+        @if($carrito && $carrito->autopartes->count() > 0)
+            <div class="d-flex justify-content-end">
+                <h4>Subtotal: ${{ number_format($carrito->autopartes->sum('precio'), 2) }}</h4>
+                <!-- Suma de todos los costos -->
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <a href="{{ route('pagar') }}" class="btn btn-success">Proceder al Pago</a>
+                <a href="{{ route('pedidos.index') }}" class="btn btn-primary ml-2">Ver Pedidos</a>
+                <!-- Agregar botón para ver pedidos -->
+            </div>
+        @endif
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

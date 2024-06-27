@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\DetallePedido;
+use Auth;
 
 class PedidoController extends Controller
 {
@@ -20,18 +21,21 @@ class PedidoController extends Controller
     }
     public function index()
     {
-        $pedidos = Pedido::orderByDesc('created_at')->get();
-
+        $pedidos = Auth::user()->pedidos;
         return view('pedidos.pedidos', compact('pedidos'));
     }
 
-
     public function show($id)
     {
-        $pedido = Pedido::findOrFail($id);
-        $detalles = DetallePedido::where('pedido_id', $pedido->id)->get();
+        $pedido = Auth::user()->pedidos()->findOrFail($id);
+        return view('pedidos.show', compact('pedido'));
+    }
 
-        return view('pedidos.detalle', compact('pedido', 'detalles'));
+    public function store(Request $request)
+    {
+        $pedido = Auth::user()->pedidos()->create([]);
+        // Agregar lógica para asociar autopartes al pedido
+        return redirect()->route('pedidos.pedidos');
     }
 
 }

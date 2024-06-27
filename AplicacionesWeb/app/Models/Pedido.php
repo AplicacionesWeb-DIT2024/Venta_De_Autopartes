@@ -7,26 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pedido extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'numero_pedido',
-        'fecha_cierre',
-        'costo_total',
-        'tipo_pago',
+        'user_id',
+        // Otros campos necesarios
     ];
 
-    protected static function boot()
+    public function user()
     {
-        parent::boot();
-
-        static::creating(function ($pedido) {
-            // Asignar el próximo número de pedido secuencial
-            $lastOrder = Pedido::orderBy('numero_pedido', 'desc')->first();
-            $pedido->numero_pedido = $lastOrder ? $lastOrder->numero_pedido + 1 : 1;
-        });
+        return $this->belongsTo(User::class);
     }
 
-    public function detalles()
+    public function autopartes()
     {
-        return $this->hasMany(DetallePedido::class);
+        return $this->belongsToMany(Autopart::class);
     }
 }

@@ -3,33 +3,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCarritoTable extends Migration
+
+class CreateCarritosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
-        Schema::create('carrito', function (Blueprint $table) {
+        Schema::create('carritos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('autopart_id');
-            $table->integer('quantity')->default(1);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            // Otros campos necesarios
             $table->timestamps();
-
-            // Foreign key constraint, assuming 'autopart_id' references 'id' on 'autopart' table
-            $table->foreign('autopart_id')->references('id')->on('autopart')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
-        Schema::dropIfExists('carrito');
+        Schema::dropIfExists('carritos');
     }
 }
