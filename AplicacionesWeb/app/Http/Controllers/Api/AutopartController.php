@@ -10,17 +10,10 @@ use Illuminate\Database\QueryException; // Importa QueryException
 
 class AutopartController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('role:Empleado')->except('index', 'show');
-    }
-
-
     public function showAutoparts()
     {
-        $autoparts = Autopart::orderBy('id')->get();
-        return view('autopartes.autopartes', compact('autoparts'));
+        $autoparts = Autopart::orderBy('id')->get();// para ordenar el listado por ID
+        return view('autopartes.autopartes', compact('autoparts')); //"autopartes.autopartes" es el nombre de la vista, en este caso "autopartes.blade.php" en la carpeta "autopartes"
     }
 
     public function showCarrito()
@@ -91,17 +84,8 @@ class AutopartController extends Controller
 
     public function index()
     {
-        $autopart = Autopart::all();
-
-
-        $data = [
-            'autopart' => $autopart,
-            'status' => 200
-        ];
-
-        return response()->json($data, 200);
-
-
+        $autoparts = Autopart::all();
+        return view('autopartes.autopartes', compact('autoparts'));
     }
 
     public function update(Request $request, $id)

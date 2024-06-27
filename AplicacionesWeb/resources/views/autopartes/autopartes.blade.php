@@ -13,7 +13,6 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Lista de Autopartes</h1>
-
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -36,8 +35,10 @@
                             <td>
                                 <a href="{{ route('autopartes.edit', $autopart->id) }}"
                                     class="btn btn-warning btn-sm">Editar</a>
-                                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
-                                    data-id="{{ $autopart->id }}">Eliminar</button>
+                                @if(Auth::check() && Auth::user()->hasRole('Empleado'))
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
+                                        data-id="{{ $autopart->id }}">Eliminar</button>
+                                @endif
                                 <form action="{{ route('carrito.store') }}" method="POST" style="display: inline;">
                                     @csrf
                                     <input type="hidden" name="autopart_id" value="{{ $autopart->id }}">
@@ -51,7 +52,11 @@
                 </tbody>
             </table>
         </div>
-        <a href="{{ route('autopartes.create') }}" class="btn btn-primary">Agregar Nueva Autoparte</a>
+
+        @if(Auth::check() && Auth::user()->hasRole('Empleado'))
+            <a href="{{ route('autopartes.create') }}" class="btn btn-primary">Agregar Nueva Autoparte</a>
+        @endif
+
         <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a>
     </div>
 
@@ -80,11 +85,6 @@
         </div>
     </div>
 
-    @if(Auth::check() && Auth::user()->hasRole('Cliente'))
-        <a href="{{ route('carrito.store', ['id' => $autoparte->id]) }}" class="btn btn-primary">Agregar al carrito</a>
-    @endif
-
-
     <!-- Agregar JS de Bootstrap y jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -96,7 +96,7 @@
         $('#deleteModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
             var id = button.data('id');
-            var action = '{{ route('autopartes.destroy', '') }}/' + id;
+            var action = '{{ route('autopartes.destroy', ':id') }}'.replace(':id', id);
             var form = $('#deleteForm');
             form.attr('action', action);
         });
