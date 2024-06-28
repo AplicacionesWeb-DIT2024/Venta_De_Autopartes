@@ -16,7 +16,7 @@
             @auth
                 <div>
                     <p>Usuario: {{ Auth::user()->name }}</p>
-                    <p>Rol: {{ Auth::user()->hasRole('Empleado') ? 'Empleado' : 'Cliente' }}</p>
+                    <p>Rol: {{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</p>
                 </div>
             @endauth
         </div>
@@ -41,15 +41,17 @@
                             <td>
                                 <a href="{{ route('autopartes.edit', $autopart->id) }}"
                                     class="btn btn-warning btn-sm">Editar</a>
-                                @if(Auth::check() && Auth::user()->hasRole('Empleado'))
+                                @if(Auth::check() && Auth::user()->role == 'Empleado')
                                     <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
                                         data-id="{{ $autopart->id }}">Eliminar</button>
                                 @endif
-                                <form action="{{ route('carrito.store') }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    <input type="hidden" name="autopart_id" value="{{ $autopart->id }}">
-                                    <button type="submit" class="btn btn-success btn-sm">Agregar al Carrito</button>
-                                </form>
+                                @if(Auth::check() && Auth::user()->role != 'Empleado')
+                                    <form action="{{ route('carrito.store') }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="autopart_id" value="{{ $autopart->id }}">
+                                        <button type="submit" class="btn btn-success btn-sm">Agregar al Carrito</button>
+                                    </form>
+                                @endif
                                 <a href="{{ route('autopartes.show', $autopart->id) }}" class="btn btn-info btn-sm">Ver
                                     Detalles</a>
                             </td>
@@ -59,11 +61,13 @@
             </table>
         </div>
 
-        @if(Auth::check() && Auth::user()->hasRole('Empleado'))
+        @if(Auth::check() && Auth::user()->role == 'Empleado')
             <a href="{{ route('autopartes.create') }}" class="btn btn-primary">Agregar Nueva Autoparte</a>
         @endif
 
-        <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a>
+        @if(Auth::check() && Auth::user()->role != 'Empleado')
+            <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a>
+        @endif
     </div>
 
     <!-- Modal de Confirmación de Eliminación -->
