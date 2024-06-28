@@ -52,7 +52,13 @@
                             <input id="password-confirm" type="password" class="form-control"
                                 name="password_confirmation" required>
                         </div>
-
+                        <div class="form-group">
+                            <label for="role">Rol</label>
+                            <select class="form-control" id="role" name="role" required>
+                                <option value="Cliente">Cliente</option>
+                                <option value="Empleado">Empleado</option>
+                            </select>
+                        </div>
                         <div class="form-group mb-0">
                             <button type="submit" class="btn btn-primary">
                                 {{ __('Register') }}
