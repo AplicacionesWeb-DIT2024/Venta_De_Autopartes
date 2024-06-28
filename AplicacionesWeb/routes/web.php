@@ -41,25 +41,34 @@ Route::middleware(['auth', 'role:Cliente'])->group(function () {
     Route::get('/cliente', [HomeController::class, 'cliente'])->name('cliente');
 
     Route::get('/autoparts', [AutopartController::class, 'showAutoparts'])->name('autopartes.index');
+    Route::get('/autopartes', [AutopartController::class, 'showAutoparts'])->name('autopartes.index');
 });
 
 // Rutas para el rol Empleado
 Route::middleware(['auth', 'role:Empleado'])->group(function () {
-    Route::get('/empleado', [HomeController::class, 'empleado'])->name('empleado');
-    Route::get('/autoparts/create', [AutopartController::class, 'create'])->name('autoparts.create');
-    Route::post('/autoparts', [AutopartController::class, 'store'])->name('autoparts.store');
-    Route::get('/autoparts/{id}/edit', [AutopartController::class, 'edit'])->name('autoparts.edit');
-    Route::put('/autoparts/{id}', [AutopartController::class, 'update'])->name('autoparts.update');
-    Route::delete('/autoparts/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
+    /*Route::get('/empleado', [HomeController::class, 'empleado'])->name('empleado');
+
     Route::get('/autopartes/create', [AutopartController::class, 'create'])->name('autopartes.create');
     Route::post('/autopartes', [AutopartController::class, 'store'])->name('autopartes.store');
+    Route::get('/autopartes/{id}/edit', [AutopartController::class, 'edit'])->name('autopartes.edit');
+    Route::put('/autopartes/{id}', [AutopartController::class, 'update'])->name('autopartes.update');
+    Route::delete('/autopartes/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
+    Route::get('/autopartes/{id}', [AutopartController::class, 'show'])->name('autopartes.show');*/
+    Route::get('/empleado', [HomeController::class, 'empleado'])->name('empleado');
+    Route::get('/autopartes/create', [AutopartController::class, 'create'])->name('autopartes.create');
+    Route::post('/autopartes', [AutopartController::class, 'store'])->name('autopartes.store');
+    Route::get('/autopartes', [AutopartController::class, 'showAutoparts'])->name('autopartes.index');
+    Route::put('/autopartes/{id}', [AutopartController::class, 'update'])->name('autopartes.update');
+    Route::get('/autopartes/{id}/edit', [AutopartController::class, 'edit'])->name('autopartes.edit');
+    Route::get('/autopartes/{id}', [AutopartController::class, 'show'])->name('autopartes.show');
+    Route::delete('/autopartes/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
 });
 
 
 
-/* Código viejo
+// Código viejo
 // Rutas para el rol Empleado
-Route::middleware(['auth', 'role:Empleado'])->group(function () {
+/*Route::middleware(['auth', 'role:Empleado'])->group(function () {
     Route::get('/empleado', [HomeController::class, 'empleado'])->name('empleado');
     Route::get('/autoparts/create', [AutopartController::class, 'create'])->name('autopartes.create');
     Route::post('/autoparts', [AutopartController::class, 'store'])->name('autopartes.store');
@@ -72,8 +81,8 @@ Route::middleware(['auth', 'role:Empleado'])->group(function () {
 // Rutas para el rol Cliente
 Route::middleware(['auth', 'role:Cliente'])->group(function () {
     
-});*/
-/*
+})
+
 //Esto es lo que me dio Chat GPT para logearme
 
 // Rutas de autenticación
@@ -92,8 +101,7 @@ Route::middleware(['auth', 'role:Cliente'])->group(function () {
     Route::middleware(['auth'])->group(function () {
         //Route::middleware('role:Cliente')->group(function () {
 
-        // Redirigir a los usuarios al listado de autopartes después de iniciar sesión
-        Route::get('/home', [AutopartController::class, 'showAutoparts'])->name('home');
+        // Redirigir a los usuarios al listado/registerr::class, 'showAutoparts'])->name('home');
 
         Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
         Route::post('/carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
