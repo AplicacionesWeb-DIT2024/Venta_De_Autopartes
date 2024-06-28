@@ -39,8 +39,10 @@
                             <td>{{ $autopart->modelo }}</td>
                             <td>{{ $autopart->precio }}</td>
                             <td>
-                                <a href="{{ route('autopartes.edit', $autopart->id) }}"
-                                    class="btn btn-warning btn-sm">Editar</a>
+                                @if(Auth::check() && Auth::user()->role == 'Empleado')
+                                    <a href="{{ route('autopartes.edit', $autopart->id) }}"
+                                        class="btn btn-warning btn-sm">Editar</a>
+                                @endif
                                 @if(Auth::check() && Auth::user()->role == 'Empleado')
                                     <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
                                         data-id="{{ $autopart->id }}">Eliminar</button>
