@@ -51,7 +51,8 @@ Route::middleware(['auth', 'role:Empleado'])->group(function () {
     Route::get('/autoparts/{id}/edit', [AutopartController::class, 'edit'])->name('autoparts.edit');
     Route::put('/autoparts/{id}', [AutopartController::class, 'update'])->name('autoparts.update');
     Route::delete('/autoparts/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
-
+    Route::get('/autopartes/create', [AutopartController::class, 'create'])->name('autopartes.create');
+    Route::post('/autopartes', [AutopartController::class, 'store'])->name('autopartes.store');
 });
 
 

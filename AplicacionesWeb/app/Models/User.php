@@ -16,12 +16,8 @@ class User extends Authenticatable
         'role',
     ];
 
-    // Método para verificar si el usuario tiene un rol específico
     public function hasRole($role)
     {
-        return $this->role === $role; // Verifica si el rol del usuario coincide con el rol especificado
+        return $this->role === $role;
     }
-
-    // Otros métodos y relaciones del modelo...
 }
-

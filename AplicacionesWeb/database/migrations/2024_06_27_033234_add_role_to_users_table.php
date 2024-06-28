@@ -9,7 +9,7 @@ class AddRoleToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('Cliente'); // Agrega un campo de rol con valor predeterminado 'Cliente'
+            $table->string('role')->default('Cliente')->after('password');
         });
     }
 

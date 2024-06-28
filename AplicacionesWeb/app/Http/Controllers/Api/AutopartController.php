@@ -29,8 +29,6 @@ class AutopartController extends Controller
         return view('autopartes.producto', compact('autopart'));
     }
 
-
-
     public function create()
     {
         return view('autopartes.create'); //"autopartes.create" es el nombre de la vista,  "create.blade.php" en la carpeta "autopartes"
