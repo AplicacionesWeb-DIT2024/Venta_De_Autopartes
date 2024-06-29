@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 
+</html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,12 +13,23 @@
 
 <body>
     <div class="container mt-5">
+        <div class="text-right mr-3">
+            <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
+            <p class="mb-1"><strong>Rol:</strong> <span
+                    class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
+            </p>
+        </div>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Lista de Autopartes</h1>
             @auth
-                <div>
-                    <p>Usuario: {{ Auth::user()->name }}</p>
-                    <p>Rol: {{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</p>
+                <div class="d-flex align-items-center">
+                    <a href="{{ route('logout') }}" class="btn btn-danger"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        Desloguearse
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
             @endauth
         </div>
