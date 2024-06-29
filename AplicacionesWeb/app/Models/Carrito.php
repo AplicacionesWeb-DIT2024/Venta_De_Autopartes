@@ -9,18 +9,15 @@ class Carrito extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'user_id',
-        // Otros campos necesarios
-    ];
+    protected $fillable = ['autopart_id', 'user_id', 'quantity'];
+
+    public function autoparte()
+    {
+        return $this->belongsTo(Autopart::class, 'autopart_id');
+    }
 
     public function user()
     {
-        return $this->belongsTo(User::class);
-    }
-
-    public function autopartes()
-    {
-        return $this->belongsToMany(Autopart::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

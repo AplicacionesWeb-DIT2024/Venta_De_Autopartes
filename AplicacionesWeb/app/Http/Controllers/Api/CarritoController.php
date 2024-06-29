@@ -3,47 +3,38 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-
 use App\Models\Carrito;
 use App\Models\Autopart;
-
+use Illuminate\Support\Facades\Auth;
 
 class CarritoController extends Controller
 {
     public function index()
     {
-        // Obtener todos los ítems del carrito
-        $carritoItems = Carrito::with('autopart')->get();
-
-        // Pasar los ítems del carrito a la vista
+        $carritoItems = Carrito::with('autoparte')->where('user_id', Auth::id())->get();
         return view('carrito.carrito', compact('carritoItems'));
     }
 
     public function store(Request $request)
     {
-        // Validar la solicitud
         $request->validate([
-            'autopart_id' => 'required|exists:autopart,id',
+            'autopart_id' => 'required|exists:autoparts,id',
         ]);
 
-        // Buscar un ítem existente en el carrito
-        $existingItem = Carrito::where('autopart_id', $request->autopart_id)->first();
+        $existingItem = Carrito::where('autopart_id', $request->autopart_id)->where('user_id', Auth::id())->first();
 
         if ($existingItem) {
-            // Actualizar la cantidad si el ítem ya existe en el carrito
-            $existingItem->quantity += 1; // o la cantidad deseada
+            $existingItem->quantity += 1;
             $existingItem->save();
         } else {
-            // Crear un nuevo ítem en el carrito
             Carrito::create([
                 'autopart_id' => $request->autopart_id,
-                'quantity' => 1, // o la cantidad deseada
+                'user_id' => Auth::id(),
+                'quantity' => 1,
             ]);
         }
 
-        // Redirigir al carrito con un mensaje de éxito
         return redirect()->route('carrito.index')->with('success', 'Autoparte agregada al carrito');
     }
 
@@ -53,15 +44,12 @@ class CarritoController extends Controller
         return view('autopartes.producto', compact('autopart'));
     }
 
-
     public function destroy($id)
     {
-        $item = Carrito::find($id);
+        $item = Carrito::where('id', $id)->where('user_id', Auth::id())->first();
         if ($item) {
             $item->delete();
         }
         return redirect()->route('carrito.index')->with('success', 'Item eliminado del carrito.');
     }
-
-
 }
