@@ -11,6 +11,7 @@ class CreateCarritoTable extends Migration
         Schema::create('carrito', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('autopart_id');
+            $table->unsignedBigInteger('user_id');
             $table->integer('quantity')->default(1);
             $table->timestamps();
 

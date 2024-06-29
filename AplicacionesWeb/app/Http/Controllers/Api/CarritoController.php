@@ -10,16 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class CarritoController extends Controller
 {
+
     public function index()
     {
-        $carritoItems = Carrito::with('autoparte')->where('user_id', Auth::id())->get();
-        return view('carrito.carrito', compact('carritoItems'));
+        $carrito = Carrito::with('autopartes')->where('user_id', Auth::id())->first();
+        return view('carrito.carrito', compact('carrito'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'autopart_id' => 'required|exists:autoparts,id',
+            'autopart_id' => 'required|exists:autopart,id',
         ]);
 
         $existingItem = Carrito::where('autopart_id', $request->autopart_id)->where('user_id', Auth::id())->first();
