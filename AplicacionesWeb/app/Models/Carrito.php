@@ -8,15 +8,6 @@ class Carrito extends Model
 {
     protected $table = 'carrito';
 
-    // Definición de la relación con Autopart
-    public function autopart()
-    {
-        return $this->belongsTo(Autopart::class, 'autopart_id');
-    }
-
-
-
-
     protected $fillable = [
         'autopart_id',
         'user_id',
@@ -28,10 +19,8 @@ class Carrito extends Model
         return $this->belongsTo(Autopart::class, 'autopart_id');
     }
 
-    // En el modelo Carrito.php
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
 }

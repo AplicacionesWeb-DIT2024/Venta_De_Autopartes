@@ -28,18 +28,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if($carrito && $carrito->autopartes->count() > 0)
-                        @foreach ($carrito->autopartes as $autopart)
+                    @if($carrito->count() > 0)
+                        @foreach ($carrito as $item)
                             <tr>
-                                <td>{{ $autopart->autoparte }}</td>
-                                <td>{{ $autopart->marca }}</td>
-                                <td>{{ $autopart->modelo }}</td>
-                                <td>{{ $autopart->codigo }}</td>
-                                <td>{{ $autopart->precio }}</td>
+                                <td>{{ $item->autoparte->autoparte }}</td>
+                                <td>{{ $item->autoparte->marca }}</td>
+                                <td>{{ $item->autoparte->modelo }}</td>
+                                <td>{{ $item->autoparte->codigo }}</td>
+                                <td>{{ $item->autoparte->precio }}</td>
                                 <td>
-                                    <a href="{{ route('autopartes.show', $autopart->id) }}" class="btn btn-info btn-sm">Ver
+                                    <a href="{{ route('autopartes.show', $item->autoparte->id) }}"
+                                        class="btn btn-info btn-sm">Ver
                                         Detalles</a>
-                                    <form action="{{ route('carrito.destroy', $autopart->id) }}" method="POST"
+                                    <form action="{{ route('carrito.destroy', $item->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE')
@@ -56,9 +57,9 @@
                 </tbody>
             </table>
         </div>
-        @if($carrito && $carrito->autopartes->count() > 0)
+        @if($carrito->count() > 0)
             <div class="d-flex justify-content-end">
-                <h4>Subtotal: ${{ number_format($carrito->autopartes->sum('precio'), 2) }}</h4>
+                <h4>Subtotal: ${{ number_format($carrito->sum('autoparte.precio'), 2) }}</h4>
                 <!-- Suma de todos los costos -->
             </div>
             <div class="d-flex justify-content-end mt-3">

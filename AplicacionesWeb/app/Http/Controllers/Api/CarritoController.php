@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class CarritoController extends Controller
 {
-
     public function index()
     {
-        $carrito = Carrito::with('autopartes')->where('user_id', Auth::id())->first();
+        $carrito = Carrito::with('autoparte')->where('user_id', Auth::id())->get();
         return view('carrito.carrito', compact('carrito'));
     }
 
