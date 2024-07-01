@@ -45,33 +45,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($autoparts as $autopart)
+                    @if ($autoparts->isEmpty())
                         <tr>
-                            <td>{{ $autopart->autoparte }}</td>
-                            <td>{{ $autopart->marca }}</td>
-                            <td>{{ $autopart->modelo }}</td>
-                            <td>{{ $autopart->precio }}</td>
-                            <td>
-                                @if(Auth::check() && Auth::user()->role == 'Empleado')
-                                    <a href="{{ route('autopartes.edit', $autopart->id) }}"
-                                        class="btn btn-warning btn-sm">Editar</a>
-                                @endif
-                                @if(Auth::check() && Auth::user()->role == 'Empleado')
-                                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
-                                        data-id="{{ $autopart->id }}">Eliminar</button>
-                                @endif
-                                @if(Auth::check() && Auth::user()->role != 'Empleado')
-                                    <form action="{{ route('carrito.store') }}" method="POST" style="display: inline;">
-                                        @csrf
-                                        <input type="hidden" name="autopart_id" value="{{ $autopart->id }}">
-                                        <button type="submit" class="btn btn-success btn-sm">Agregar al Carrito</button>
-                                    </form>
-                                @endif
-                                <a href="{{ route('autopartes.show', $autopart->id) }}" class="btn btn-info btn-sm">Ver
-                                    Detalles</a>
-                            </td>
+                            <td colspan="5" class="text-center">No hay autopartes disponibles</td>
                         </tr>
-                    @endforeach
+                    @else
+                        @foreach ($autoparts as $autopart)
+                            <tr>
+                                <td>{{ $autopart->autoparte }}</td>
+                                <td>{{ $autopart->marca }}</td>
+                                <td>{{ $autopart->modelo }}</td>
+                                <td>{{ number_format($autopart->precio, 2) }}</td>
+                                <td>
+                                    @if(Auth::check() && Auth::user()->role == 'Empleado')
+                                        <a href="{{ route('autopartes.edit', $autopart->id) }}"
+                                            class="btn btn-warning btn-sm">Editar</a>
+                                    @endif
+                                    @if(Auth::check() && Auth::user()->role == 'Empleado')
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteModal"
+                                            data-id="{{ $autopart->id }}">Eliminar</button>
+                                    @endif
+                                    @if(Auth::check() && Auth::user()->role != 'Empleado')
+                                        <form action="{{ route('carrito.store') }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <input type="hidden" name="autopart_id" value="{{ $autopart->id }}">
+                                            <button type="submit" class="btn btn-success btn-sm">Agregar al Carrito</button>
+                                        </form>
+                                    @endif
+                                    <a href="{{ route('autopartes.show', $autopart->id) }}" class="btn btn-info btn-sm">Ver
+                                        Detalles</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

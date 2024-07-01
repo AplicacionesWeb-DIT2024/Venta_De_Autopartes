@@ -11,9 +11,14 @@
 
 <body>
     <div class="container mt-5">
+        <div class="text-right mr-3">
+            <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
+            <p class="mb-1"><strong>Rol:</strong> <span
+                    class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
+            </p>
+        </div>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Carrito</h1>
-
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">

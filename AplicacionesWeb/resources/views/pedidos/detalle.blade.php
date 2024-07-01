@@ -12,9 +12,16 @@
 <body>
     <div class="container mt-5">
         <h1>Detalles del Pedido</h1>
-        <p>Número de Pedido: {{ $pedido->numero_pedido }}</p>
+        <div class="text-right mr-3">
+            <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
+            <p class="mb-1"><strong>Rol:</strong> <span
+                    class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
+            </p>
+        </div>
+        <p>Número de Pedido: {{ $pedido->id }}</p>
         <p>Fecha de Cierre: {{ $pedido->fecha_cierre }}</p>
-        <p>Costo Total: {{ $pedido->costo_total }}</p>
+        <p>Costo Total: ${{ number_format($pedido->detalles->sum('precio'), 2) }}</p>
+        <!-- Aquí se calcula el costo total -->
         <p>Tipo de Pago: {{ $pedido->tipo_pago }}</p>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -34,7 +41,7 @@
                             <td>{{ $detalle->marca }}</td>
                             <td>{{ $detalle->modelo }}</td>
                             <td>{{ $detalle->codigo }}</td>
-                            <td>{{ $detalle->precio }}</td>
+                            <td>{{ number_format($detalle->precio, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

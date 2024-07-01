@@ -28,19 +28,6 @@ class PedidoController extends Controller
 
         return view('pedidos.detalle', compact('pedido', 'detalles'));
     }
-    /*public function index()
-    {
-        $pedidos = Pedido::orderByDesc('created_at')->get();
-
-        return view('pedidos.pedidos', compact('pedidos'));
-    }
-
-    public function show($id)
-    {
-        // Utiliza findOrFail para obtener el pedido del usuario autenticado por su ID
-        $pedido = Pedido::with('detalles')->findOrFail($id);
-        return view('pedidos.detalle', compact('pedido'));
-    }*/
 
     public function store(Request $request)
     {

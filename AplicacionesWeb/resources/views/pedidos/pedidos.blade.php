@@ -3,6 +3,12 @@
 @section('content')
 <div class="container">
     <h1>Mis Pedidos</h1>
+    <div class="text-right mr-3">
+        <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
+        <p class="mb-1"><strong>Rol:</strong> <span
+                class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
+        </p>
+    </div>
     @if($pedidos->isEmpty())
         <p>No tienes pedidos.</p>
     @else

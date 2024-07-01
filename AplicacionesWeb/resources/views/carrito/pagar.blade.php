@@ -11,6 +11,12 @@
 
 <body>
     <div class="container mt-5">
+        <div class="text-right mr-3">
+            <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
+            <p class="mb-1"><strong>Rol:</strong> <span
+                    class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
+            </p>
+        </div>
         <h1>Confirmar Compra</h1>
         <p>¿Estás seguro que deseas hacer la compra?</p>
         <div class="table-responsive">
