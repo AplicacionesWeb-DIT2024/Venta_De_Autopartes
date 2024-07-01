@@ -25,6 +25,4 @@ class Pedido extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-
 }

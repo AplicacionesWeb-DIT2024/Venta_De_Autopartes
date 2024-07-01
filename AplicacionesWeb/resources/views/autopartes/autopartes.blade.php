@@ -88,6 +88,7 @@
 
         @if(Auth::check() && Auth::user()->role != 'Empleado')
             <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a>
+            <a href="{{ route('pedidos.index') }}" class="btn btn-secondary">Ir al Listado de Pedidos</a>
         @endif
     </div>
 
