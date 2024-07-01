@@ -40,7 +40,7 @@
                 </tbody>
             </table>
         </div>
-        <a href="{{ route('pedidos.index') }}" class="btn btn-secondary">Volver al Listado de Pedidos</a>
+        <a href="{{ route('pedidos.index') }}" class="btn btn-primary">Volver al Listado de Pedidos</a>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

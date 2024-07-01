@@ -27,5 +27,7 @@
             </tbody>
         </table>
     @endif
+    <a href="{{ route('autopartes.index') }}" class="btn btn-primary">Ir al listado de autopartes</a>
+    <a href="{{ route('carrito.index') }}" class="btn btn-secondary">Volver al Carrito</a>
 </div>
 @endsection

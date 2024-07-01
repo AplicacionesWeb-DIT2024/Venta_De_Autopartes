@@ -13,7 +13,7 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Carrito</h1>
-            <a href="{{ route('autopartes.index') }}" class="btn btn-primary">Agregar Otro Producto</a>
+
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -56,6 +56,8 @@
                     @endif
                 </tbody>
             </table>
+            <a href="{{ route('autopartes.index') }}" class="btn btn-primary">Agregar Otro Producto</a>
+            <a href="{{ route('pedidos.index') }}" class="btn btn-secondary">Ir al Listado de Pedidos</a>
         </div>
         @if($carrito->count() > 0)
             <div class="d-flex justify-content-end">

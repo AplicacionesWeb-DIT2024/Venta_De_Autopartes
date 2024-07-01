@@ -29,7 +29,9 @@
                             <td>{{ $item->autoparte->autoparte }}</td>
                             <td>{{ $item->autoparte->marca }}</td>
                             <td>{{ $item->autoparte->modelo }}</td>
-                            <td>{{ $item->autoparte->precio }}</td>
+
+                            <td>{{ number_format($item->autoparte->precio, 2) }}</td>
+
                         </tr>
                     @endforeach
                 </tbody>

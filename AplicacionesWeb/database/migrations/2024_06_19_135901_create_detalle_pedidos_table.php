@@ -15,7 +15,7 @@ class CreateDetallePedidosTable extends Migration
             $table->string('marca');
             $table->string('modelo');
             $table->string('codigo');
-            $table->decimal('precio', 8, 2);
+            $table->decimal('precio', 9, 2);
             $table->timestamps();
 
             $table->foreign('pedido_id')->references('id')->on('pedidos')->onDelete('cascade');
