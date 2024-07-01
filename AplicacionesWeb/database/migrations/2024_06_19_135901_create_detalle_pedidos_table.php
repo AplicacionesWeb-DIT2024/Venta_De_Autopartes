@@ -4,11 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateDetallePedidosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up()
     {
         Schema::create('detalle_pedidos', function (Blueprint $table) {
@@ -21,16 +18,12 @@ return new class extends Migration
             $table->decimal('precio', 8, 2);
             $table->timestamps();
 
-            // Foreign key constraint, assuming 'pedido_id' references 'id' on 'pedidos' table
             $table->foreign('pedido_id')->references('id')->on('pedidos')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('detalle_pedidos');
     }
-};
+}

@@ -11,22 +11,20 @@ class Pedido extends Model
 
     protected $fillable = [
         'user_id',
-        // Otros campos necesarios
+        'fecha_cierre',
+        'costo_total',
+        'tipo_pago'
     ];
+
+    public function detalles()
+    {
+        return $this->hasMany(DetallePedido::class, 'pedido_id', 'id');
+    }
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relación con los detalles del pedido
-    public function detalles()
-    {
-        return $this->hasMany(DetallePedido::class, 'pedido_id', 'id');
-    }
 
-    public function autopartes()
-    {
-        return $this->belongsToMany(Autopart::class);
-    }
 }

@@ -41,7 +41,7 @@ class CarritoController extends Controller
     public function show($id)
     {
         $autopart = Autopart::findOrFail($id);
-        return view('autopartes.producto', compact('autopart'));
+        return view('autopartes.producto', compact('autoparte'));
     }
 
     public function destroy($id)

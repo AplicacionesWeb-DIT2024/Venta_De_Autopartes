@@ -36,7 +36,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-end mb-4">
-            <h4>Subtotal: ${{ number_format($carritoItems->sum('autopart.precio'), 2) }}</h4>
+            <h4>Subtotal: ${{ number_format($carritoItems->sum('autoparte.precio'), 2) }}</h4>
         </div>
         <div class="mb-4">
             <h5>Formas de Pago</h5>
