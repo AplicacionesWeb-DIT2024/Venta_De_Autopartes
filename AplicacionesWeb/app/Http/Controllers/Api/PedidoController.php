@@ -1,15 +1,12 @@
 <?php
 
-//namespace App\Http\Controllers;
 namespace App\Http\Controllers\Api;
 
-use App\Models\Pedido;
-use App\Models\Autopart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use App\Models\DetallePedido;
 use Auth;
+use App\Models\Pedido;
+use App\Models\DetallePedido;
 
 class PedidoController extends Controller
 {
@@ -19,22 +16,24 @@ class PedidoController extends Controller
         $this->middleware('auth');
         $this->middleware('role:Cliente')->except('index', 'show');
     }
+
     public function index()
     {
-        $pedidos = Auth::user()->pedidos;
+        $pedidos = Pedido::orderByDesc('created_at')->get();
+
         return view('pedidos.pedidos', compact('pedidos'));
     }
 
     public function show($id)
     {
-        $pedido = Auth::user()->pedidos()->findOrFail($id);
-        return view('pedidos.show', compact('pedido'));
+        // Utiliza findOrFail para obtener el pedido del usuario autenticado por su ID
+        $pedido = Pedido::with('detalles')->findOrFail($id);
+        return view('pedidos.detalle', compact('pedido'));
     }
 
     public function store(Request $request)
     {
         $pedido = Auth::user()->pedidos()->create([]);
-        // Agregar lógica para asociar autopartes al pedido
         return redirect()->route('pedidos.pedidos');
     }
 

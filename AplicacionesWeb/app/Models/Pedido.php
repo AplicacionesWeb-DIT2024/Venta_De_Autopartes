@@ -19,6 +19,12 @@ class Pedido extends Model
         return $this->belongsTo(User::class);
     }
 
+    // Relación con los detalles del pedido
+    public function detalles()
+    {
+        return $this->hasMany(DetallePedido::class, 'pedido_id', 'id');
+    }
+
     public function autopartes()
     {
         return $this->belongsToMany(Autopart::class);

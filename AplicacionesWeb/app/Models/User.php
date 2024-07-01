@@ -20,4 +20,9 @@ class User extends Authenticatable
     {
         return $this->role === $role;
     }
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class);
+    }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
         <h1>Confirmar Compra</h1>
@@ -24,10 +26,10 @@
                 <tbody>
                     @foreach ($carritoItems as $item)
                         <tr>
-                            <td>{{ $item->autopart->autoparte }}</td>
-                            <td>{{ $item->autopart->marca }}</td>
-                            <td>{{ $item->autopart->modelo }}</td>
-                            <td>{{ $item->autopart->precio }}</td>
+                            <td>{{ $item->autoparte->autoparte }}</td>
+                            <td>{{ $item->autoparte->marca }}</td>
+                            <td>{{ $item->autoparte->modelo }}</td>
+                            <td>{{ $item->autoparte->precio }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -41,7 +43,8 @@
             <form action="{{ route('comprar') }}" method="POST">
                 @csrf
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="forma_pago" id="creditoDebito" value="Credito/Debito" checked>
+                    <input class="form-check-input" type="radio" name="forma_pago" id="creditoDebito"
+                        value="Credito/Debito" checked>
                     <label class="form-check-label" for="creditoDebito">
                         Crédito/Débito
                     </label>
@@ -68,4 +71,5 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
