@@ -29,8 +29,6 @@ class AutopartController extends Controller
         return view('autopartes.producto', compact('autopart'));
     }
 
-
-
     public function create()
     {
         return view('autopartes.create'); //"autopartes.create" es el nombre de la vista,  "create.blade.php" en la carpeta "autopartes"
@@ -64,8 +62,8 @@ class AutopartController extends Controller
             'modelo' => 'required|string|max:255',
             'añoVehiculo' => 'required|string|max:255',
             'codigo' => 'required|string|max:255|unique:autopart,codigo',
-            'estado' => 'required|string|max:255',
-            'precio' => 'required|string|max:255',
+            'estado' => 'required|in:Muy bueno,Bueno,Malo,Muy malo',
+            'precio' => 'required|numeric|between:0,5000000',
             'color' => 'required|string|max:255',
         ], [
             'codigo.unique' => 'El código de la autoparte ya está en uso.',
@@ -84,17 +82,8 @@ class AutopartController extends Controller
 
     public function index()
     {
-        $autopart = Autopart::all();
-
-
-        $data = [
-            'autopart' => $autopart,
-            'status' => 200
-        ];
-
-        return response()->json($data, 200);
-
-
+        $autoparts = Autopart::all();
+        return view('autopartes.autopartes', compact('autoparts'));
     }
 
     public function update(Request $request, $id)
@@ -102,53 +91,32 @@ class AutopartController extends Controller
         $autopart = Autopart::find($id);
 
         if (!$autopart) {
-            $data = [
-                'message' => 'Autoparte no encontrada',
-                'status' => 404
-            ];
-            return response()->json($data, 404);
+            return redirect()->route('autopartes.index')->with('error', 'Autoparte no encontrada.');
         }
 
-        $validator = Validator::make($request->all(), [
-            'autoparte' => 'required|max:255',
-            'marca' => 'required|max:255',
-            'modelo' => 'required|max:255',
-            'añoVehiculo' => 'required|digits:4',
-            'codigo' => 'required|max:100',
+        $request->validate([
+            'autoparte' => 'required|string|max:255',
+            'marca' => 'required|string|max:255',
+            'modelo' => 'required|string|max:255',
+            'añoVehiculo' => 'required|string|max:255',
+            'codigo' => 'required|string|max:255|unique:autopart,codigo,' . $autopart->id,
             'estado' => 'required|in:Muy bueno,Bueno,Malo,Muy malo',
             'precio' => 'required|numeric|between:0,5000000',
-            'color' => 'required|max:15'
+            'color' => 'required|string|max:255',
+        ], [
+            'codigo.unique' => 'El código de la autoparte ya está en uso.',
+            'precio.between' => 'El precio debe estar entre 0 y 5.000.000.',
         ]);
 
-        if ($validator->fails()) {
-            $data = [
-                'message' => 'Error en la validación de los datos',
-                'errors' => $validator->errors(),
-                'status' => 400
-            ];
-            return response()->json($data, 400);
-
+        try {
+            $autopart->update($request->all());
+            return redirect()->route('autopartes.index')->with('success', 'Autoparte actualizada con éxito.');
+        } catch (QueryException $e) {
+            if ($e->errorInfo[1] == 23505) { // Código de error para entrada duplicada en PostgreSQL
+                return redirect()->back()->with('error', 'El código de la autoparte ya existe.')->withInput();
+            }
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar la autoparte.')->withInput();
         }
-
-        $autopart->autoparte = $request->autoparte;
-        $autopart->marca = $request->marca;
-        $autopart->modelo = $request->modelo;
-        $autopart->añoVehiculo = $request->añoVehiculo;
-        $autopart->codigo = $request->codigo;
-        $autopart->estado = $request->estado;
-        $autopart->precio = $request->precio;
-        $autopart->color = $request->color;
-
-        $autopart->save();
-
-        $data = [
-            'message' => 'Autoparte actualizada',
-            'autopart' => $autopart,
-            'status' => 200
-        ];
-
-        //return response()->json($data, 200);
-        return redirect()->route('autopartes.index');
     }
 
     public function updatePartial(Request $request, $id)

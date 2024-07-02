@@ -1,27 +1,22 @@
+<?php
+
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class RoleSeeder extends Seeder
 {
     public function run()
     {
-        // Crear roles
-        $clienteRole = Role::create(['name' => 'Cliente']);
-        $empleadoRole = Role::create(['name' => 'Empleado']);
+        $roles = ['Cliente', 'Empleado'];
 
-        // Asignar roles a usuarios (suponiendo que tienes usuarios creados)
-        $clienteUser = User::find(1); // ID del usuario cliente
-        $empleadoUser = User::find(2); // ID del usuario empleado
-
-        if ($clienteUser) {
-            $clienteUser->assignRole($clienteRole);
-        }
-
-        if ($empleadoUser) {
-            $empleadoUser->assignRole($empleadoRole);
+        foreach ($roles as $role) {
+            DB::table('roles')->updateOrInsert(
+                ['name' => $role],
+                ['name' => $role]
+            );
         }
     }
 }
