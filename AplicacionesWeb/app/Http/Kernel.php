@@ -14,12 +14,14 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
 
-     // app/Http/Kernel.php
+    // app/Http/Kernel.php
 
-protected $routeMiddleware = [
-    // ...
-    'rolekey' => \App\Http\Middleware\RoleKeyMiddleware::class,
-];
+    protected $routeMiddleware = [
+        'auth' => \App\Http\Middleware\Authenticate::class,
+        'role' => \App\Http\Middleware\CheckRole::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+    ];
 
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
@@ -48,7 +50,7 @@ protected $routeMiddleware = [
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+            \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];

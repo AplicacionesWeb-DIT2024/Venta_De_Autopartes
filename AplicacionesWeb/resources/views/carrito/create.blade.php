@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,15 @@
     <!-- Agregar Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
+        <div class="text-right mr-3">
+            <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
+            <p class="mb-1"><strong>Rol:</strong> <span
+                    class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
+            </p>
+        </div>
         <h1>Crear Pedido</h1>
         <form action="{{ route('carrito.store') }}" method="POST">
             @csrf
@@ -36,4 +44,5 @@
 
     <!-- Aquí podrías agregar scripts adicionales si los necesitas -->
 </body>
+
 </html>
