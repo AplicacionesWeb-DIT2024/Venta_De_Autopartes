@@ -1,49 +1,39 @@
-<!DOCTYPE html>
-<html lang="es">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedidos</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-
-<body>
-    <div class="container mt-5">
-        <h1>Listado de Pedidos</h1>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Número de Pedido</th>
-                        <th>Fecha de Cierre</th>
-                        <th>Costo Total</th>
-                        <th>Tipo de Pago</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($pedidos as $pedido)
-                        <tr>
-                            <td>{{ $pedido->numero_pedido }}</td>
-                            <td>{{ $pedido->fecha_cierre }}</td>
-                            <td>{{ $pedido->costo_total }}</td>
-                            <td>{{ $pedido->tipo_pago }}</td>
-                            <td>
-                                <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn btn-info btn-sm">Ver
-                                    Detalles</a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <a href="{{ route('carrito.index') }}" class="btn btn-primary">Ir al carrito</a>
+@section('content')
+<div class="container">
+    <h1>Mis Pedidos</h1>
+    <div class="text-right mr-3">
+        <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
+        <p class="mb-1"><strong>Rol:</strong> <span
+                class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
+        </p>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+    @if($pedidos->isEmpty())
+        <p>No tienes pedidos.</p>
+    @else
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($pedidos as $pedido)
+                    <tr>
+                        <td>{{ $pedido->id }}</td>
+                        <td>{{ $pedido->created_at }}</td>
+                        <td>
+                            <a href="{{ route('pedidos.show', $pedido->id) }}" class="btn btn-info">Ver Detalles</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+    <a href="{{ route('autopartes.index') }}" class="btn btn-primary">Ir al listado de autopartes</a>
+    <a href="{{ route('carrito.index') }}" class="btn btn-secondary">Volver al Carrito</a>
+</div>
+@endsection

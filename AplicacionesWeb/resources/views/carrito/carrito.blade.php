@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,17 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container mt-5">
+        <div class="text-right mr-3">
+            <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
+            <p class="mb-1"><strong>Rol:</strong> <span
+                    class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
+            </p>
+        </div>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Carrito</h1>
-            <a href="{{ route('autopartes.index') }}" class="btn btn-primary">Agregar Otro Producto</a>
         </div>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -26,36 +33,52 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($carritoItems as $item)
+                    @if($carrito->count() > 0)
+                        @foreach ($carrito as $item)
+                            <tr>
+                                <td>{{ $item->autoparte->autoparte }}</td>
+                                <td>{{ $item->autoparte->marca }}</td>
+                                <td>{{ $item->autoparte->modelo }}</td>
+                                <td>{{ $item->autoparte->codigo }}</td>
+                                <td>{{ $item->autoparte->precio }}</td>
+                                <td>
+                                    <a href="{{ route('autopartes.show', $item->autoparte->id) }}"
+                                        class="btn btn-info btn-sm">Ver
+                                        Detalles</a>
+                                    <form action="{{ route('carrito.destroy', $item->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">Eliminar del Carrito</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
                         <tr>
-                            <td>{{ $item->autopart->autoparte }}</td>
-                            <td>{{ $item->autopart->marca }}</td>
-                            <td>{{ $item->autopart->modelo }}</td>
-                            <td>{{ $item->autopart->codigo }}</td>
-                            <td>{{ $item->autopart->precio }}</td>
-                            <td>
-                            <a href="{{ route('autopartes.show', $item->autopart->id) }}" class="btn btn-info btn-sm">Ver Detalles</a>
-                                <form action="{{ route('carrito.destroy', $item->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar del Carrito</button>
-                                </form>
-                            </td>
+                            <td colspan="6" class="text-center">No tienes autopartes en tu carrito.</td>
                         </tr>
-                    @endforeach
+                    @endif
                 </tbody>
             </table>
+            <a href="{{ route('autopartes.index') }}" class="btn btn-primary">Agregar Otro Producto</a>
+            <a href="{{ route('pedidos.index') }}" class="btn btn-secondary">Ir al Listado de Pedidos</a>
         </div>
-        <div class="d-flex justify-content-end">
-            <h4>Subtotal: ${{ number_format($carritoItems->sum('autopart.precio'), 2) }}</h4> <!--Suma de todos los costos.-->
-        </div>
-        <div class="d-flex justify-content-end mt-3">
-            <a href="{{ route('pagar') }}" class="btn btn-success">Proceder al Pago</a>
-            <a href="{{ route('pedidos.index') }}" class="btn btn-primary ml-2">Ver Pedidos</a> <!-- Agregar botón para ver pedidos -->
-        </div>
+        @if($carrito->count() > 0)
+            <div class="d-flex justify-content-end">
+                <h4>Subtotal: ${{ number_format($carrito->sum('autoparte.precio'), 2) }}</h4>
+                <!-- Suma de todos los costos -->
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <a href="{{ route('pagar') }}" class="btn btn-success">Proceder al Pago</a>
+                <a href="{{ route('pedidos.index') }}" class="btn btn-primary ml-2">Ver Pedidos</a>
+                <!-- Agregar botón para ver pedidos -->
+            </div>
+        @endif
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

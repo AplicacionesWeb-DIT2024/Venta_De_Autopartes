@@ -1,66 +1,57 @@
 <?php
+
 use App\Http\Controllers\Api\AutopartController;
 use App\Http\Controllers\Api\CarritoController;
 use App\Http\Controllers\Api\CompraController;
 use App\Http\Controllers\Api\PedidoController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+// Rutas de autenticación
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Rutas accesibles para todos los usuarios autenticados
+Route::middleware('auth')->group(function () {
+    // Redirigir a los usuarios al listado de autopartes después de iniciar sesión
+    Route::get('/home', [AutopartController::class, 'index'])->name('home');
+    Route::get('/autoparts', [AutopartController::class, 'index'])->name('autopartes.index');
+    Route::get('/autoparts/{id}', [AutopartController::class, 'show'])->name('autopartes.show');
 });
 
-// Rutas de creación de autopartes
-Route::get('/autoparts/create', [AutopartController::class, 'create'])->name('autopartes.create');
-Route::post('/autoparts', [AutopartController::class, 'store'])->name('autopartes.store');
-
-// Ruta para ver el listado de autopartes
-Route::get('/autoparts', [AutopartController::class, 'showAutoparts'])->name('autopartes.index');
-
-// Rutas de edición de autopartes
-Route::put('/autoparts/{id}', [AutopartController::class, 'update'])->name('autopartes.update');
-Route::get('/autoparts/{id}/edit', [AutopartController::class, 'edit'])->name('autopartes.edit');
-
-// Rutas de eliminación de autopartes
-Route::delete('/autoparts/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
-
-// Rutas para los roles
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-
 // Rutas para el rol Cliente
-Route::middleware(['auth', 'rolekey'])->group(function () {
+Route::middleware(['auth', 'role:Cliente'])->group(function () {
+    Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+    Route::post('/carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
+    Route::delete('/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
+    Route::put('/carrito/{id}', [CarritoController::class, 'update'])->name('carrito.update');
+    Route::get('/carrito/{id}/edit', [CarritoController::class, 'edit'])->name('carrito.edit');
+
+    Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
+    Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+    Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
+
+    Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
+    Route::post('/comprar', [CompraController::class, 'comprar'])->name('comprar');
+
     Route::get('/cliente', [HomeController::class, 'cliente'])->name('cliente');
+
+
+    Route::put('/autopartes/{id}', [AutopartController::class, 'update'])->name('autopartes.update');
+    Route::get('/autopartes/{id}/edit', [AutopartController::class, 'edit'])->name('autopartes.edit');
+    Route::delete('/autopartes/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
 });
 
 // Rutas para el rol Empleado
-Route::middleware(['auth', 'rolekey'])->group(function () {
+Route::middleware(['auth', 'role:Empleado'])->group(function () {
     Route::get('/empleado', [HomeController::class, 'empleado'])->name('empleado');
+    Route::get('/autopartes/create', [AutopartController::class, 'create'])->name('autopartes.create');
+    Route::post('/autopartes', [AutopartController::class, 'store'])->name('autopartes.store');
+    Route::put('/autopartes/{id}', [AutopartController::class, 'update'])->name('autopartes.update');
+    Route::get('/autopartes/{id}/edit', [AutopartController::class, 'edit'])->name('autopartes.edit');
+    Route::delete('/autopartes/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
 });
-
-// Ruta para ver el listado de pedidos
-Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
-
-// Rutas de creación de pedidos
-Route::post('/carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
-
-// Rutas de edición de autopartes
-Route::put('/carrito/{id}', [AutopartController::class, 'update'])->name('carrito.update');
-Route::get('/carrito/{id}/edit', [AutopartController::class, 'edit'])->name('carrito.edit');
-
-// Rutas de eliminación de pedidos
-Route::delete('/carrito/{id}', [AutopartController::class, 'destroy'])->name('carrito.destroy');
-Route::resource('carrito', CarritoController::class);
-
-// Ruta de eliminación de productos del carrito
-Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
-Route::delete('/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
-
-// Para ver el detalle de las autopartes.
-Route::get('/autopartes/{id}', [AutopartController::class, 'show'])->name('autopartes.show');
-
-// Rutas para confirmar el pago
-Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
-Route::post('/comprar', [CompraController::class, 'comprar'])->name('comprar');
-
-
-Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
-Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
