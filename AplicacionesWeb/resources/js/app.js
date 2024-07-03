@@ -1,7 +1,9 @@
-import './bootstrap';
-import '../css/app.css';
-import { createRoot } from 'react-dom/client';
 import React from 'react';
-import Example from './components/Example';
+import { createRoot } from 'react-dom/client';
+import Login from './components/Login';
 
-createRoot(document.getElementById('app')).render(<Example />);
+const loginElement = document.getElementById('login');
+
+if (loginElement) {
+    createRoot(loginElement).render(<Login />);
+}
