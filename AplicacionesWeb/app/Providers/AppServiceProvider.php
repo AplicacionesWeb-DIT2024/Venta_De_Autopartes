@@ -18,7 +18,9 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        //
+    {//para que no me tire error de "mix manifest not found at"
+        $this->app->bind('path.public', function () {
+            return base_path() . '/../public_html';
+        });
     }
 }
