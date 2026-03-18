@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException; // Importa QueryException
+//Comentario para hacer el pull request a main.
 
 class AutopartController extends Controller
 {
