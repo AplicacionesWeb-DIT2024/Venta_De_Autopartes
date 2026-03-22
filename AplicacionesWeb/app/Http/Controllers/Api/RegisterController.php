@@ -10,30 +10,28 @@ use App\Http\Controllers\Controller;
 
 class RegisterController extends Controller
 {
-    public function create()
+    public function register(Request $request)
     {
-        return view('auth.register');
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
         ]);
 
-        $role = Role::where('name', 'Cliente')->first();
+        // Asignar el rol de "cliente" al nuevo usuario
+        $role = Role::firstOrCreate(['name' => 'cliente']);
         $user->assignRole($role);
 
-        auth()->login($user);
+        // Asignar el rol de "Empleado" al nuevo usuario
+        $roleEmpleado = Role::firstOrCreate(['name' => 'Empleado']);
+        $user->assignRole($roleEmpleado);
 
-        return redirect()->route('home');
+        return response()->json(['message' => 'Usuario registrado con éxito'], 201);
     }
 }

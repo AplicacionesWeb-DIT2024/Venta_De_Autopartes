@@ -12,48 +12,89 @@ use Illuminate\Support\Facades\Auth;
 
 class CompraController extends Controller
 {
-    public function pagar()
+    public function realizarCompra(Request $request)
     {
-        $carritoItems = Carrito::with('autoparte')->get();
-        return view('carrito.pagar', compact('carritoItems'));
-    }
+        $carritoItems = Carrito::where('user_id', Auth::id())->with('autopart')->get();
 
-    public function comprar(Request $request)
-    {
-        $carritoItems = Carrito::with('autoparte')->get();
-
-        // Validar que forma_pago esté presente y no sea nulo
-        $formaPago = $request->forma_pago ?? 'Pago no especificado'; // Ejemplo de valor por defecto si no se envía forma_pago
-
-        // Crear el pedido
-        $pedido = Pedido::create([
-            'user_id' => Auth::id(),
-            'fecha_cierre' => now(),
-            'costo_total' => $carritoItems->sum('autopart.precio'),
-            'tipo_pago' => $formaPago,  // Asignar forma_pago verificada o valor por defecto
-        ]);
-
-        // Crear los detalles del pedido
-        foreach ($carritoItems as $item) {
-            if ($item->autoparte && isset($item->autoparte->precio)) {
-                DetallePedido::create([
-                    'pedido_id' => $pedido->id,
-                    'autoparte' => $item->autoparte->autoparte,
-                    'marca' => $item->autoparte->marca,
-                    'modelo' => $item->autoparte->modelo,
-                    'codigo' => $item->autoparte->codigo,
-                    'precio' => $item->autoparte->precio,
-                ]);
-
-                // Eliminar la autoparte del listado de autopartes
-                $item->autoparte->delete();
-            }
-
-            // Eliminar el item del carrito
-            $item->delete();
+        if ($carritoItems->isEmpty()) {
+            return response()->json(['message' => 'El carrito está vacío'], 400);
         }
 
-        return redirect()->route('pedidos.show', $pedido->id)->with('success', 'Compra realizada con éxito.');
+        $total = 0;
+        foreach ($carritoItems as $item) {
+            $total += $item->autopart->precio * $item->cantidad;
+        }
+
+        $pedido = Pedido::create([
+            'user_id' => Auth::id(),
+            'total' => $total,
+            'estado' => 'pendiente',
+        ]);
+
+        foreach ($carritoItems as $item) {
+            DetallePedido::create([
+                'pedido_id' => $pedido->id,
+                'autopart_id' => $item->autopart_id,
+                'cantidad' => $item->cantidad,
+                'precio_unitario' => $item->autopart->precio,
+            ]);
+        }
+
+        Carrito::where('user_id', Auth::id())->delete();
+
+        return response()->json(['message' => 'Compra realizada con éxito', 'pedido_id' => $pedido->id]);
+    }
+
+    //Validar que la forma de pago esté presente y no sea nulo
+    public function validarPago(Request $request)
+    {
+        $validated = $request->validate([
+            'forma_pago' => 'required|string',
+        ]);
+
+        // Aquí podrías agregar lógica adicional para procesar el pago
+
+        return response()->json(['message' => 'Forma de pago válida']);
+    }
+
+    //Crear los detalles del pedido, eliminar la autoparte del carrito y actualizar el stock de la autoparte
+    public function procesarCompra(Request $request){
+        $carritoItems = Carrito::where('user_id', Auth::id())->with('autopart')->get();
+
+        if ($carritoItems->isEmpty()) {
+            return response()->json(['message' => 'El carrito está vacío'], 400);
+        }
+
+        $total = 0;
+        foreach ($carritoItems as $item) {
+            $total += $item->autopart->precio * $item->cantidad;
+        }
+
+        $pedido = Pedido::create([
+            'user_id' => Auth::id(),
+            'total' => $total,
+            'estado' => 'pendiente',
+        ]);
+
+        foreach ($carritoItems as $item) {
+            DetallePedido::create([
+                'pedido_id' => $pedido->id,
+                'autopart_id' => $item->autopart_id,
+                'cantidad' => $item->cantidad,
+                'precio_unitario' => $item->autopart->precio,
+            ]);
+
+            // Actualizar el stock de la autoparte
+            $autopart = Autopart::find($item->autopart_id);
+            if ($autopart) {
+                $autopart->stock -= $item->cantidad;
+                $autopart->save();
+            }
+        }
+
+        Carrito::where('user_id', Auth::id())->delete();
+
+        return response()->json(['message' => 'Compra procesada con éxito', 'pedido_id' => $pedido->id]);
     }
 
 }

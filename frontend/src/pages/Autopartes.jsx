@@ -3,12 +3,19 @@ import { useAutopartes } from "../hooks/useAutopartes";
 export default function Autopartes() {
   const { autopartes, loading, error, addToCart } = useAutopartes();
 
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>Error al cargar las autopartes.</p>;
-
   return (
     <div className="container mt-5">
-        <h1>Catálogo de Autopartes</h1>
+
+        <div className="d-flex justify-content-between align-items-center mb-4">
+            <h2>Lista de Autopartes</h2>
+            <button className="btn btn-primary" onClick={() => window.location.href = '/carrito'}>
+                Ver Carrito
+            </button>
+        </div>
+        
+        {loading && <p>Cargando autopartes...</p>}
+        {error && <p className="text-danger">Error al cargar autopartes</p>}
+        
         <table className="table">
             <thead>
                 <tr>
@@ -27,7 +34,7 @@ export default function Autopartes() {
                 ) : (
                     autopartes.map(autopart => (
                         <tr key={autopart.id}>
-                            <td>{autopart.nombre}</td>
+                            <td>{autopart.autoparte}</td>
                             <td>{autopart.marca}</td>
                             <td>{autopart.modelo}</td>
                             <td>${autopart.precio}</td>

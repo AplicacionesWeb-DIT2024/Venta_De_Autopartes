@@ -9,46 +9,37 @@ use App\Models\Pedido;
 use App\Models\DetallePedido;
 
 class PedidoController extends Controller
-{
-    public function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('role:Cliente')->except('index', 'show');
-    }
-
+{// Método para mostrar los pedidos del usuario autenticado
     public function index()
     {
-        // Filtra los pedidos por el usuario autenticado
-        $pedidos = Pedido::where('user_id', Auth::id())->orderByDesc('created_at')->get();
-
-        return view('pedidos.pedidos', compact('pedidos'));
+        $pedidos = Pedido::where('user_id', Auth::id())->with('detalles')->get();
+        return response()->json($pedidos);
     }
 
+    // Método para mostrar los detalles de un pedido específico
     public function show($id)
     {
-        $pedido = Pedido::where('user_id', Auth::id())->findOrFail($id);
-        $detalles = DetallePedido::where('pedido_id', $pedido->id)->get();
-
-        return view('pedidos.detalle', compact('pedido', 'detalles'));
+        $pedido = Pedido::where('id', $id)->where('user_id', Auth::id())->with('detalles')->first();
+        if (!$pedido) {
+            return response()->json(['message' => 'Pedido no encontrado'], 404);
+        }
+        return response()->json($pedido);
     }
 
+    // Método para crear un nuevo pedido
     public function store(Request $request)
     {
-        // Contar los pedidos existentes del usuario actual
-        $countPedidos = Pedido::where('user_id', Auth::id())->count();
+        $validated = $request->validate([
+            'total' => 'required|numeric',
+            'estado' => 'required|string',
+        ]);
 
-        // Crear un nuevo pedido
-        $pedido = new Pedido();
-        $pedido->user_id = Auth::id();
-        $pedido->fecha_cierre = now(); // Opcional: puedes definir la fecha de cierre aquí
-        $pedido->costo_total = 0; // Inicializar costo total según tu lógica
-        $pedido->tipo_pago = ''; // Inicializar tipo de pago según tu lógica
-        $pedido->save();
+        $pedido = Pedido::create([
+            'user_id' => Auth::id(),
+            'total' => $validated['total'],
+            'estado' => $validated['estado'],
+        ]);
 
-        // Actualizar el ID del pedido con el contador + 1
-        $pedido->id = $countPedidos + 1;
-        $pedido->save();
-
-        return redirect()->route('pedidos.pedidos');
+        return response()->json($pedido, 201);
     }
 }
