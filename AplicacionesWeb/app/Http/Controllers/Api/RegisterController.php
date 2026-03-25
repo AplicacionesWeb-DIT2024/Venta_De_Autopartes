@@ -28,10 +28,9 @@ class RegisterController extends Controller
         $role = Role::firstOrCreate(['name' => 'cliente']);
         $user->assignRole($role);
 
-        // Asignar el rol de "Empleado" al nuevo usuario
-        $roleEmpleado = Role::firstOrCreate(['name' => 'Empleado']);
-        $user->assignRole($roleEmpleado);
-
-        return response()->json(['message' => 'Usuario registrado con éxito'], 201);
+        return response()->json([
+            'user' => $user,
+            'message' => 'Usuario registrado exitosamente',
+        ], 201);
     }
 }
