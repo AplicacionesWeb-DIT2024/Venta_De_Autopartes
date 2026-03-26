@@ -47,6 +47,10 @@ const Login = () => {
           />
         </div>
         <button type="submit">Login</button>
+        <p>
+          {/* Agrega un enlace para registrarse si el usuario no tiene una cuenta */}
+          No tenés cuenta? <a href="/register">Register here</a>
+        </p>
       </form>
     </div>
   );

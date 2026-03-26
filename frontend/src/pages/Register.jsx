@@ -49,6 +49,10 @@ const Register = () => {
           required
         />
         <button type="submit">Register</button>
+        {/* Agrega un enlace para redirigir a la página de inicio de sesión */}
+        <p>
+          Ya tenés cuenta? <a href="/">Login here</a>
+        </p>
       </form>
     </div>
   );
