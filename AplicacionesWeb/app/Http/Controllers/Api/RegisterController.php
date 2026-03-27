@@ -24,8 +24,9 @@ class RegisterController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        // Asignar el rol de "cliente" al nuevo usuario
-        $role = Role::firstOrCreate(['name' => 'cliente']);
+        // Asigna un rol al usuario
+        $roleName = $request->input('role', 'cliente'); // Asigna 'cliente' por defecto si no se proporciona un rol
+        $role = Role::firstOrCreate(['name' => $roleName]);
         $user->assignRole($role);
 
         return response()->json([

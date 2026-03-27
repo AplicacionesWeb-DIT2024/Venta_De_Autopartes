@@ -23,11 +23,11 @@ const Register = () => {
       }
       // Enviar datos al backend para registrar al usuario
       try {
-        await axios.post('http://localhost:8000/api/auth/register', {//TODO no encuentra la ruta, revisar
-
+        await axios.post('http://localhost:8000/api/register', {//TODO no encuentra la ruta, revisar
           name: username,
           email,
           password,
+          password_confirmation: confirmPassword,
           role
         });
         alert('Registro exitoso! Ahora podés iniciar sesión.');
@@ -67,15 +67,15 @@ const Register = () => {
         />
 
         <input type="password"
-          placeholder="Confirm Password"
+          placeholder="Confirm Password"  /*Botón para registrarse y redirigir al login*/
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required />
 
         <select value={role} onChange={(e) => setRole(e.target.value)} required>
-          <option value="">Select Role</option>
-          <option value="user">Cliente</option>
-          <option value="admin">Empleado</option>
+          <option value="">Seleccionar Rol</option>
+          <option value="cliente">Cliente</option>
+          <option value="empleado">Empleado</option>
         </select>
         {/*Botón para registrarse y redirigir al login*/}
         <button type="submit">Register</button>
