@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Rutas para el rol Cliente
-Route::middleware(['auth', 'role:Cliente'])->group(function () {
+Route::middleware(['auth', 'role:cliente'])->group(function () {
     Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
     Route::post('/carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
     Route::delete('/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
@@ -47,7 +47,7 @@ Route::middleware(['auth', 'role:Cliente'])->group(function () {
 });
 
 // Rutas para el rol Empleado
-Route::middleware(['auth', 'role:Empleado'])->group(function () {
+Route::middleware(['auth', 'role:empleado'])->group(function () {
     Route::get('/empleado', [HomeController::class, 'empleado'])->name('empleado');
     Route::get('/autopartes/create', [AutopartController::class, 'create'])->name('autopartes.create');
     Route::post('/autopartes', [AutopartController::class, 'store'])->name('autopartes.store');

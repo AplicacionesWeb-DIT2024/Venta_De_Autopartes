@@ -16,6 +16,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|string',
         ]);
 
         $user = User::create([
@@ -24,9 +25,8 @@ class RegisterController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        // Asigna un rol al usuario
-        $roleName = $request->input('role', 'cliente'); // Asigna 'cliente' por defecto si no se proporciona un rol
-        $role = Role::firstOrCreate(['name' => $roleName]);
+        // Asignar el rol al usuario
+        $role = Role::firstOrCreate(['name' => $validated['role']]);
         $user->assignRole($role);
 
         return response()->json([

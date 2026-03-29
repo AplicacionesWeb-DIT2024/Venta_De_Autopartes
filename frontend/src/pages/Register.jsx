@@ -31,7 +31,7 @@ const Register = () => {
           role
         });
         alert('Registro exitoso! Ahora podés iniciar sesión.');
-        navigate('/login');
+        navigate('/autoparts');
       } catch (error) {
         alert(error.response?.data?.message || 'Error al registrarse');
       }
@@ -83,7 +83,7 @@ const Register = () => {
 
         {/* Agrega un enlace para redirigir a la página de inicio de sesión */}
         <p>
-          Ya tenés cuenta? <Link to="/login">Login here</Link>
+          Ya tenés cuenta? <Link to="/">Login here</Link>
         </p>
 
       </form>

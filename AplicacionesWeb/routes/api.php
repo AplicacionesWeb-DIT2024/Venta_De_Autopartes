@@ -22,3 +22,4 @@ Route::post('/comprar', [CompraController::class, 'comprar'])->name('comprar');
 
 //Rutas para registro de usuarios
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
+
