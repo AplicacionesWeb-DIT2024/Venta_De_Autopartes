@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CarritoController;
 use App\Http\Controllers\Api\CompraController;
 use App\Http\Controllers\Api\PedidoController;
 use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/autoparts', [AutopartController::class, 'index']);
 Route::post('/autoparts', [AutopartController::class, 'store']);
@@ -23,3 +24,5 @@ Route::post('/comprar', [CompraController::class, 'comprar'])->name('comprar');
 //Rutas para registro de usuarios
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
+// Rutas para autenticación
+Route::post('/login', [AuthController::class, 'login'])->name('login');

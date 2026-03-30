@@ -44,16 +44,17 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
+        // Validar las credenciales
         if (Auth::attempt($credentials)) {
-            // Autenticación exitosa
-            return redirect()->intended('/autoparts');
+            return response()->json([
+                'message' => 'Login successful',
+                'user' => Auth::user(),
+            ], 200);
         }
 
-        // Autenticación fallida
-        return back()->withErrors([
-            'email' => 'Las credenciales proporcionadas no son válidas.',
-        ]);
+        return response()->json([
+            'message' => 'Invalid credentials',
+        ], 401);
     }
 
     public function logout(Request $request)

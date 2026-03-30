@@ -31,7 +31,7 @@ const Register = () => {
           role
         });
         alert('Registro exitoso! Ahora podés iniciar sesión.');
-        navigate('/autoparts');
+        navigate('/');
       } catch (error) {
         alert(error.response?.data?.message || 'Error al registrarse');
       }

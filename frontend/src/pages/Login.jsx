@@ -10,17 +10,18 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { username, password });
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.token);
-        navigate('/dashboard');
-      } else {
-        alert('Login failed: ' + response.data.message);
-      }
+      const response = await axios.post('http://localhost:8000/api/login', { 
+        email: username, 
+        password 
+      });
+      
+      navigate('/autoparts'); // Redirige a la página de autopartes después del login exitoso 
+    
     } catch (error) {
       console.error('Error during login:', error);
-      alert('An error occurred during login. Please try again.');
+      alert(error.response?.data?.message || 'Error al iniciar sesión'); // Muestra un mensaje de error al usuario
     }
   };
 
@@ -29,10 +30,10 @@ const Login = () => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <div>
-          <label>Username:</label>
+          <label>Email:</label>
           <input
             type="text"
-            value={username}
+            value={username} // 
             onChange={(e) => setUsername(e.target.value)}
             required
           />
