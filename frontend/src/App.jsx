@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
+import Autopartes from './pages/Autopartes'; // Importa la página de Autopartes
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/autoparts" element={<Autopartes />} /> {/* Ruta para la página de Autopartes */} 
       </Routes>
     </Router>
   );
