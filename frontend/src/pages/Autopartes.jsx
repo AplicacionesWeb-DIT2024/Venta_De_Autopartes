@@ -2,11 +2,11 @@ import { useAutopartes } from "../hooks/useAutopartes";
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate
 
 export default function Autopartes() {
-    const { autopartes, error, addToCart, deleteAutoparte } = useAutopartes();
+    const { autopartes, error, loading, addToCart, deleteAutoparte } = useAutopartes();
     const navigate = useNavigate(); // Inicializa el hook useNavigate
 
     const lista = autopartes || [];
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user') || "null"); // Asegura que si no hay usuario, se maneje como null en lugar de lanzar un error
 
     const esEmpleado = user?.role === 'Empleado';
 
@@ -44,7 +44,7 @@ export default function Autopartes() {
             </div>
 
             {/*BOTONES SEGÚN ROL*/}
-            {esEmpleado && (
+            {esEmpleado ? (
                 <div className="mb-3">
                     <button
                         className="btn btn-primary me-2"
@@ -53,14 +53,13 @@ export default function Autopartes() {
                         Agregar Autoparte
                     </button>
                     <button
-                    className="btn btn-secondary"
+                        className="btn btn-secondary"
                         onClick={() => navigate('/autopartes/editar')}
                     >
                         Editar Autoparte
                     </button>
                 </div>
-            )}
-            {!esEmpleado && (
+            ) : (
                 <div className="mb-3">
                     <button
                         className="btn btn-primary"
@@ -77,71 +76,50 @@ export default function Autopartes() {
                     Error al cargar autopartes
                 </div>
             )}
-            
-
-            {/* CARGANDO */}
-            {loading && (
-                <div className="text-center my-5">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Cargando...</span>
-                    </div>
-                    <p className="mt-3">Cargando autopartes...</p>
-                </div>
-            )}
-
-            {/* ERROR */}
-            {error && (
-                <div className="alert alert-danger" role="alert">
-                    Error al cargar autopartes
-                </div>
-            )}
-
 
             {/* TABLA DE AUTOPARTES */}
             {!loading && !error && (
                 <div className="card shadow-sm border-0">
                     <div className="table-responsive">
-                        <table className="table table-hover align-middle mb-0">
-                            <table className="table-dark table-striped">
-                                <thead>
+                        <table className="table table-hover algin-middle mb-0 table-dark table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Autoparte</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
+                                    <th>Precio</th>
+                                    <th className="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {lista.length === 0 ? ( // Si no hay autopartes, mostrar un mensaje indicando que no hay disponibles
                                     <tr>
-                                        <th>Autoparte</th>
-                                        <th>Marca</th>
-                                        <th>Modelo</th>
-                                        <th>Precio</th>
-                                        <th className="text-center">Acciones</th>
+                                        <td colSpan="5" className="text-center">
+                                            No hay autopartes disponibles.
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {lista.length === 0 ? ( // Si no hay autopartes, mostrar un mensaje indicando que no hay disponibles
-                                        <tr>
-                                            <td colSpan="5" className="text-center">
-                                                No hay autopartes disponibles.
+                                ) : (
+                                    // Iterar sobre la lista de autopartes y mostrar cada una en una fila de la tabla
+                                    lista.map((autopart) => (
+                                        <tr key={autopart.id}>
+                                            <td className="fw-semibold">{autopart.nombre}</td>
+                                            <td>{autopart.marca}</td>
+                                            <td>{autopart.modelo}</td>
+                                            <td className="text-success fw-bold">
+                                                ${autopart.precio.toFixed(2)}
+                                            </td>
+                                            <td className="text-center">
+                                                <button
+                                                    className="btn btn-sm btn-success"
+                                                    onClick={() => addToCart(autopart)}
+                                                >
+                                                    Agregar al Carrito
+                                                </button>
                                             </td>
                                         </tr>
-                                    ) : (
-                                        // Iterar sobre la lista de autopartes y mostrar cada una en una fila de la tabla
-                                        lista.map((autopart) => (
-                                            <tr key={autopart.id}>
-                                                <td className="fw-semibold">{autopart.nombre}</td>
-                                                <td>{autopart.marca}</td>
-                                                <td>{autopart.modelo}</td>
-                                                <td className="text-success fw-bold">
-                                                    ${autopart.precio.toFixed(2)}
-                                                </td>
-                                                <td className="text-center">
-                                                    <button
-                                                        className="btn btn-sm btn-success"
-                                                        onClick={() => addToCart(autopart)}
-                                                    >
-                                                        Agregar al Carrito
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
+                                    ))
+                                )}
+                            </tbody>
                         </table>
                     </div>
                 </div>
