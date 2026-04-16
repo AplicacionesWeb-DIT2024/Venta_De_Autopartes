@@ -2,34 +2,82 @@ import { useAutopartes } from "../hooks/useAutopartes";
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate
 
 export default function Autopartes() {
-    const { autopartes, loading, error, addToCart } = useAutopartes();
+    const { autopartes, error, addToCart, deleteAutoparte } = useAutopartes();
     const navigate = useNavigate(); // Inicializa el hook useNavigate
 
     const lista = autopartes || [];
+    const user = JSON.parse(localStorage.getItem('user'));
+
+    const esEmpleado = user?.role === 'Empleado';
+
+    const handleDelete = (id) => {
+        if (window.confirm('¿Estás seguro de que deseas eliminar esta autoparte?')) {
+            deleteAutoparte(id);
+        }
+    };
 
     return (
         <div className="container mt-5">
 
+            {/*USUARIO*/}
+            {user && (
+                <div className="text-end text-muted mb-3">
+                    <p className="mb-1">
+                        <strong>Usuario: </strong> {user.name}
+                    </p>
+                    <span className="badge bg-info">{user.role}</span>
+                </div>
+            )}
+
             {/*HEADER*/}
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <h1>Autopartes</h1>
+                <h1>Lista de Autopartes</h1>
                 <button
-                    className="btn btn-secondary"
-                    onClick={() => navigate('/')}
+                    className="btn btn-danger"
+                    onClick={() => {
+                        localStorage.removeItem('user');
+                        navigate('/');
+                    }}
                 >
                     Cerrar sesión
                 </button>
             </div>
 
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2>Lista de Autopartes</h2>
-                <button
-                    className="btn btn-primary"
-                    onClick={() => navigate('/carrito')}
-                >
-                    Ver Carrito
-                </button>
-            </div>
+            {/*BOTONES SEGÚN ROL*/}
+            {esEmpleado && (
+                <div className="mb-3">
+                    <button
+                        className="btn btn-primary me-2"
+                        onClick={() => navigate('/autopartes/crear')}
+                    >
+                        Agregar Autoparte
+                    </button>
+                    <button
+                    className="btn btn-secondary"
+                        onClick={() => navigate('/autopartes/editar')}
+                    >
+                        Editar Autoparte
+                    </button>
+                </div>
+            )}
+            {!esEmpleado && (
+                <div className="mb-3">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => navigate('/carrito')}
+                    >
+                        Ver Carrito
+                    </button>
+                </div>
+            )}
+
+            {/* ERROR */}
+            {error && (
+                <div className="alert alert-danger" role="alert">
+                    Error al cargar autopartes
+                </div>
+            )}
+            
 
             {/* CARGANDO */}
             {loading && (
