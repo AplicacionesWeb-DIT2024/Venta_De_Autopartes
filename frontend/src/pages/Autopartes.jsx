@@ -18,14 +18,16 @@ export default function Autopartes() {
 
     return (
         <div className="container mt-5">
-
             {/*USUARIO*/}
             {user && (
-                <div className="text-end text-muted mb-3">
+                <div className="text-end mb-3">
                     <p className="mb-1">
-                        <strong>Usuario: </strong> {user.name}
+                        <strong>Usuario:</strong> {user.name}
                     </p>
-                    <span className="badge bg-info">{user.role}</span>
+                    <p className="mb-0">
+                        <strong>Rol:</strong> 
+                        <span className="ms-1 badge bg-info">{user.role}</span>
+                    </p>
                 </div>
             )}
 

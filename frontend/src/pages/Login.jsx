@@ -17,6 +17,14 @@ const Login = () => {
         password 
       });
       
+      // Guardar el usuario y token en localStorage
+      localStorage.setItem('user', JSON.stringify({
+        name: response.data.user.name,
+        email: response.data.user.email,
+        role: response.data.user.role
+      }));
+      localStorage.setItem('token', response.data.token);
+      
       navigate('/autoparts'); // Redirige a la página de autopartes después del login exitoso 
     
     } catch (error) {
