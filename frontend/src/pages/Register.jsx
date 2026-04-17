@@ -74,8 +74,8 @@ const Register = () => {
 
         <select value={role} onChange={(e) => setRole(e.target.value)} required>
           <option value="">Seleccionar Rol</option>
-          <option value="cliente">Cliente</option>
-          <option value="empleado">Empleado</option>
+          <option value="Cliente">Cliente</option>
+          <option value="Empleado">Empleado</option>
         </select>
         {/*Botón para registrarse y redirigir al login*/}
         <button type="submit">Register</button>
