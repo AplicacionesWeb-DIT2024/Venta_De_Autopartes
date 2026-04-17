@@ -25,7 +25,7 @@ export default function Autopartes() {
                         <strong>Usuario:</strong> {user.name}
                     </p>
                     <p className="mb-0">
-                        <strong>Rol:</strong> 
+                        <strong>Rol:</strong>
                         <span className="ms-1 badge bg-info">{user.role}</span>
                     </p>
                 </div>
@@ -79,53 +79,62 @@ export default function Autopartes() {
                 </div>
             )}
 
-            {/* TABLA DE AUTOPARTES */}
+            {/* TABLA DE AUTOPARTES EN CARDS*/}
             {!loading && !error && (
-                <div className="card shadow-sm border-0">
-                    <div className="table-responsive">
-                        <table className="table table-hover algin-middle mb-0 table-dark table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Autoparte</th>
-                                    <th>Marca</th>
-                                    <th>Modelo</th>
-                                    <th>Precio</th>
-                                    <th className="text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {lista.length === 0 ? ( // Si no hay autopartes, mostrar un mensaje indicando que no hay disponibles
-                                    <tr>
-                                        <td colSpan="5" className="text-center">
-                                            No hay autopartes disponibles.
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    // Iterar sobre la lista de autopartes y mostrar cada una en una fila de la tabla
-                                    lista.map((autopart) => (
-                                        <tr key={autopart.id}>
-                                            <td className="fw-semibold">{autopart.nombre}</td>
-                                            <td>{autopart.marca}</td>
-                                            <td>{autopart.modelo}</td>
-                                            <td className="text-success fw-bold">
-                                                ${autopart.precio.toFixed(2)}
-                                            </td>
-                                            <td className="text-center">
-                                                <button
-                                                    className="btn btn-sm btn-success"
-                                                    onClick={() => addToCart(autopart)}
-                                                >
-                                                    Agregar al Carrito
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <>
+                    {
+                        lista.length === 0 ? (
+                            <div className="text-center mt-5">
+                                <h4 className="text-muted">
+                                    No hay autopartes disponibles
+                                </h4>
+                            </div>
+                        ) : (
+                            <div className="row">
+                                {lista.map((autopart) => (
+                                    <div key={autopart.id} className="col-md-4 mb-4">
+                                        <div className="card h-100 shadow-sm border-0">
+                                            <div className="card-body d-flex flex-column">
+                                                <h5 className="card-title fw-bold">
+                                                    {autopart.nombre}
+                                                </h5>
+                                                <p className="mb-2">
+                                                    <strong>Marca:</strong> {autopart.marca}
+                                                </p>
+                                                <h4 className="text-success fw-bold mt-auto">
+                                                    ${autopart.precio.toFixed(2)}
+                                                </h4>
+                                            </div>
+
+                                            <div className="card-footer b-white border-0 text-center">
+                                                {!esEmpleado && (
+                                                    <button
+                                                        className="btn btn-success w-100 mb-2"
+                                                        onClick={() => addToCart(autopart)}
+                                                    >
+                                                        Agregar al Carrito
+                                                    </button>
+                                                )}
+
+                                                {esEmpleado && (
+                                                    <>
+                                                        <button
+                                                            className="btn btn-danger w-100 mb-2"
+                                                            onClick={() => handleDelete(autopart.id)}
+                                                        >
+                                                            Eliminar
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )
+                    }
+                </>
             )}
         </div>
     );
-}   
+}
