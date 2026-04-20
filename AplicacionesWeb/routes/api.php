@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\AuthController;
 
 // Rutas para la gestión de autopartes
-Route::prefix('autoparts')->group(function () {
+Route::middleware('auth:sanctum')->prefix('autoparts')->group(function () {
     Route::get('/', [AutopartController::class, 'index']);
     Route::post('/', [AutopartController::class, 'store']);
     Route::get('/{id}', [AutopartController::class, 'show']);
@@ -23,7 +23,7 @@ Route::post('/register', [RegisterController::class, 'register']);
 
 // Rutas protegidas por autenticación
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/carrito', [CarritoController::class,'store']);
+    //Route::post('/carrito', [CarritoController::class, 'store']);
     Route::post('/comprar', [CarritoController::class, 'comprar']);
 });
 

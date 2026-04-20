@@ -2,11 +2,11 @@ import { useAutopartes } from "../hooks/useAutopartes";
 import { useNavigate } from "react-router-dom"; // Importa el hook useNavigate
 
 export default function Autopartes() {
-    const { autopartes, error, addToCart, deleteAutoparte } = useAutopartes();
+    const { autopartes, error, loading, addToCart, deleteAutoparte } = useAutopartes();
     const navigate = useNavigate(); // Inicializa el hook useNavigate
 
     const lista = autopartes || [];
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem('user') || "null"); // Asegura que si no hay usuario, se maneje como null en lugar de lanzar un error
 
     const esEmpleado = user?.role === 'Empleado';
 
@@ -18,33 +18,36 @@ export default function Autopartes() {
 
     return (
         <div className="container mt-5">
-
             {/*USUARIO*/}
             {user && (
-                <div className="text-end text-muted mb-3">
+                <div className="text-end mb-3">
                     <p className="mb-1">
-                        <strong>Usuario: </strong> {user.name}
+                        <strong>Usuario:</strong> {user.name}
                     </p>
-                    <span className="badge bg-info">{user.role}</span>
+                    <p className="mb-0">
+                        <strong>Rol:</strong>
+                        <span className="ms-1 badge bg-info">{user.role}</span>
+                    </p>
                 </div>
             )}
 
+            <button
+                className="btn btn-danger"
+                onClick={() => {
+                    localStorage.removeItem('user');
+                    navigate('/');
+                }}
+            >
+                Cerrar sesión
+            </button>
             {/*HEADER*/}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h1>Lista de Autopartes</h1>
-                <button
-                    className="btn btn-danger"
-                    onClick={() => {
-                        localStorage.removeItem('user');
-                        navigate('/');
-                    }}
-                >
-                    Cerrar sesión
-                </button>
+
             </div>
 
             {/*BOTONES SEGÚN ROL*/}
-            {esEmpleado && (
+            {esEmpleado ? (
                 <div className="mb-3">
                     <button
                         className="btn btn-primary me-2"
@@ -53,14 +56,13 @@ export default function Autopartes() {
                         Agregar Autoparte
                     </button>
                     <button
-                    className="btn btn-secondary"
+                        className="btn btn-secondary"
                         onClick={() => navigate('/autopartes/editar')}
                     >
                         Editar Autoparte
                     </button>
                 </div>
-            )}
-            {!esEmpleado && (
+            ) : (
                 <div className="mb-3">
                     <button
                         className="btn btn-primary"
@@ -77,75 +79,63 @@ export default function Autopartes() {
                     Error al cargar autopartes
                 </div>
             )}
-            
 
-            {/* CARGANDO */}
-            {loading && (
-                <div className="text-center my-5">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Cargando...</span>
-                    </div>
-                    <p className="mt-3">Cargando autopartes...</p>
-                </div>
-            )}
-
-            {/* ERROR */}
-            {error && (
-                <div className="alert alert-danger" role="alert">
-                    Error al cargar autopartes
-                </div>
-            )}
-
-
-            {/* TABLA DE AUTOPARTES */}
+            {/* TABLA DE AUTOPARTES EN CARDS*/}
             {!loading && !error && (
-                <div className="card shadow-sm border-0">
-                    <div className="table-responsive">
-                        <table className="table table-hover align-middle mb-0">
-                            <table className="table-dark table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Autoparte</th>
-                                        <th>Marca</th>
-                                        <th>Modelo</th>
-                                        <th>Precio</th>
-                                        <th className="text-center">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {lista.length === 0 ? ( // Si no hay autopartes, mostrar un mensaje indicando que no hay disponibles
-                                        <tr>
-                                            <td colSpan="5" className="text-center">
-                                                No hay autopartes disponibles.
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        // Iterar sobre la lista de autopartes y mostrar cada una en una fila de la tabla
-                                        lista.map((autopart) => (
-                                            <tr key={autopart.id}>
-                                                <td className="fw-semibold">{autopart.nombre}</td>
-                                                <td>{autopart.marca}</td>
-                                                <td>{autopart.modelo}</td>
-                                                <td className="text-success fw-bold">
+                <>
+                    {
+                        lista.length === 0 ? (
+                            <div className="text-center mt-5">
+                                <h4 className="text-muted">
+                                    No hay autopartes disponibles
+                                </h4>
+                            </div>
+                        ) : (
+                            <div className="row">
+                                {lista.map((autopart) => (
+                                    <div key={autopart.id} className="col-md-4 mb-4">
+                                        <div className="card h-100 shadow-sm border-0">
+                                            <div className="card-body d-flex flex-column">
+                                                <h5 className="card-title fw-bold">
+                                                    {autopart.nombre}
+                                                </h5>
+                                                <p className="mb-2">
+                                                    <strong>Marca:</strong> {autopart.marca}
+                                                </p>
+                                                <h4 className="text-success fw-bold mt-auto">
                                                     ${autopart.precio.toFixed(2)}
-                                                </td>
-                                                <td className="text-center">
+                                                </h4>
+                                            </div>
+
+                                            <div className="card-footer bg-white border-0 text-center">
+                                                {!esEmpleado && (
                                                     <button
-                                                        className="btn btn-sm btn-success"
+                                                        className="btn btn-success w-100 mb-2"
                                                         onClick={() => addToCart(autopart)}
                                                     >
                                                         Agregar al Carrito
                                                     </button>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-                        </table>
-                    </div>
-                </div>
+                                                )}
+
+                                                {esEmpleado && (
+                                                    <>
+                                                        <button
+                                                            className="btn btn-danger w-100 mb-2"
+                                                            onClick={() => handleDelete(autopart.id)}
+                                                        >
+                                                            Eliminar
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )
+                    }
+                </>
             )}
         </div>
     );
-}   
+}
