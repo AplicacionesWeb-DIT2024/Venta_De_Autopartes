@@ -83,8 +83,8 @@ const Register = () => {
             <label>Rol</label>
             <select value={role} onChange={(e) => setRole(e.target.value)} required>
               <option value="">Seleccionar rol</option>
-              <option value="customer">Cliente</option>
-              <option value="admin">Administrador</option>
+              <option value="Cliente">Cliente</option>
+              <option value="Empleado">Empleado</option>
             </select>
           </div>
           <button type="submit" className="register-button">Registrarse</button>
