@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -38,55 +39,60 @@ const Register = () => {
     };
 
   return (
-    <div>
-      <h2>Registrarse</h2>
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-        <input type="password"
-          placeholder="Confirm Password"  /*Botón para registrarse y redirigir al login*/
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required />
-
-        <select value={role} onChange={(e) => setRole(e.target.value)} required>
-          <option value="">Seleccionar Rol</option>
-          <option value="Cliente">Cliente</option>
-          <option value="Empleado">Empleado</option>
-        </select>
-        {/*Botón para registrarse y redirigir al login*/}
-        <button type="submit">Register</button>
-
-
-        {/* Agrega un enlace para redirigir a la página de inicio de sesión */}
-        <p>
-          Ya tenés cuenta? <Link to="/">Login here</Link>
+    <div className="register-container">
+      <div className="register-card">
+        <h2 className="register-title">Crear una cuenta</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="register-input-group">
+            <label>Nombre de usuario</label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <div className="register-input-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="register-input-group">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="register-input-group">
+            <label>Confirmar contraseña</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="register-input-group">
+            <label>Rol</label>
+            <select value={role} onChange={(e) => setRole(e.target.value)} required>
+              <option value="">Seleccionar rol</option>
+              <option value="customer">Cliente</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+          <button type="submit" className="register-button">Registrarse</button>
+        </form>
+        <p className="register-footer">
+          ¿Ya tenés una cuenta? <Link to="/">Iniciar sesión</Link>
         </p>
-
-      </form>
+      </div>
     </div>
   );
 };
