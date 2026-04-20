@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Importa los estilos de Bootstrap
+import './Login.css'; // Archivo para estilos personalizados
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -36,66 +36,44 @@ const Login = () => {
   };
 
   return (
-    <div className="container">
-      <div className="row justify-content-center" style={{ marginTop: '80px' }}>
-        <div className="col-md-6" col-lg-5>
+    <div className="login-container">
+      <div className="login-card">
 
-          <div className="card shadow">
-            <div className="card-header text-center">
-              <h2>Login</h2>
-            </div>
-
-            <div className="card-body">
-              <form onSubmit={handleLogin}>
-
-                {/* ERROR */}
-                {errorMsg && (
-                  <div className="alert alert-danger">
-                    {errorMsg}
-                  </div>
-                )}
-
-                {/* EMAIL */}
-                <div className="mb-3">
-                  <label className="form-label">Email address:</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    autoFocus
-                  />
-                </div>
-
-                {/* PASSWORD */}
-                <div className="mb-3">
-                  <label className="form-label">Password:</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-
-                {/* BOTONES */}
-                <div className="d-flex justify-content-between align-items-center">
-                  <button type="submit" className="btn btn-primary">
-                    Login
-                  </button>
-
-                  <Link to="/register" className="btn btn-link">
-                    Registrarse
-                  </Link>
-                </div>
-
-              </form>
-            </div>
+        
+        <h2 className="login-title">Iniciar Sesión</h2>
+        
+        {errorMsg && <p className="login-error">{errorMsg}</p>}
+        <form onSubmit={handleLogin}>
+          <div className="login-input-group">
+            <label htmlFor="email">Correo Electrónico</label>
+            <input
+              type="email"
+              id="email"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              autoFocus
+            />
           </div>
-
-
+          <div className="login-input-group">
+            <label htmlFor="password">Contraseña</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="login-button">
+            Iniciar Sesión
+          </button>
+        </form>
+        <div className="login-footer">
+          <p>
+            ¿No tienes una cuenta?{' '}
+            <Link to="/register">Regístrate aquí</Link>
+          </p>
         </div>
       </div>
     </div>
