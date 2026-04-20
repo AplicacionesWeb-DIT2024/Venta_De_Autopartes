@@ -31,18 +31,19 @@ export default function Autopartes() {
                 </div>
             )}
 
+            <button
+                className="btn btn-danger"
+                onClick={() => {
+                    localStorage.removeItem('user');
+                    navigate('/');
+                }}
+            >
+                Cerrar sesión
+            </button>
             {/*HEADER*/}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h1>Lista de Autopartes</h1>
-                <button
-                    className="btn btn-danger"
-                    onClick={() => {
-                        localStorage.removeItem('user');
-                        navigate('/');
-                    }}
-                >
-                    Cerrar sesión
-                </button>
+
             </div>
 
             {/*BOTONES SEGÚN ROL*/}
@@ -106,7 +107,7 @@ export default function Autopartes() {
                                                 </h4>
                                             </div>
 
-                                            <div className="card-footer b-white border-0 text-center">
+                                            <div className="card-footer bg-white border-0 text-center">
                                                 {!esEmpleado && (
                                                     <button
                                                         className="btn btn-success w-100 mb-2"
