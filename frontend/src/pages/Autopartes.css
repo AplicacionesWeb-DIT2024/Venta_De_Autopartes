@@ -1,0 +1,104 @@
+
+/*/* Estilos para la página de autopartes */
+
+/* Contenedor principal */
+.autopartes-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Título de la página */
+.autopartes-container h2{
+  width: 100%;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Grid de autopartes */
+.autopartes-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* Tarjeta de cada autoparte */
+.autoparte-card{
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    background-color: #fff;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Efecto hover para las tarjetas */
+.autoparte-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el contenido de cada tarjeta */
+.autoparte-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+/* Estilos para la descripción y el precio */
+.autoparte-card p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Estilos para el precio */
+.autoparte-card span{
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+/* Estilos para el botón de compra */
+.autoparte-card button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Efecto hover para el botón de compra */
+.autoparte-card button:hover{
+    background-color: #0056b3;
+}
+
+/* Efecto de superposición al hacer hover en la tarjeta */
+.autoparte-card::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* Mostrar la superposición al hacer hover en la tarjeta */
+.autoparte-card:hover::before{
+    opacity: 1;
+}
+
+/* Estilos para la imagen de cada autoparte */
+.autoparte-card img{
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
