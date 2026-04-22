@@ -45,97 +45,101 @@ export default function Autopartes() {
                 </button>
             </div>
 
+
+            {/* LISTADO*/}
+            {
+                !loading && !error && (
+                    <>
+                        {lista.length === 0 ? (
+                            <div className="text-center mt5">
+                                <h4 className="text-muted">
+                                    No hay autopartes disponibles.
+                                </h4>
+                            </div>
+                        ) : (
+                            <div className="row">
+                                {lista.map((autopart) => (
+                                    <div key={autopart.id} className="col-md-4 mb-4">
+
+                                        <div className="card h-100 shadow-sm">
+                                            <div className="card-body d-flex flex-column text-center">
+
+                                                <h5 className="card-title">
+                                                    {autopart.name}
+                                                </h5>
+
+                                                {/* Marca como badge */}
+                                                <p className="badge bg-light text-dark mb-2">
+                                                    {autopart.marca}
+                                                </p>
+
+                                                {/* Precio */}
+                                                <h4 className="text-success mt-auto">
+                                                    ${autopart.price.toFixed(2)}
+                                                </h4>
+                                            </div>
+
+                                            <div className="card-footer bg-white border-0 text-center">
+
+                                                {!esEmpleado && (
+                                                    <button
+                                                        className="btn btn-success w-100 mb-2"
+                                                        onClick={() => addToCart(autopart)}
+                                                    >
+                                                        Agregar al Carrito
+                                                    </button>
+                                                )}
+
+                                                {esEmpleado && (
+                                                    <button
+                                                        className="btn btn-danger w-100"
+                                                        onClick={() => handleDelete(autopart.id)}
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </>
+                )
+            }
+
             {/* HEADER */}
             <div className="mb-4 text-center">
-                {esEmpleado ? (
+                {esEmpleado ? ( // Si es Empleado solo tenemos habilitada la creación de Autopartes
                     <>
-                        <button
-                            className="btn btn-primary me-3"
-                            onClick={() => navigate('/autopartes/crear')}
-                        >
-                            Agregar Autoparte
-                        </button>
+                        <div className="d-flex justify-content-start">
+                            <button
+                                className="btn btn-primary"
+                                onClick={() => navigate('/autopartes/crear')}
+                            >
+                                Agregar Autoparte
+                            </button>
+                        </div>
                     </>
-                ) : (
+                ) : ( // Si no es Empleado, mostramos el botón para ver el carrito
                     <button
                         className="btn btn-primary"
                         onClick={() => navigate('/carrito')}
                     >
-                Ver Carrito
-            </button>
+                        Ver Carrito
+                    </button>
                 )}
-        </div>
-
-            {/* ERROR */ }
-    {
-        error && (
-            <div className="alert alert-danger" role="alert">
-                Error al cargar autopartes: {error.message}
             </div>
-        )
-    }
 
-    {/* LISTADO*/ }
-    {
-        !loading && !error && (
-            <>
-                {lista.length === 0 ? (
-                    <div className="text-center mt5">
-                        <h4 className="text-muted">
-                            No hay autopartes disponibles.
-                        </h4>
+            {/* ERROR */}
+            {
+                error && (
+                    <div className="alert alert-danger" role="alert">
+                        Error al cargar autopartes: {error.message}
                     </div>
-                ) : (
-                    <div className="row">
-                        {lista.map((autopart) => (
-                            <div key={autopart.id} className="col-md-4 mb-4">
+                )
+            }
 
-                                <div className="card h-100 shadow-sm">
-                                    <div className="card-body d-flex flex-column text-center">
-
-                                        <h5 className="card-title">
-                                            {autopart.name}
-                                        </h5>
-
-                                        {/* Marca como badge */}
-                                        <p className="badge bg-light text-dark mb-2">
-                                            {autopart.marca}
-                                        </p>
-
-                                        {/* Precio */}
-                                        <h4 className="text-success mt-auto">
-                                            ${autopart.price.toFixed(2)}
-                                        </h4>
-                                    </div>
-
-                                    <div className="card-footer bg-white border-0 text-center">
-
-                                        {!esEmpleado && (
-                                            <button
-                                                className="btn btn-success w-100 mb-2"
-                                                onClick={() => addToCart(autopart)}
-                                            >
-                                                Agregar al Carrito
-                                            </button>
-                                        )}
-
-                                        {esEmpleado && (
-                                            <button
-                                                className="btn btn-danger w-100"
-                                                onClick={() => handleDelete(autopart.id)}
-                                            >
-                                                Eliminar
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </>
-        )
-    }
         </div >
     );
 }
