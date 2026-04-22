@@ -2,20 +2,20 @@
 /* Estilos para la página de autopartes */
 
 /* Estilos generales */
-.container {
+.autopartes-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
 
 /* Estilos para el título */
-h1 {
+.autopartes-title {
   text-align: center;
   margin-bottom: 30px;
 }
 
 /* Usuario info*/
-.text-end{
+.autopartes-container .text-end{
     text-align: right;
     margin-bottom: 20px;
 }
@@ -33,7 +33,7 @@ h1 {
 }
 
 /* Estilos para las tarjetas de autopartes */
-.card{
+.autopartes-container .card {
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 15px;
@@ -47,39 +47,39 @@ h1 {
 }
 
 /* Estilos para el cuerpo de la tarjeta */
-.card-body{
+.autopartes-container .card-body{
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 /* Estilos para el título de la tarjeta */
-.card-title{
+.autopartes-container .card-title{
     font-size: 20px;
     margin-bottom: 10px;
 }
 
 /* Marca */
-.card-body p {
+.autopartes-container.card-body p {
     font-size: 16px;
     color: #777;
     margin-bottom: 5px;
 }
 
 /* Precio */
-.text-success{
+.autopartes-container .text-success{
     font-size: 18px;
     color: #28a745;
     font-weight: bold;
 }
 
 /* Estilos para el pie de la tarjeta */
-.card-footer {
+.autopartes-container .card-footer {
     margin-top: 10px;
 }
 
 /* Estilos para los botones */
-.btn {
+.autopartes-container .btn {
     background-color: #007bff;
     border-color: #007bff;
     color: #fff;
@@ -91,7 +91,7 @@ h1 {
 }
 
 /* Estilos para el botón de agregar al carrito */
-btn-success {
+.autopartes-container .btn-success {
     background-color: #28a745;
     border-color: #28a745;
     color: #fff;
@@ -102,13 +102,13 @@ btn-success {
     transition: background-color 0.3s ease;
 }
 /* Efecto hover para el botón de agregar al carrito */
-.btn-success:hover {
+.autopartes-container .btn-success:hover {
     background-color: #218838;
     border-color: #1e7e34;
 }
 
 /* Estilos para el botón de eliminar del carrito */
-.btn-danger{
+.autopartes-container .btn-danger{
     background-color: #dc3545;
     border-color: #dc3545;
     color: #fff;
@@ -120,13 +120,13 @@ btn-success {
 }
 
 /* Efecto hover para el botón de eliminar del carrito */
-.btn-danger:hover {
+.autopartes-container .btn-danger:hover {
     background-color: #c82333;
     border-color: #bd2130;
 }
 
 /* botones de arriba*/
-.btn-primary {
+.autopartes-container .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
     color: #fff;
@@ -136,11 +136,11 @@ btn-success {
     display: inline-block;
     transition: background-color 0.3s ease;
 }
-.btn-primary:hover {
+.autopartes-container .btn-primary:hover {
     background-color: #0069d9;
     border-color: #0062cc;
 }
-.btn-secondary {
+.autopartes-container .btn-secondary {
     background-color: #6c757d;
     border-color: #6c757d;
     color: #fff;
@@ -150,26 +150,26 @@ btn-success {
     display: inline-block;
     transition: background-color 0.3s ease;
 }
-.btn-secondary:hover {
+.autopartes-container .btn-secondary:hover {
     background-color: #5a6268;
     border-color: #545b62;
 }
 
 /* Estilos para la fila de tarjetas */
-.row{
+.autopartes-container .row{
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
 /* Estilos para la columna de tarjetas */
-.col-md-4{
+.autopartes-container .col-md-4{
     flex: 0 0 32%;
     max-width: 32%;
 }
 
 /* Estilos para el texto de descripción */
-.text-muted{
+.autopartes-container .text-muted{
     font-size: 14px;
     color: #999;
 }
