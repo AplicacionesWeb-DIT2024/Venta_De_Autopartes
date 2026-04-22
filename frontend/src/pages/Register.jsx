@@ -24,7 +24,7 @@ const Register = () => {
       }
       // Enviar datos al backend para registrar al usuario
       try {
-        await axios.post('http://localhost:8000/api/register', {//TODO no encuentra la ruta, revisar
+        await axios.post('http://localhost:8000/api/register', {
           name: username,
           email,
           password,
