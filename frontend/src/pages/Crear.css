@@ -1,0 +1,63 @@
+/* Archivo CSS para la página de creación de productos */
+
+/* Estilos para el contenedor principal */
+.crear-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Estilos para el título */
+.crear-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilos para el formulario */
+.crear-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Estilos para los campos del formulario */
+.crear-form input,
+.crear-form select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilos para los campos del formulario con fondo oscuro */
+.crear-form input {
+    background-color: #2a2a40;
+    color: #fff;
+}
+
+/* Estilos para el campo de selección con fondo oscuro */
+.crear-form select{
+    background-color: #2a2a40;
+    color: #fff;
+}
+
+/* Estilos para los placeholders de los campos del formulario */
+.crear-form input::placeholder{
+    color: #fff;
+}
+
+/* Estilos para el botón de envío del formulario */
+.crear-form button{
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Estilos para el botón de envío del formulario al pasar el mouse por encima */
+.crear-form button:hover{
+    background-color: #45a049;
+}
