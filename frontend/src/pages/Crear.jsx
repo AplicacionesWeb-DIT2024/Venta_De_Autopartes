@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./Crear.css";
+
+
 
 const Crear = () => {
     const [formData, setFormData] = useState({
@@ -13,6 +16,8 @@ const Crear = () => {
         color: "",
     });
 
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -21,27 +26,41 @@ const Crear = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    // Función para manejar el envío del formulario
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!formData.nombre || !formData.marca || !formData.modelo || !formData.anio || !formData.codigo || !formData.precio || !formData.color) {
-            alert("Por favor, completa todos los campos.");
-            return;
+        const token = localStorage.getItem("token"); // Obtener el token del almacenamiento local
+
+        try {
+            const response = await fetch("http://localhost:8080/api/autoparts", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}` // Para incluir el token en la cabecera de autorización
+                },
+                body: JSON.stringify({
+                    nombre: formData.nombre,
+                    marca: formData.marca,
+                    modelo: formData.modelo,
+                    anio: formData.anio,
+                    codigo: formData.codigo,
+                    estado: formData.estado,
+                    precio: formData.precio,
+                    color: formData.color
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al crear la autoparte. Por favor, inténtalo de nuevo.");
+            }
+
+            alert("Autoparte creada exitosamente!");
+            navigate("/autoparts"); // Redirige a la página de listado de autopartes después de crear una nueva
+        } catch (error) {
+            console.error("Error al crear la autoparte:", error);
+            alert("Error al crear la autoparte. Por favor, inténtalo de nuevo.");
         }
-
-        console.log("Autoparte creada:", formData);
-
-        //Resetear el formulario
-        setFormData({
-            nombre: "",
-            marca: "",
-            modelo: "",
-            anio: "",
-            codigo: "",
-            estado: "Bueno",
-            precio: "",
-            color: "",
-        });
     };
 
     return (

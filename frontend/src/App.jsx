@@ -6,7 +6,7 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import Autopartes from './pages/Autopartes'; // Importa la página de Autopartes
-
+import Crear from './pages/Crear'; // Importa la página de Crear
 function App() {
   return (
     <Router>
@@ -16,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/autoparts" element={<Autopartes />} /> {/* Ruta para la página de Autopartes */} 
+        <Route path="/crear" element={<Crear />} /> {/* Ruta para la página de Crear */}
       </Routes>
     </Router>
   );

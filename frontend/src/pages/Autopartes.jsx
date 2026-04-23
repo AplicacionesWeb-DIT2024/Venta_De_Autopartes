@@ -115,7 +115,7 @@ export default function Autopartes() {
                         <div className="d-flex justify-content-start">
                             <button
                                 className="btn btn-primary"
-                                onClick={() => navigate('/autopartes/crear')}
+                                onClick={() => navigate('/autoparts/crear')}
                             >
                                 Agregar Autoparte
                             </button>
