@@ -16,7 +16,7 @@ const Crear = () => {
         color: "",
     });
 
-    const navigate = useNavigate();
+    const navigate = useNavigate();n: f
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -121,6 +121,14 @@ const Crear = () => {
                 </select>
 
                 <input
+                    type="number"
+                    name="precio"
+                    placeholder="Precio"
+                    value={formData.precio}
+                    onChange={handleChange}
+                />
+
+                <input
                     type="text"
                     name="color"
                     placeholder="Color"
@@ -133,3 +141,5 @@ const Crear = () => {
         </div>
     );
 }
+
+export default Crear;
