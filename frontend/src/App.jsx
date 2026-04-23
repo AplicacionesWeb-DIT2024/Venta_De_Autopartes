@@ -16,7 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/autoparts" element={<Autopartes />} /> {/* Ruta para la página de Autopartes */} 
-        <Route path="/crear" element={<Crear />} /> {/* Ruta para la página de Crear */}
+        <Route path="/autoparts/crear" element={<Crear />} /> {/* Ruta para la página de Crear */}
       </Routes>
     </Router>
   );

@@ -16,7 +16,7 @@ const Crear = () => {
         color: "",
     });
 
-    const navigate = useNavigate();n: f
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
