@@ -1,63 +1,98 @@
 /* Archivo CSS para la página de creación de productos */
 
+/* Estilos generales para el cuerpo de la página */
+body {
+    background: #0f172a;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 /* Estilos para el contenedor principal */
 .crear-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 650;
+    margin: 50px auto;
+    padding: 30px;
+    background: #1e293b;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    color: #f1f5f9
 }
 
 /* Estilos para el título */
 .crear-container h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    font-weight: 600;
 }
 
 /* Estilos para el formulario */
 .crear-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 /* Estilos para los campos del formulario */
 .crear-form input,
 .crear-form select {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    transition: all 0.2s ease;
 }
 
-/* Estilos para los campos del formulario con fondo oscuro */
-.crear-form input {
-    background-color: #2a2a40;
-    color: #fff;
+/* Estilos para el placeholder de los campos */
+.crear-form input,
+.crear-form select {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid #334155;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    transition: all 0.2s ease;
 }
 
-/* Estilos para el campo de selección con fondo oscuro */
-.crear-form select{
-    background-color: #2a2a40;
-    color: #fff;
+/* Estilos para el placeholder de los campos */
+.crear-form input:placeholder {
+    color: #94a3b8
 }
 
-/* Estilos para los placeholders de los campos del formulario */
-.crear-form input::placeholder{
-    color: #fff;
+/* Estilos para el enfoque de los campos */
+.crear-form input:focus,
+.crear-form select:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
 }
 
-/* Estilos para el botón de envío del formulario */
-.crear-form button{
-    padding: 10px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
+/* Estilos para el cursor en los campos de selección */
+.crear-form select {
     cursor: pointer;
 }
 
-/* Estilos para el botón de envío del formulario al pasar el mouse por encima */
-.crear-form button:hover{
-    background-color: #45a049;
+/* Estilos para el botón de envío */
+.crear-form button {
+    margin-top: 10px;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Efectos para el botón de envío */
+.crear-form button:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+}
+
+/* Efectos para el botón de envío al hacer clic */
+.crear-form button:active {
+    transform: scale(0.98);
 }
