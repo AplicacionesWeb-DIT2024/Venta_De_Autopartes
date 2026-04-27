@@ -40,10 +40,10 @@ const Crear = () => {
                     "Authorization": `Bearer ${token}` // Para incluir el token en la cabecera de autorización
                 },
                 body: JSON.stringify({
-                    nombre: formData.nombre,
+                    autoparte: formData.nombre,
                     marca: formData.marca,
                     modelo: formData.modelo,
-                    anio: formData.anio,
+                    añoVehiculo: formData.anio,
                     codigo: formData.codigo,
                     estado: formData.estado,
                     precio: formData.precio,
