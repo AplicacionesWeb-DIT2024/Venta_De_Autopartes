@@ -13,7 +13,7 @@ class Autopart extends Model
         'autoparte',
         'marca',
         'modelo',
-        'añoVehiculo',
+        'anioVehiculo',
         'codigo',
         'estado',
         'precio',

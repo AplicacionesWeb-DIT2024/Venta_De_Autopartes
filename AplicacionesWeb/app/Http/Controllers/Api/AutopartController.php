@@ -29,7 +29,7 @@ class AutopartController extends Controller
             'autoparte' => 'required|string|max:255',
             'marca' => 'required|string|max:255',
             'modelo' => 'required|string|max:255',
-            'añoVehiculo' => 'required|integer|min:1900|max:' . date('Y'), // Valida que el año del vehículo sea un número entero entre 1900 y el año actual
+            'anioVehiculo' => 'required|integer|min:1900|max:' . date('Y'), // Valida que el año del vehículo sea un número entero entre 1900 y el año actual
             'codigo' => 'required|string|max:255|unique:autoparts,codigo,', // Valida que el código sea único en la tabla autoparts, ignorando el registro actual en caso de actualización
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',

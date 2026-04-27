@@ -43,7 +43,7 @@ const Crear = () => {
                     autoparte: formData.nombre,
                     marca: formData.marca,
                     modelo: formData.modelo,
-                    añoVehiculo: formData.anio,
+                    anioVehiculo: formData.anio,
                     codigo: formData.codigo,
                     estado: formData.estado,
                     precio: formData.precio,

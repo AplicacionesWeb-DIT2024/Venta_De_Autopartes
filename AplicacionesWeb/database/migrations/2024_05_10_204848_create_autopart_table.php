@@ -15,10 +15,10 @@ return new class extends Migration {
             $table->string("autoparte");
             $table->string("marca");
             $table->string("modelo");
-            $table->string("añoVehiculo");
+            $table->string("anioVehiculo");
             $table->string("codigo");
             $table->string("estado");
-            $table->string("precio");
+            $table->decimal("precio",10, 2);
             $table->string("color");
             $table->timestamps();
         });
