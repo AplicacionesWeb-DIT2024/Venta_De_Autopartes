@@ -11,7 +11,7 @@ const Crear = () => {
         modelo: "",
         anio: "",
         codigo: "",
-        estado: "Bueno",
+        estado: "",
         precio: "",
         color: "",
     });
@@ -65,78 +65,39 @@ const Crear = () => {
 
     return (
         <div className="crear-container">
-            <h2>Crear Nueva Autoparte</h2>
+            <h2>Agregar Nueva Autoparte</h2>
 
             <form onSubmit={handleSubmit} className="crear-form">
 
-                <input
-                    type="text"
-                    name="nombre"
-                    placeholder="Nombre"
-                    value={formData.nombre}
-                    onChange={handleChange}
-                />
+                <label>Nombre</label>
+                <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
 
-                <input
-                    type="text"
-                    name="marca"
-                    placeholder="Marca"
-                    value={formData.marca}
-                    onChange={handleChange}
-                />
+                <label>Marca</label>
+                <input type="text" name="marca" value={formData.marca} onChange={handleChange} required />
 
-                <input
-                    type="text"
-                    name="modelo"
-                    placeholder="Modelo"
-                    value={formData.modelo}
-                    onChange={handleChange}
-                />
+                <label>Modelo</label>
+                <input type="text" name="modelo" value={formData.modelo} onChange={handleChange} required />
 
-                <input
-                    type="number"
-                    name="anio"
-                    placeholder="Año"
-                    value={formData.anio}
-                    onChange={handleChange}
-                />
+                <label>Año</label>
+                <input type="number" name="anio" value={formData.anio} onChange={handleChange} required />
 
-                <input
-                    type="text"
-                    name="codigo"
-                    placeholder="Código de Referencia"
-                    value={formData.codigo}
-                    onChange={handleChange}
-                />
+                <label>Código</label>
+                <input type="text" name="codigo" value={formData.codigo} onChange={handleChange} required />
 
-                <select
-                    name="estado"
-                    value={formData.estado}
-                    onChange={handleChange}
-                >
-                    <option value="Muy Bueno">Muy Bueno</option>
+                <label>Estado</label>
+                <select name="estado" value={formData.estado} onChange={handleChange}>
                     <option value="Bueno">Bueno</option>
+                    <option value="Regular">Regular</option>
                     <option value="Malo">Malo</option>
-                    <option value="Muy Malo">Muy Malo</option>
                 </select>
 
-                <input
-                    type="number"
-                    name="precio"
-                    placeholder="Precio"
-                    value={formData.precio}
-                    onChange={handleChange}
-                />
+                <label>Precio</label>
+                <input type="number" name="precio" value={formData.precio} onChange={handleChange} required />
 
-                <input
-                    type="text"
-                    name="color"
-                    placeholder="Color"
-                    value={formData.color}
-                    onChange={handleChange}
-                />
+                <label>Color</label>
+                <input type="text" name="color" value={formData.color} onChange={handleChange} required />
 
-                <button type="submit">Crear Autoparte</button>
+                <button type="submit">Agregar Autoparte</button>
             </form>
         </div>
     );
