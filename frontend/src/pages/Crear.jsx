@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Crear.css";
 
-
-
 const Crear = () => {
     const [formData, setFormData] = useState({
         nombre: "",
@@ -30,11 +28,12 @@ const Crear = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem("token"); // Obtener el token del almacenamiento local
+        //const token = localStorage.getItem("token"); // Obtener el token del almacenamiento local
 
         try {
-            const response = await fetch("http://localhost:8080/api/autoparts", {
+            const response = await fetch("http://127.0.0.1:8000/api/autoparts", {
                 method: "POST",
+                credentials: "include", // Importante
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}` // Para incluir el token en la cabecera de autorización
@@ -52,11 +51,13 @@ const Crear = () => {
             });
 
             if (!response.ok) {
-                throw new Error("Error al crear la autoparte. Por favor, inténtalo de nuevo.");
+                const data = await response.json();
+                throw new Error(data.message || "Error al crear la autoparte. Por favor, inténtalo de nuevo.");
             }
 
             alert("Autoparte creada exitosamente!");
             navigate("/autoparts"); // Redirige a la página de listado de autopartes después de crear una nueva
+
         } catch (error) {
             console.error("Error al crear la autoparte:", error);
             alert("Error al crear la autoparte. Por favor, inténtalo de nuevo.");
