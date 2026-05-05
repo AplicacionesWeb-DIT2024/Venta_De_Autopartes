@@ -28,13 +28,17 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            //  'role' => $request->role,
         ]);
+
+
+        $user->assignRole($request->role);
 
         Auth::login($user);
 
-        return redirect()->route('home');
+        return response()-> json(['messagge' => 'Usuario registrado correctamente']);
     }
+
 
     public function showLoginForm()
     {
@@ -55,7 +59,7 @@ class AuthController extends Controller
                 'email' => $user->email,
                 'role' => $user->getRoleNames()->first(), // Obtener el primer rol del usuario
             ],
-            'token'=> $token,
+            'token' => $token,
         ]);
     }
 

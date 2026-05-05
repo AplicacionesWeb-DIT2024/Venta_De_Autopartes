@@ -13,7 +13,7 @@ export const useAutopartes = () => {
     const token = localStorage.getItem('token');
     const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
     
-    axios.get('http://localhost:8000/api/autoparts', config)
+    api.get('http://localhost:8000/api/autoparts', config)
       .then(res => {
         console.log('Respuesta de autopartes:', res.data);
         setAutopartes(res.data.data || res.data || []); // Maneja diferentes estructuras de respuesta
