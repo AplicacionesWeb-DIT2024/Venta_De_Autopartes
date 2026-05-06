@@ -10,12 +10,12 @@ export const useAutopartes = () => {
 
   // Cargar las autopartes al montar el componente
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-    
-    api.get('http://localhost:8000/api/autoparts', config)
+    //const token = localStorage.getItem('token');
+    //const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+
+    axios.get('http://localhost:8000/api/autoparts')
       .then(res => {
-        console.log('Respuesta de autopartes:', res.data);
+        //console.log('Respuesta de autopartes:', res.data);
         setAutopartes(res.data.data || res.data || []); // Maneja diferentes estructuras de respuesta
         setLoading(false);
       })
@@ -40,7 +40,7 @@ export const useAutopartes = () => {
   const deleteAutoparte = async (id) => {
     const token = localStorage.getItem('token');
     const config = { headers: { Authorization: `Bearer ${token}` } };
-    
+
     try {
       await axios.delete(`http://localhost:8000/api/autoparts/${id}`, config);
       setAutopartes(autopartes.filter(autopart => autopart.id !== id));
@@ -51,4 +51,5 @@ export const useAutopartes = () => {
   };
 
   return { autopartes, loading, error, addToCart, deleteAutoparte };
-}
+
+};
