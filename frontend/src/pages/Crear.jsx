@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Crear.css";
+import api from "../api"
 
 const Crear = () => {
     const [formData, setFormData] = useState({
@@ -28,39 +29,27 @@ const Crear = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        //const token = localStorage.getItem("token"); // Obtener el token del almacenamiento local
-
         try {
-            const response = await fetch("http://127.0.0.1:8000/api/autoparts", {
-                method: "POST",
-                credentials: "include", // Importante
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}` // Para incluir el token en la cabecera de autorización
-                },
-                body: JSON.stringify({
-                    autoparte: formData.nombre,
-                    marca: formData.marca,
-                    modelo: formData.modelo,
-                    anioVehiculo: formData.anio,
-                    codigo: formData.codigo,
-                    estado: formData.estado,
-                    precio: formData.precio,
-                    color: formData.color
-                })
+            await api.post('/api/autoparts', {
+                autoparte: formData.nombre,
+                marca: formData.marca,
+                modelo: formData.modelo,
+                anioVehiculo: formData.anio,
+                codigo: formData.codigo,
+                estado: formData.estado,
+                precio: formData.precio,
+                color: formData.color
             });
-
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || "Error al crear la autoparte. Por favor, inténtalo de nuevo.");
-            }
 
             alert("Autoparte creada exitosamente!");
             navigate("/autoparts"); // Redirige a la página de listado de autopartes después de crear una nueva
 
         } catch (error) {
             console.error("Error al crear la autoparte:", error);
-            alert("Error al crear la autoparte. Por favor, inténtalo de nuevo.");
+            alert(
+                error.response?.data?.message ||
+                "Error al crear la autoparte. Por favor, inténtalo de nuevo."
+            );
         }
     };
 
