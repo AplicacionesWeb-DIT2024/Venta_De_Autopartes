@@ -84,7 +84,7 @@ export default function Autopartes() {
                                                 {!esEmpleado && (
                                                     <button
                                                         className="btn btn-success w-100 mb-2"
-                                                        onClick={() => addToCart(autopart)}
+                                                        onClick={() => addToCart(autopart.id)}
                                                     >
                                                         Agregar al Carrito
                                                     </button>
