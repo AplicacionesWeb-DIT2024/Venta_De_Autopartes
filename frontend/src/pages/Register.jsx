@@ -29,9 +29,6 @@ const Register = () => {
       // CSRF
       await api.get('/sanctum/csrf-cookie');
 
-      console.log("COOOKIEE!!!!!!!!!:", document.cookie);
-
-
       await api.post('/register', {
         name: username,
         email,
