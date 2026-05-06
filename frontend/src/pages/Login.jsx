@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css'; // Archivo para estilos personalizados
 import api from "../api"
+import Cookies from 'js-cookie';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -18,9 +19,13 @@ const Login = () => {
     try {
       await api.get('/sanctum/csrf-cookie');
 
-      await axios.post('/api/login', {
+      const response = await api.post('/api/login', {
         email: username,
         password
+      }, {
+        headers: {
+          'X-XSRF-TOKEN': decodeURIComponent(Cookies.get('XSRF-TOKEN'))
+        }
       });
 
       // Guardar el usuario y token en localStorage
@@ -37,7 +42,13 @@ const Login = () => {
       navigate('/autoparts'); // Redirige a la página de autopartes después del login exitoso
 
     } catch (error) {
-      setErrorMsg(error.response?.data?.message || 'Error al iniciar sesión'); // Muestra un mensaje de error al usuario
+      console.error('ERROR LOGIN: ',error);
+      console.error('RESPONSE: ', error.response);
+
+      setErrorMsg(
+        error.response?.data?.message || 
+        error.message ||
+        'Error al iniciar sesión'); // Muestra un mensaje de error al usuario
     }
   };
 
