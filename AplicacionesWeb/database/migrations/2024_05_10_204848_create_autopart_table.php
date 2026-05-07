@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('autopart', function (Blueprint $table) {
+        Schema::create('autoparts', function (Blueprint $table) {
             $table->id();
             $table->string("autoparte");
             $table->string("marca");
@@ -29,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('autopart');
+        Schema::dropIfExists('autoparts');
     }
 };

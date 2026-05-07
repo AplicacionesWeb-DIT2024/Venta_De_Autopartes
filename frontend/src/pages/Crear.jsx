@@ -30,6 +30,7 @@ const Crear = () => {
         e.preventDefault();
 
         try {
+            await api.get('/sanctum/csrf-cookie');
             await api.post('/api/autoparts', {
                 autoparte: formData.nombre,
                 marca: formData.marca,
