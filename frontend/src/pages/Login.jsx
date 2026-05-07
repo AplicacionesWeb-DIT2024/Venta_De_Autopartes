@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,11 +43,11 @@ const Login = () => {
       navigate('/autoparts'); // Redirige a la página de autopartes después del login exitoso
 
     } catch (error) {
-      console.error('ERROR LOGIN: ',error);
+      console.error('ERROR LOGIN: ', error);
       console.error('RESPONSE: ', error.response);
 
       setErrorMsg(
-        error.response?.data?.message || 
+        error.response?.data?.message ||
         error.message ||
         'Error al iniciar sesión'); // Muestra un mensaje de error al usuario
     }
@@ -74,12 +75,22 @@ const Login = () => {
 
           <div className="login-input-group">
             <label>Contraseña</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="password-container">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+
+              <button
+                type="button"
+                className="show-password-btn"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? "🙈" : "👁"}
+              </button>
+            </div>
           </div>
 
           <button type="submit" className="login-button">
