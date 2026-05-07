@@ -77,6 +77,7 @@ const Crear = () => {
 
                 <label>Estado</label>
                 <select name="estado" value={formData.estado} onChange={handleChange}>
+                    <option value="">-</option>
                     <option value="Bueno">Bueno</option>
                     <option value="Regular">Regular</option>
                     <option value="Malo">Malo</option>
