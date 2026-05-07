@@ -16,7 +16,7 @@ class CreateCarritoTable extends Migration
             $table->timestamps();
 
             // Foreign key constraint, assuming 'autopart_id' references 'id' on 'autopart' table
-            $table->foreign('autopart_id')->references('id')->on('autopart')->onDelete('cascade');
+            $table->foreign('autopart_id')->references('id')->on('autoparts')->onDelete('cascade');
         });
     }
 

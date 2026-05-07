@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios"; // Importa axios para realizar solicitudes HTTP
+import api from "../api";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -10,12 +11,9 @@ export const useAutopartes = () => {
 
   // Cargar las autopartes al montar el componente
   useEffect(() => {
-    //const token = localStorage.getItem('token');
-    //const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-
-    axios.get('http://localhost:8000/api/autoparts')
+    
+    api.get('/api/autoparts')
       .then(res => {
-        //console.log('Respuesta de autopartes:', res.data);
         setAutopartes(res.data.data || res.data || []); // Maneja diferentes estructuras de respuesta
         setLoading(false);
       })
