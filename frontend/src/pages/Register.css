@@ -1,13 +1,13 @@
 /* Contenedor principal */
 .register-container {
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #f3f4f6;
 }
 
-/* Tarjeta de register */
+/* Tarjeta de registro */
 .register-card {
     background: white;
     padding: 2rem;
@@ -17,7 +17,7 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Título del register */
+/* Título del registro */
 .register-title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -31,7 +31,7 @@
 }
 
 /* Etiqueta del input */
-.register-input-group label{
+.register-input-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
@@ -44,17 +44,70 @@
     border: 1px solid #d1d5db;
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 /* Focus */
 .register-input-group input:focus {
     outline: none;
     border-color: #3b82f6;
-    box-shadow: 0 0 0 1px #3b82f6;  
+    box-shadow: 0 0 0 1px #3b82f6;
 }
 
-/* Botón de register */
+/* Password container */
+.register-password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* Espacio para el botón de mostrar contraseña */
+.register.register-password-container input {
+    padding-right: 45px
+}
+
+/* Botón de mostrar contraseña */
+.show-password-button {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Select */
+.register-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: white;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/*Focus del select */
+.register-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 1px #3b82f6;
+}
+
+/* Evita problemas de ancho */
+.register-input-group input,
+.register-select {
+    box-sizing: border-box;
+}
+
+/* Botón */
 .register-button {
     width: 100%;
     padding: 0.75rem;
@@ -67,7 +120,7 @@
     transition: background-color 0.3s ease;
 }
 
-/* Hover */
+/* Hover del botón */
 .register-button:hover {
     background-color: #2563eb;
 }
@@ -79,21 +132,21 @@
     text-align: center;
 }
 
-/* Footer */
-.register-footer{
+/*Footer del registro */
+.register-footer {
     text-align: center;
     margin-top: 1rem;
     font-size: 0.9rem;
 }
 
-/* Enlaces del footer */
+/* Enlace del footer */
 .register-footer a {
     color: #3b82f6;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-/* Hover */
+/* Hover del enlace */
 .register-footer a:hover {
     color: #2563eb;
 }
