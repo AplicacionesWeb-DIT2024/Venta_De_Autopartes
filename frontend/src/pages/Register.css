@@ -118,6 +118,39 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Botón deshabilitado */
+.register-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Hover del botón (solo si no está deshabilitado) */
+.register-button:hover:not(:disabled) {
+    background-color: #2563eb;
+}
+
+/* Spinner de carga */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: 3px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animación del spinner */
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Hover del botón */
