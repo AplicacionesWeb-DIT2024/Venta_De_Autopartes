@@ -1,7 +1,6 @@
 //Frontend del Login
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './Login.css'; // Archivo para estilos personalizados
 import api from "../api"
 import Cookies from 'js-cookie';
@@ -10,13 +9,16 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     setErrorMsg(''); // Limpiar mensajes de error anteriores
+    setLoading(true); // Iniciar el estado de carga
 
     try {
       await api.get('/sanctum/csrf-cookie');
@@ -39,7 +41,6 @@ const Login = () => {
           role: response.data.user.role
         })
       );
-      //localStorage.setItem('token', response.data.token);
 
       navigate('/autoparts'); // Redirige a la página de autopartes después del login exitoso
 
@@ -50,7 +51,10 @@ const Login = () => {
       setErrorMsg(
         error.response?.data?.message ||
         error.message ||
-        'Error al iniciar sesión'); // Muestra un mensaje de error al usuario
+        'Error al iniciar sesión'
+      ); // Muestra un mensaje de error al usuario
+    } finally {
+      setLoading(false); // Finalizar el estado de carga
     }
   };
 
@@ -97,8 +101,16 @@ const Login = () => {
             </div>
           </div>
 
-          <button type="submit" className="login-button">
-            Iniciar Sesión
+          <button
+            type="submit"
+            className="login-button"
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="spinner"></span>
+            ) : (
+              'Iniciar Sesión'
+            )}
           </button>
         </form>
 

@@ -65,6 +65,33 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Disabled */
+.login-button:disabled{
+    opacity: 0.7;
+    cursor: not-allowed;    
+}
+
+/* Spinner */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Hover */
