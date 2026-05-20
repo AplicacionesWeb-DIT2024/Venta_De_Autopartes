@@ -153,15 +153,7 @@
 
 /* Estilos para la fila de tarjetas */
 .autopartes-container .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-/* Estilos para la columna de tarjetas */
-.autopartes-container .col-md-4 {
-    flex: 0 0 32%;
-    max-width: 32%;
+    row-gap: 20px;
 }
 
 /* Estilos para el texto de descripción */
@@ -170,7 +162,7 @@
     color: #999;
 }
 
-.autopartes-container {
+.autopartes-container .row{
     margin-top: 20px;
 }
 

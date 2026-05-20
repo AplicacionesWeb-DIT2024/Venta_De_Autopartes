@@ -59,7 +59,7 @@ export default function Autopartes() {
                         ) : (
                             <div className="row">
                                 {lista.map((autopart) => (
-                                    <div key={autopart.id} className="col-md-4 mb-4">
+                                    <div key={autopart.id} className="col-md-3 mb-4">
 
                                         <div
                                             className="card h-100 shadow-sm card-clickable"
