@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"; // Importamos useParams para obtener el ID de la autoparte desde la URL
+import { useParams, useNavigate } from "react-router-dom"; // Importamos useParams para obtener el ID de la autoparte desde la URL
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import "./DetalleAutoparte.css"; // Importamos el archivo CSS para estilos
 
@@ -52,7 +52,7 @@ export default function DetalleAutoparte() {
 
                     {/* Nombre de la autoparte */}
                     <h1 className="detalle-titulo">
-                        {autoparte.nombre}
+                        {autoparte.autoparte}
                     </h1>
 
 
