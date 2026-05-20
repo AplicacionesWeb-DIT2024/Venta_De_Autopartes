@@ -11,9 +11,12 @@ export const useAutopartes = () => {
 
   // Cargar las autopartes al montar el componente
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
     
-    api.get('/api/autoparts')
+    api.get('/api/autoparts', config)
       .then(res => {
+        console.log("Respuesta de autopartes:", res.data);
         setAutopartes(res.data.data || res.data || []); // Maneja diferentes estructuras de respuesta
         setLoading(false);
       })
