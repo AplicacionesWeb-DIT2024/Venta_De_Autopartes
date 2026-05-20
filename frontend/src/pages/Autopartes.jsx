@@ -67,21 +67,11 @@ export default function Autopartes() {
                                                 <h5 className="card-title">
                                                     {autopart.autoparte}
                                                 </h5>
-
-                                                {/* Marca como badge */}
-                                                <p className="badge bg-light text-dark mb-2">
-                                                    {autopart.marca}
-                                                </p>
-
                                                 {/* Precio */}
                                                 <h4 className="text-success mt-auto">
                                                     ${Number(autopart.precio).toFixed(2)}
                                                 </h4>
                                             </div>
-                                            <p>Modelo: {autopart.modelo}</p>
-                                            <p>Año: {autopart.anioVehiculo}</p>
-                                            <p>Estado: {autopart.estado}</p>
-                                            <p>Color: {autopart.color}</p>
 
                                             <div className="card-footer bg-white border-0 text-center">
 
