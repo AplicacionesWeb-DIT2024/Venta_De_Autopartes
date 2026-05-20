@@ -5,6 +5,7 @@ import axios from 'axios';
 import './Login.css'; // Archivo para estilos personalizados
 import api from "../api"
 import Cookies from 'js-cookie';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -88,7 +89,10 @@ const Login = () => {
                 className="show-password-btn"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword ? "🙈" : "👁"}
+                {showPassword
+                  ? <FaEye /> // Icono de ojo abierto
+                  : <FaEyeSlash /> // Icono de ojo cerrado
+                }
               </button>
             </div>
           </div>
