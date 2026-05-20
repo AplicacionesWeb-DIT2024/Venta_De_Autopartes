@@ -16,6 +16,8 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfimPassword, setShowConfirmPassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const [errorMsg, setErrorMsg] = useState('');
 
   const navigate = useNavigate();
@@ -24,10 +26,12 @@ const Register = () => {
     e.preventDefault();
 
     setErrorMsg('');
+    setLoading(true);
 
     // Validar que las contraseñas coincidan
     if (password !== confirmPassword) {
       setErrorMsg('Las contraseñas no coinciden');
+      setLoading(false);
       return;
     }
 
@@ -62,6 +66,8 @@ const Register = () => {
         error.response?.data?.message ||
         'Error al registrarse'
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -200,10 +206,17 @@ const Register = () => {
           <button
             type="submit"
             className="register-button"
+            disabled={loading}
           >
-            Registrarse
+            {loading ? (
+              <>
+              <span className="spinner"></span>
+              Registrando...
+              </>
+            ) : (
+              'Registrarse'
+            )}
           </button>
-
         </form>
 
         {/* Enlace para iniciar sesión */}
