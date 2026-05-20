@@ -10,10 +10,18 @@ use Illuminate\Validation\Rule;
 class AutopartController extends Controller
 {
 
-    // Método para mostrar todas las autopartes cada 10 por página
-    public function index()
+    // Método para mostrar todas las autopartes
+    public function index(Request $request)
     {
-        return Autopart::orderBy('created_at', 'desc')->paginate(10); // Devuelve una lista paginada de autopartes ordenadas por fecha de creación en orden descendente
+        // Obtener el parámetro per_page, por defecto 50
+        $perPage = $request->input('per_page', 50);
+        
+        // Validar que per_page no sea mayor a 100 (seguridad)
+        if ($perPage > 100) {
+            $perPage = 100;
+        }
+        
+        return Autopart::orderBy('created_at', 'desc')->paginate($perPage); // Devuelve una lista paginada de autopartes ordenadas por fecha de creación en orden descendente
     }
 
     // Método para mostrar una autoparte específica
