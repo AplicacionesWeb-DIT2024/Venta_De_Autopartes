@@ -23,7 +23,6 @@ Route::post('/register', [RegisterController::class, 'register']);
 
 // Rutas protegidas por autenticación
 Route::middleware('auth:sanctum')->group(function () {
-    //Route::post('/carrito', [CarritoController::class, 'store']);
     Route::post('/comprar', [CarritoController::class, 'comprar']);
 });
 
@@ -31,4 +30,5 @@ Route::post('/carrito', [CarritoController::class, 'store'])->name('carrito.stor
 
 // Rutas para la compra
 Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
-Route::post('/comprar', [CompraController::class, 'comprar'])->name('comprar');
+
+
