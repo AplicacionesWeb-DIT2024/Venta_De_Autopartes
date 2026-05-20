@@ -1,21 +1,20 @@
-
 /* Estilos para la página de autopartes */
 
 /* Estilos generales */
 .autopartes-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 /* Estilos para el título */
 .autopartes-title {
-  text-align: center;
-  margin-bottom: 30px;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 /* Usuario info*/
-.autopartes-container .text-end{
+.autopartes-container .text-end {
     text-align: right;
     margin-bottom: 20px;
 }
@@ -42,19 +41,12 @@
 }
 
 /* Efecto hover para las tarjetas */
-.card:hover{
+.card:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para el cuerpo de la tarjeta */
-.autopartes-container .card-body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 /* Estilos para el título de la tarjeta */
-.autopartes-container .card-title{
+.autopartes-container .card-title {
     font-size: 20px;
     margin-bottom: 10px;
 }
@@ -67,7 +59,7 @@
 }
 
 /* Precio */
-.autopartes-container .text-success{
+.autopartes-container .text-success {
     font-size: 18px;
     color: #28a745;
     font-weight: bold;
@@ -101,6 +93,7 @@
     display: inline-block;
     transition: background-color 0.3s ease;
 }
+
 /* Efecto hover para el botón de agregar al carrito */
 .autopartes-container .btn-success:hover {
     background-color: #218838;
@@ -108,7 +101,7 @@
 }
 
 /* Estilos para el botón de eliminar del carrito */
-.autopartes-container .btn-danger{
+.autopartes-container .btn-danger {
     background-color: #dc3545;
     border-color: #dc3545;
     color: #fff;
@@ -136,10 +129,12 @@
     display: inline-block;
     transition: background-color 0.3s ease;
 }
+
 .autopartes-container .btn-primary:hover {
     background-color: #0069d9;
     border-color: #0062cc;
 }
+
 .autopartes-container .btn-secondary {
     background-color: #6c757d;
     border-color: #6c757d;
@@ -150,30 +145,36 @@
     display: inline-block;
     transition: background-color 0.3s ease;
 }
+
 .autopartes-container .btn-secondary:hover {
     background-color: #5a6268;
     border-color: #545b62;
 }
 
 /* Estilos para la fila de tarjetas */
-.autopartes-container .row{
+.autopartes-container .row {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
 /* Estilos para la columna de tarjetas */
-.autopartes-container .col-md-4{
+.autopartes-container .col-md-4 {
     flex: 0 0 32%;
     max-width: 32%;
 }
 
 /* Estilos para el texto de descripción */
-.autopartes-container .text-muted{
+.autopartes-container .text-muted {
     font-size: 14px;
     color: #999;
 }
 
 .autopartes-container {
     margin-top: 20px;
+}
+
+.card-clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
