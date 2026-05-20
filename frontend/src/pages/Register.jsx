@@ -127,8 +127,8 @@ const Register = () => {
                 }
               >
                 {showPassword
-                  ? <FaEyeSlash />
-                  : <FaEye />
+                  ? <FaEye /> // Icono de ojo abierto
+                  : <FaEyeSlash /> // Icono de ojo cerrado
                 }
               </button>
 
@@ -163,9 +163,9 @@ const Register = () => {
                   )
                 }
               >
-                {showConfimPassword
-                  ? <FaEyeSlash />
-                  : <FaEye />
+                {showPassword
+                  ? <FaEye /> // Icono de ojo abierto
+                  : <FaEyeSlash /> // Icono de ojo cerrado
                 }
               </button>
 
@@ -215,7 +215,7 @@ const Register = () => {
             </Link>
           </p>
         </div>
-        
+
       </div >
     </div >
   );
