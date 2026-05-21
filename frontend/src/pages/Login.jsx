@@ -41,6 +41,9 @@ const Login = () => {
           role: response.data.user.role
         })
       );
+      
+      // Guardar el token en localStorage
+      localStorage.setItem('auth_token', response.data.token);
 
       navigate('/autoparts'); // Redirige a la página de autopartes después del login exitoso
 

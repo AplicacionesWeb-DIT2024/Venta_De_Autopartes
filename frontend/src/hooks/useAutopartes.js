@@ -11,10 +11,7 @@ export const useAutopartes = () => {
 
   // Cargar las autopartes al montar el componente
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-    
-    api.get('/api/autoparts?per_page=50', config)
+    api.get('/api/autoparts?per_page=50')
       .then(res => {
         console.log("Respuesta de autopartes:", res.data);
         // Obtener datos de paginación de Laravel
@@ -41,11 +38,8 @@ export const useAutopartes = () => {
   };
 
   const deleteAutoparte = async (id) => {
-    const token = localStorage.getItem('token');
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-
     try {
-      await axios.delete(`http://localhost:8000/api/autoparts/${id}`, config);
+      await api.delete(`/api/autoparts/${id}`);
       setAutopartes(autopartes.filter(autopart => autopart.id !== id));
     } catch (err) {
       console.error('Error al eliminar autoparte:', err);
