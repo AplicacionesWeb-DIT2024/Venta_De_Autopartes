@@ -28,13 +28,17 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            //  'role' => $request->role,
         ]);
+
+
+        $user->assignRole($request->role);
 
         Auth::login($user);
 
-        return redirect()->route('home');
+        return response()-> json(['messagge' => 'Usuario registrado correctamente']);
     }
+
 
     public function showLoginForm()
     {
@@ -43,18 +47,20 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-        // Validar las credenciales
-        if (Auth::attempt($credentials)) {
-            return response()->json([
-                'message' => 'Login successful',
-                'user' => Auth::user(),
-            ], 200);
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['message' => 'Credenciales inválidas'], 401);
         }
+        $user = Auth::user();
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Invalid credentials',
-        ], 401);
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->getRoleNames()->first(), // Obtener el primer rol del usuario
+            ],
+            'token' => $token,
+        ]);
     }
 
     public function logout(Request $request)

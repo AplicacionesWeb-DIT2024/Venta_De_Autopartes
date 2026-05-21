@@ -1,22 +1,24 @@
 <?php
 
-
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
+// Instrucción para limpiar y crear la BD desde 0: php artisan migrate:fresh --seed
 class RoleSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        $roles = ['Cliente', 'Empleado'];
+        Role::firstOrCreate([
+            'name' => 'Empleado',
+            'guard_name' => 'web'
+        ]);
 
-        foreach ($roles as $role) {
-            DB::table('roles')->updateOrInsert(
-                ['name' => $role],
-                ['name' => $role]
-            );
-        }
+        Role::firstOrCreate([
+            'name' => 'Cliente',
+            'guard_name' => 'web' // Especifica el guard para el rol, generalmente 'web' para aplicaciones web
+        ]);
+
     }
 }

@@ -8,12 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Autopart extends Model
 {
     use HasFactory;
-    protected $table = "autopart";
+    protected $table = "autoparts";
     protected $fillable = [
         'autoparte',
         'marca',
         'modelo',
-        'añoVehiculo',
+        'anioVehiculo',
         'codigo',
         'estado',
         'precio',

@@ -15,11 +15,15 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login', 'register', 'logout'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'], // URL del frontend
+    // URL del frontend
+    'allowed_origins' => [
+        'http://127.0.0.1:5173'
+    ],
+    'supports_credentials' => true,
 
     'allowed_origins_patterns' => [],
 
@@ -29,6 +33,5 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
 
 ];

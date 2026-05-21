@@ -10,10 +10,18 @@ use Illuminate\Validation\Rule;
 class AutopartController extends Controller
 {
 
-    // Método para mostrar todas las autopartes cada 10 por página
-    public function index()
+    // Método para mostrar todas las autopartes
+    public function index(Request $request)
     {
-        return Autopart::orderBy('created_at', 'desc')->paginate(10); // Devuelve una lista paginada de autopartes ordenadas por fecha de creación en orden descendente
+        // Obtener el parámetro per_page, por defecto 50
+        $perPage = $request->input('per_page', 50);
+        
+        // Validar que per_page no sea mayor a 100 (seguridad)
+        if ($perPage > 100) {
+            $perPage = 100;
+        }
+        
+        return Autopart::orderBy('created_at', 'desc')->paginate($perPage); // Devuelve una lista paginada de autopartes ordenadas por fecha de creación en orden descendente
     }
 
     // Método para mostrar una autoparte específica
@@ -29,8 +37,8 @@ class AutopartController extends Controller
             'autoparte' => 'required|string|max:255',
             'marca' => 'required|string|max:255',
             'modelo' => 'required|string|max:255',
-            'añoVehiculo' => 'required|integer|min:1900|max:' . date('Y'), // Valida que el año del vehículo sea un número entero entre 1900 y el año actual
-            'codigo' => 'required|string|max:255|unique:autoparts,codigo,', // Valida que el código sea único en la tabla autoparts, ignorando el registro actual en caso de actualización
+            'anioVehiculo' => 'required|integer|min:1900|max:' . date('Y'), // Valida que el año del vehículo sea un número entero entre 1900 y el año actual
+            'codigo' => 'required|string|max:255|unique:autoparts,codigo', // Valida que el código sea único en la tabla autoparts, ignorando el registro actual en caso de actualización
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
             'color' => 'required|string|max:255',

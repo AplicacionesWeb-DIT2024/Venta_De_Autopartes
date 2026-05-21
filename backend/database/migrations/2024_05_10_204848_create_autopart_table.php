@@ -10,15 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('autopart', function (Blueprint $table) {
+        Schema::create('autoparts', function (Blueprint $table) {
             $table->id();
             $table->string("autoparte");
             $table->string("marca");
             $table->string("modelo");
-            $table->string("añoVehiculo");
+            $table->string("anioVehiculo");
             $table->string("codigo");
             $table->string("estado");
-            $table->string("precio");
+            $table->decimal("precio",10, 2);
             $table->string("color");
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('autopart');
+        Schema::dropIfExists('autoparts');
     }
 };
