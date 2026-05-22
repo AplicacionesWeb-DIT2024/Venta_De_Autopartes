@@ -15,6 +15,8 @@ const Crear = () => {
         color: "",
     });
 
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -30,7 +32,10 @@ const Crear = () => {
         e.preventDefault();
 
         try {
+            setLoading(true);
+
             await api.get('/sanctum/csrf-cookie');
+
             await api.post('/api/autoparts', {
                 autoparte: formData.nombre,
                 marca: formData.marca,
@@ -47,10 +52,13 @@ const Crear = () => {
 
         } catch (error) {
             console.error("Error al crear la autoparte:", error);
+
             alert(
                 error.response?.data?.message ||
                 "Error al crear la autoparte. Por favor, inténtalo de nuevo."
             );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -89,7 +97,24 @@ const Crear = () => {
                 <label>Color</label>
                 <input type="text" name="color" value={formData.color} onChange={handleChange} required />
 
-                <button type="submit">Agregar Autoparte</button>
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="d-flex justify-content-center align-items-center gap-2"
+                >
+                    {loading ? (
+                        <>
+                            <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                            ></span>
+                            Agregando...
+                        </>
+                    ) : (
+                        "Agregar Autoparte"
+                    )}
+                </button>
             </form>
         </div>
     );
