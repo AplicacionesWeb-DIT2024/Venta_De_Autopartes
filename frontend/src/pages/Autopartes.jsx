@@ -129,15 +129,6 @@ export default function Autopartes() {
                                                         Agregar al Carrito
                                                     </button>
                                                 )}
-
-                                                {esEmpleado && (
-                                                    <button
-                                                        className="btn btn-danger w-100"
-                                                        onClick={() => handleDelete(autopart.id)}
-                                                    >
-                                                        Eliminar
-                                                    </button>
-                                                )}
                                             </div>
                                         </div>
                                     </div>
