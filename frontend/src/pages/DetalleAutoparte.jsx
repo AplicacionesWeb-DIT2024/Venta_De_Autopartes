@@ -7,7 +7,12 @@ export default function DetalleAutoparte() {
     const { id } = useParams(); // Obtenemos el ID de la autoparte desde los parámetros de la URL
     const navigate = useNavigate(); // Hook para navegar programáticamente
 
-    const { autopartes, loading, addToCart } = useAutopartes(); // Obtenemos las autopartes y la función para agregar al carrito desde el hook personalizado
+    const {
+        autopartes,
+        loading,
+        addToCart,
+        deleteAutoparte
+    } = useAutopartes(); // Obtenemos las autopartes y la función para agregar al carrito desde el hook personalizado
 
     // Buscar la autoparte por id
     const autoparte = autopartes?.find(
@@ -16,16 +21,52 @@ export default function DetalleAutoparte() {
 
     //usuario logueado
     const user = JSON.parse(localStorage.getItem("user") || "null"); // Obtenemos el usuario logueado desde el localStorage
+
+    // Verificamos si el usuario es un empleado
     const esEmpleado = user?.role === "Empleado"; // Verificamos si el usuario es un empleado
 
     // Debug
-    console.log("ID de URL:", id, "Autopartes:", autopartes, "Encontrado:", autoparte);
+    console.log(
+        "ID de URL:",
+        id,
+        "Autopartes:",
+        autopartes,
+        "Encontrado:",
+        autoparte
+    );
+
+    const handleDelete = async () => {
+
+        const confirmar = window.confirm(
+            "¿Estás seguro de que deseas eliminar esta autoparte? Esta acción no se puede deshacer."
+        )
+
+        if (!confirmar) return;
+
+        try {
+
+            await deleteAutoparte(autoparte.id);
+
+            alert("Autoparte eliminada exitosamente.");
+
+            // Redirigir a la lista de autopartes después de eliminar
+            navigate("/autoparts");
+
+        } catch (error) {
+
+            console.error("Error al eliminar la autoparte:", error);
+
+            alert("Ocurrió un error al eliminar la autoparte. Por favor, intenta nuevamente.");
+        }
+    };
 
     // Si está cargando
     if (loading) {
         return (
             <div className="container mt-5 text-center">
-                <h4 className="text-muted">Cargando autoparte...</h4>
+                <h4 className="text-muted">
+                    Cargando autoparte...
+                </h4>
             </div>
         );
     }
@@ -34,8 +75,12 @@ export default function DetalleAutoparte() {
     if (!autopartes || autopartes.length === 0) {
         return (
             <div className="container mt-5 text-center">
+
                 <h2>No hay autopartes disponibles</h2>
-                <p>No se pudieron cargar las autopartes.</p>
+
+                <p>
+                    No se pudieron cargar las autopartes.
+                </p>
 
                 <button
                     className="btn btn-primary mt-3"
@@ -51,8 +96,13 @@ export default function DetalleAutoparte() {
     if (!autoparte) {
         return (
             <div className="container mt-5 text-center">
+
                 <h2>Autoparte no encontrada</h2>
-                <p>La autoparte que estás buscando no existe. (ID: {id})</p>
+
+                <p>
+                    La autoparte que estás buscando no existe.
+                    (ID: {id})
+                </p>
 
                 <button
                     className="btn btn-primary mt-3"
@@ -65,6 +115,7 @@ export default function DetalleAutoparte() {
     }
 
     return (
+
         <div className="container mt-5 detalle-container">
 
             {/*Botón volver*/}
@@ -83,7 +134,6 @@ export default function DetalleAutoparte() {
                     <h1 className="detalle-titulo">
                         {autoparte.autoparte}
                     </h1>
-
 
                     {/* Marca */}
                     <span className="badge bg-dark mb-3">
@@ -119,18 +169,29 @@ export default function DetalleAutoparte() {
                         </p>
 
                         <div className="descripcion-box">
-                            {autoparte.descripcion || "No hay descripción disponible."}
+                            {autoparte.descripcion ||
+                                "No hay descripción disponible."}
                         </div>
+
                     </div>
 
                     {/* Botón agregar al carrito, solo visible para clientes */}
-                    {!esEmpleado
-                        && (
+                    {!esEmpleado && (
                             <button
                                 className="btn btn-primary mt-4"
-                                onClick={() => addToCart(autoparte)}
+                                onClick={() => addToCart(autoparte.id)}
                             >
                                 Agregar al carrito
+                            </button>
+                        )}
+
+                        {/* Empleado */}
+                        {esEmpleado && (
+                            <button
+                                className="btn btn-danger mt-4"
+                                onClick={handleDelete}
+                            >
+                                Eliminar autoparte
                             </button>
                         )}
 
