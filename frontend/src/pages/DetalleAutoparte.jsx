@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom"; // Importamos useParams para obtener el ID de la autoparte desde la URL
+import { useState } from "react";
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import "./DetalleAutoparte.css"; // Importamos el archivo CSS para estilos
 
@@ -6,6 +7,8 @@ export default function DetalleAutoparte() {
 
     const { id } = useParams(); // Obtenemos el ID de la autoparte desde los parámetros de la URL
     const navigate = useNavigate(); // Hook para navegar programáticamente
+
+    const [deleting, setDeleting] = useState(false); // Estado para controlar si se está eliminando la autoparte
 
     const {
         autopartes,
@@ -44,6 +47,8 @@ export default function DetalleAutoparte() {
         if (!confirmar) return;
 
         try {
+
+            setDeleting(true); // Establecemos el estado de eliminación
 
             await deleteAutoparte(autoparte.id);
 
@@ -177,24 +182,36 @@ export default function DetalleAutoparte() {
 
                     {/* Botón agregar al carrito, solo visible para clientes */}
                     {!esEmpleado && (
-                            <button
-                                className="btn btn-primary mt-4"
-                                onClick={() => addToCart(autoparte.id)}
-                            >
-                                Agregar al carrito
-                            </button>
-                        )}
+                        <button
+                            className="btn btn-primary mt-4"
+                            onClick={() => addToCart(autoparte.id)}
+                        >
+                            Agregar al carrito
+                        </button>
+                    )}
 
-                        {/* Empleado */}
-                        {esEmpleado && (
-                            <button
-                                className="btn btn-danger mt-4"
-                                onClick={handleDelete}
-                            >
-                                Eliminar autoparte
-                            </button>
-                        )}
+                    {/* Empleado */}
+                    {esEmpleado && (
+                        <button
+                            className="btn btn-danger mt-4 d-flex align-items-center gap-2"
+                            onClick={handleDelete}
+                            disabled={loading} // Deshabilitar el botón mientras se está eliminando
+                        >
+                            {deleting ? (
+                                <>
+                                    <span
+                                        className="spinner-border spinner-border-sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    ></span>
 
+                                    Eliminando...
+                                </>
+                            ) : (
+                                "Eliminar autoparte"
+                            )}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
