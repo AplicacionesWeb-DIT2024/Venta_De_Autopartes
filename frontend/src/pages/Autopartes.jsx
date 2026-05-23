@@ -2,6 +2,40 @@ import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook pe
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
 
+// Componente Skeleton para las tarjetas de carga
+function SkeletonCard() {
+    return (
+        <div className="col-md-3 mb-4">
+            <div className="card h-100 shadow-sm" style={{ opacity: 0.7 }}>
+                <div className="card-body d-flex flex-column text-center">
+                    <div className="skeleton-title" style={{
+                        height: '20px',
+                        backgroundColor: '#e0e0e0',
+                        borderRadius: '4px',
+                        marginBottom: '12px',
+                        animation: 'pulse 1.5s infinite'
+                    }}></div>
+                    <div className="skeleton-price" style={{
+                        height: '24px',
+                        backgroundColor: '#e0e0e0',
+                        borderRadius: '4px',
+                        marginTop: 'auto',
+                        animation: 'pulse 1.5s infinite'
+                    }}></div>
+                </div>
+                <div className="card-footer bg-white border-0 text-center">
+                    <div style={{
+                        height: '38px',
+                        backgroundColor: '#e0e0e0',
+                        borderRadius: '4px',
+                        animation: 'pulse 1.5s infinite'
+                    }}></div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Autopartes() {
     const { autopartes, error, loading, addToCart, deleteAutoparte } = useAutopartes(); // Obtenemos las autopartes y funciones del hook
     const navigate = useNavigate(); // Hook para la navegación
@@ -45,6 +79,14 @@ export default function Autopartes() {
                 </button>
             </div>
 
+            {/* SKELETON LOADING */}
+            {loading && (
+                <div className="row">
+                    {[...Array(4)].map((_, i) => (
+                        <SkeletonCard key={i} />
+                    ))}
+                </div>
+            )}
 
             {/* LISTADO*/}
             {
