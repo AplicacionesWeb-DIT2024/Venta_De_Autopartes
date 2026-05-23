@@ -10,7 +10,8 @@ export default function DetalleAutoparte() {
     const {
         autopartes,
         loading,
-        addToCart
+        addToCart,
+        deleteAutoparte
     } = useAutopartes(); // Obtenemos las autopartes y la función para agregar al carrito desde el hook personalizado
 
     // Buscar la autoparte por id
@@ -187,7 +188,7 @@ export default function DetalleAutoparte() {
                         {/* Empleado */}
                         {esEmpleado && (
                             <button
-                                className="btn btn-warning mt-4"
+                                className="btn btn-danger mt-4"
                                 onClick={handleDelete}
                             >
                                 Eliminar autoparte
