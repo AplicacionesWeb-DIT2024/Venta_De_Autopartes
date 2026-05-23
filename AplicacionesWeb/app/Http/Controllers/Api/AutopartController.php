@@ -21,7 +21,10 @@ class AutopartController extends Controller
             $perPage = 100;
         }
         
-        return Autopart::orderBy('created_at', 'desc')->paginate($perPage); // Devuelve una lista paginada de autopartes ordenadas por fecha de creación en orden descendente
+        // Seleccionar solo las columnas necesarias para mejorar el rendimiento
+        return Autopart::select('id', 'autoparte', 'marca', 'modelo', 'precio', 'estado', 'created_at')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate($perPage);
     }
 
     // Método para mostrar una autoparte específica
