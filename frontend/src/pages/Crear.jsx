@@ -62,6 +62,13 @@ const Crear = () => {
         }
     };
 
+    const currentYear = new Date().getFullYear();
+
+    const years = [];
+    for (let year = currentYear; year >= 1930; year--) {
+        years.push(year);
+    }
+
     return (
         <div className="crear-container">
             <h2>Agregar Nueva Autoparte</h2>
@@ -78,17 +85,31 @@ const Crear = () => {
                 <input type="text" name="modelo" value={formData.modelo} onChange={handleChange} required />
 
                 <label>Año</label>
-                <input type="number" name="anio" value={formData.anio} onChange={handleChange} required />
+                <select
+                    name="anio"
+                    value={formData.anio}
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="">Seleccione un año</option>
+                    {years.map((year) => (
+                        <option key={year} value={year}>
+                            {year}
+                        </option>
+                    ))}
+                </select>
 
                 <label>Código</label>
                 <input type="text" name="codigo" value={formData.codigo} onChange={handleChange} required />
 
                 <label>Estado</label>
                 <select name="estado" value={formData.estado} onChange={handleChange}>
-                    <option value="">-</option>
+                    <option value="">Seleccione un estado</option>
+                    <option value="Muy Bueno">Muy Bueno</option>
                     <option value="Bueno">Bueno</option>
                     <option value="Regular">Regular</option>
                     <option value="Malo">Malo</option>
+                    <option value="Muy Malo">Muy Malo</option>
                 </select>
 
                 <label>Precio</label>
