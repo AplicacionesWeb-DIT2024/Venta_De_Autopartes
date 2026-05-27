@@ -14,7 +14,7 @@ const Register = () => {
   const [role, setRole] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfimPassword, setShowConfirmPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -133,8 +133,8 @@ const Register = () => {
                 }
               >
                 {showPassword
-                  ? <FaEye /> // Icono de ojo abierto
-                  : <FaEyeSlash /> // Icono de ojo cerrado
+                  ? <FaEye /> // Icono de ojo cerrado
+                  : <FaEyeSlash /> // Icono de ojo abierto
                 }
               </button>
 
@@ -149,7 +149,7 @@ const Register = () => {
 
               <input
                 type={
-                  showConfimPassword
+                  showConfirmPassword
                     ? "text"
                     : "password"
                 }
@@ -165,13 +165,13 @@ const Register = () => {
                 className="show-password-btn"
                 onClick={() =>
                   setShowConfirmPassword(
-                    !showConfimPassword
+                    !showConfirmPassword
                   )
                 }
               >
-                {showPassword
-                  ? <FaEye /> // Icono de ojo abierto
-                  : <FaEyeSlash /> // Icono de ojo cerrado
+                {showConfirmPassword
+                  ? <FaEye /> // Icono de ojo cerrado
+                  : <FaEyeSlash /> // Icono de ojo abierto
                 }
               </button>
 
