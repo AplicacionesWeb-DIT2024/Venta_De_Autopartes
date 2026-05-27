@@ -158,7 +158,7 @@ export default function DetalleAutoparte() {
                         </p>
 
                         <p>
-                            <strong> Año: </strong> {autoparte.año}
+                            <strong> Año: </strong> {autoparte.anioVehiculo}
                         </p>
 
                         <p>
@@ -168,15 +168,6 @@ export default function DetalleAutoparte() {
                         <p>
                             <strong> Estado: </strong> {autoparte.estado}
                         </p>
-
-                        <p>
-                            <strong> Descripción: </strong>
-                        </p>
-
-                        <div className="descripcion-box">
-                            {autoparte.descripcion ||
-                                "No hay descripción disponible."}
-                        </div>
 
                     </div>
 
