@@ -15,16 +15,26 @@ class AutopartController extends Controller
     {
         // Obtener el parámetro per_page, por defecto 50
         $perPage = $request->input('per_page', 50);
-        
+
         // Validar que per_page no sea mayor a 100 (seguridad)
         if ($perPage > 100) {
             $perPage = 100;
         }
-        
+
         // Seleccionar solo las columnas necesarias para mejorar el rendimiento
-        return Autopart::select('id', 'autoparte', 'marca', 'modelo', 'precio', 'estado', 'created_at')
-                        ->orderBy('created_at', 'desc')
-                        ->paginate($perPage);
+        return Autopart::select(
+            'id', 
+            'autoparte', 
+            'marca', 
+            'modelo', 
+            'precio', 
+            'estado', 
+            'anioVehiculo', 
+            'color', 
+            'created_at'
+            )
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 
     // Método para mostrar una autoparte específica
@@ -64,7 +74,7 @@ class AutopartController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('autoparts')->ignore($id), 
+                Rule::unique('autoparts')->ignore($id),
             ],
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
