@@ -31,4 +31,10 @@ Route::post('/carrito', [CarritoController::class, 'store'])->name('carrito.stor
 // Rutas para la compra
 Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
 
-
+Route::middleware('auth:sanctum')->prefix('carrito')->group(function (){
+    route::get('/', [CarritoController::class, 'index']);
+    route::post('/', [CarritoController::class, 'store']);
+    route::put('/{id}', [CarritoController::class, 'update']);
+    route::delete('/{id}', [CarritoController::class, 'destroy']);
+    route::delete('/', [CarritoController::class, 'clear']);
+});
