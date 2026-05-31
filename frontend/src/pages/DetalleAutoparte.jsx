@@ -170,16 +170,23 @@ export default function DetalleAutoparte() {
                         </p>
 
                     </div>
+                    {/* Agregar al carrito */}
+                    <div className="card-footer bg-white border-0 text-center">
 
-                    {/* Botón agregar al carrito, solo visible para clientes */}
-                    {!esEmpleado && (
-                        <button
-                            className="btn btn-primary mt-4"
-                            onClick={() => addToCart(autoparte.id)}
-                        >
-                            Agregar al carrito
-                        </button>
-                    )}
+                        {!esEmpleado && (
+                            <button
+                                className="btn btn-success w-100 mb-2"
+                                onClick={async () => {
+
+                                    await addToCart(autoparte.id, 1); // Agregamos 1 unidad al carrito
+                                    
+                                    navigate("/carrito");
+                                }}
+                                >
+                                    Agregar al Carrito
+                            </button>
+                        )}
+                    </div>
 
                     {/* Empleado */}
                     {esEmpleado && (

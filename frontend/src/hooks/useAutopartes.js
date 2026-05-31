@@ -20,7 +20,7 @@ export const useAutopartes = () => {
         const data = res.data.data || res.data || [];
 
         setAutopartes(data);
-        
+
         setLoading(false);
       })
       .catch(err => {
@@ -34,16 +34,36 @@ export const useAutopartes = () => {
       )
   }, []);
 
-  const addToCart = async (id) => {
+
+  // Función para agregar una autoparte al carrito
+  const addToCart = async (id, cantidad = 1) => {
+
     const token = localStorage.getItem('auth_token');
-    await fetch(`${API}/carrito`, {
+
+    const response = await fetch(`${API}/carrito`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token && { "Authorization": `Bearer ${token}` })
+        ...(token && {
+          "Authorization": `Bearer ${token}`
+        })
       },
-      body: JSON.stringify({ autopart_id: id })
+      body: JSON.stringify({
+        autopart_id: id,
+        cantidad
+      })
     });
+
+    // Obtener la respuesta del servidor y convertirla a JSON
+    const data = await response.json();
+
+    console.log("Respuesta carrito:", data);
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Error al agregar al carrito');
+    }
+
+    return data;
   };
 
   const deleteAutoparte = async (id) => {

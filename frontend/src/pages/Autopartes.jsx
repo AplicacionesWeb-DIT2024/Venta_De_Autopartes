@@ -124,7 +124,12 @@ export default function Autopartes() {
                                                 {!esEmpleado && (
                                                     <button
                                                         className="btn btn-success w-100 mb-2"
-                                                        onClick={() => addToCart(autopart.id)}
+                                                        onClick={async (e) => {
+
+                                                            e.stopPropagation(); // Evitamos que el clic en el botón dispare el evento del card
+                                                            await addToCart(autopart.id, 1); // Agregamos al carrito
+                                                            navigate('/carrito'); // Navegamos al carrito
+                                                        }}
                                                     >
                                                         Agregar al Carrito
                                                     </button>
