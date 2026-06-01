@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 
-const API = import.meta.env.VITE_API_URL;
-
 export const useAutopartes = () => {
   const [autopartes, setAutopartes] = useState([]); // Estado para almacenar las autopartes
   const [loading, setLoading] = useState(true);
@@ -38,32 +36,19 @@ export const useAutopartes = () => {
   // Función para agregar una autoparte al carrito
   const addToCart = async (id, cantidad = 1) => {
 
-    const token = localStorage.getItem('auth_token');
-
-    const response = await fetch(`${API}/carrito`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...(token && {
-          "Authorization": `Bearer ${token}`
-        })
-      },
-      body: JSON.stringify({
+    try {
+      const response = await api.post(`/api/carrito`, {
         autopart_id: id,
         cantidad
-      })
-    });
+      });
 
-    // Obtener la respuesta del servidor y convertirla a JSON
-    const data = await response.json();
+      console.log("Respuesta carrito:", response.data);
 
-    console.log("Respuesta carrito:", data);
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Error al agregar al carrito');
+      return response.data;
+    } catch (error) {
+      console.error('Error al agregar al carrito:', error);
+      throw new Error(error.response?.data?.message || 'Error al agregar al carrito');
     }
-
-    return data;
   };
 
   const deleteAutoparte = async (id) => {

@@ -127,8 +127,12 @@ export default function Autopartes() {
                                                         onClick={async (e) => {
 
                                                             e.stopPropagation(); // Evitamos que el clic en el botón dispare el evento del card
-                                                            await addToCart(autopart.id, 1); // Agregamos al carrito
-                                                            navigate('/carrito'); // Navegamos al carrito
+                                                            try {
+                                                                await addToCart(autopart.id, 1); // Agregamos al carrito
+                                                                navigate('/carrito'); // Navegamos al carrito
+                                                            } catch (err) {
+                                                                alert('Error al agregar al carrito: ' + err.message);
+                                                            }
                                                         }}
                                                     >
                                                         Agregar al Carrito

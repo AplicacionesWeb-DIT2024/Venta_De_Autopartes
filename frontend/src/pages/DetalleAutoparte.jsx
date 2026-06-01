@@ -168,6 +168,9 @@ export default function DetalleAutoparte() {
                         <p>
                             <strong> Estado: </strong> {autoparte.estado}
                         </p>
+                        <p>
+                            <strong> stock: </strong> {autoparte.stock}
+                        </p>
 
                     </div>
                     {/* Agregar al carrito */}
@@ -178,12 +181,15 @@ export default function DetalleAutoparte() {
                                 className="btn btn-success w-100 mb-2"
                                 onClick={async () => {
 
-                                    await addToCart(autoparte.id, 1); // Agregamos 1 unidad al carrito
-                                    
-                                    navigate("/carrito");
+                                    try {
+                                        await addToCart(autoparte.id, 1); // Agregamos 1 unidad al carrito
+                                        navigate("/carrito");
+                                    } catch (err) {
+                                        alert('Error al agregar al carrito: ' + err.message);
+                                    }
                                 }}
-                                >
-                                    Agregar al Carrito
+                            >
+                                Agregar al Carrito
                             </button>
                         )}
                     </div>
