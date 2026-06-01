@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 export default function Carrito() {
 
@@ -19,19 +20,23 @@ export default function Carrito() {
 
             setLoading(true);
 
-            const response = await fetch("http://localhost:8080/api/carrito", {
+            const response = await api.get("/api/carrito", {
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     Accept: "application/json",
                 },
             });
 
-            if (!response.ok) {
+            if (!response) {
                 throw new Error("Error al cargar el carrito");
             }
 
-            const data = await response.json();
+            const data = response.data;
+
+            console.log("Datos del carrito:", data); // Log para verificar la respuesta de la API
+
             setItems(data);
+
+            console.log("Items del carrito:", data); // Log para verificar que los items se están guardando en el estado
         } catch (err) {
             setError(err.message);
         } finally {
@@ -49,19 +54,12 @@ export default function Carrito() {
     const eliminarItem = async (itemId) => {
 
         try {
-            const response = await fetchuseEffect(() => {
-                fetchCarrito();
-            }, []); (`http://localhost:8080/api/carrito/${itemId}`, {
-                method: "DELETE",
+            await api.delete(`/api/carrito/${itemId}`, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     Accept: "application/json",
                 },
             });
 
-            if (!response.ok) {
-                throw new Error("Error al eliminar el item");
-            }
             setItems(items.filter(item => item.id !== itemId));
 
         } catch (err) {
@@ -74,19 +72,11 @@ export default function Carrito() {
         if (cantidad < 1) return;
 
         try {
-            const response = await fetch(`http://localhost:8080/api/carrito/${id}`, {
-                method: "PUT",
+            await api.put(`/api/carrito/${id}`, { cantidad }, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
                     Accept: "application/json",
                 },
-                body: JSON.stringify({ cantidad }),
             });
-
-            if (!response.ok) {
-                throw new Error("Error al actualizar la cantidad");
-            }
 
             fetchCarrito();
 
@@ -100,17 +90,11 @@ export default function Carrito() {
         if (!window.confirm("¿Estás seguro de vaciar el carrito?")) return;
 
         try {
-            const response = await fetch("http://localhost:8080/api/carrito", {
-                method: "DELETE",
+            await api.delete("/api/carrito", {
                 headers: {
-                    Authorization: `Bearer ${token}`,
                     Accept: "application/json",
                 },
             });
-
-            if (!response.ok) {
-                throw new Error("Error al vaciar el carrito");
-            }
 
             setItems([]);
         } catch (err) {
@@ -119,7 +103,7 @@ export default function Carrito() {
     };
 
     const total = items.reduce((acc, item) => {
-        return acc + item.precio * item.cantidad;
+        return acc + item.autopart.precio * item.cantidad;
     }, 0);
 
     if (loading) {

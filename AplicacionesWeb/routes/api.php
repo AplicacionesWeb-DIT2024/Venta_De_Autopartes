@@ -21,8 +21,6 @@ Route::middleware('auth:sanctum')->prefix('autoparts')->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register']);
 
-Route::post('/carrito', [CarritoController::class, 'store'])->name('carrito.store');
-
 // Rutas para la compra
 Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
 
