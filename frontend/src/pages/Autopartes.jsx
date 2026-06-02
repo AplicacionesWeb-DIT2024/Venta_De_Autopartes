@@ -1,7 +1,7 @@
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
-
+import { useState } from "react";
 // Componente Skeleton para las tarjetas de carga
 function SkeletonCard() {
     return (
@@ -43,6 +43,7 @@ export default function Autopartes() {
     const lista = autopartes || []; // Aseguramos que autopartes sea un array
     const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const esEmpleado = user?.role === 'Empleado'; // Verificamos si el usuario es un empleado
+    const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar la carga al agregar al carrito
 
     const handleDelete = (id) => {
         if (window.confirm("¿Estás seguro de que deseas eliminar esta autoparte?")) {
@@ -119,23 +120,40 @@ export default function Autopartes() {
                                                 </h4>
                                             </div>
 
+                                            {/* Botón Agregar al Carrito */}
                                             <div className="card-footer bg-white border-0 text-center">
-
                                                 {!esEmpleado && (
                                                     <button
                                                         className="btn btn-success w-100 mb-2"
+                                                        disabled={loadingCart} // Deshabilitar el botón mientras se está agregando al carrito
                                                         onClick={async (e) => {
-
-                                                            e.stopPropagation(); // Evitamos que el clic en el botón dispare el evento del card
+                                                            e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
                                                             try {
+                                                                setLoadingCart(true); // Activamos el estado de carga
+
                                                                 await addToCart(autopart.id, 1); // Agregamos al carrito
+
                                                                 navigate('/carrito'); // Navegamos al carrito
                                                             } catch (err) {
                                                                 alert('Error al agregar al carrito: ' + err.message);
+                                                            } finally {
+                                                                setLoadingCart(false); // Desactivamos el estado de carga
                                                             }
                                                         }}
                                                     >
-                                                        Agregar al Carrito
+                                                        {loadingCart ? (
+                                                            <>
+                                                                <span
+                                                                    className="spinner-border spinner-border-sm me-2"
+                                                                    role="status"
+                                                                    aria-hidden="true"
+                                                                ></span>
+
+                                                                Agregando...
+                                                            </>
+                                                        ) : (
+                                                            "Agregar al Carrito"
+                                                        )}
                                                     </button>
                                                 )}
                                             </div>
