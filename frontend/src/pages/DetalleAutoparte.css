@@ -4,20 +4,20 @@
 }
 
 .detalle-card {
-    border-radius: 12px;
+    border-radius: 12px; /*La redondez de las esquinas*/
     border: none;
-    padding: 20px;
+    padding: 15px 15px;
 }
 
 .detalle-titulo{
     font-size: 32px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .detalle-info p {
     font-size: 18px;
-    margin-bottom: 12px;
+    margin-bottom: 5px;
 }
 
 .descripcion-box {
@@ -26,4 +26,8 @@
     border-radius: 8px;
     border: 1px solid #ddd;
     min-height: 100px;
+}
+
+.boton-carrito {
+    margin-top: 0px; /*Aumenta el espacio entre la descripción y el botón*/
 }

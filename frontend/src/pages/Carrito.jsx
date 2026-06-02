@@ -220,7 +220,7 @@ export default function Carrito() {
                                                 className="btn btn-danger btn-sm"
                                                 onClick={() => eliminarItem(item.id)}
                                             >
-                                                Eliminar
+                                                Eliminar del Carrito
                                             </button>
 
                                         </td>

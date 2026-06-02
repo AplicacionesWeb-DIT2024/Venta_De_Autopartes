@@ -9,6 +9,7 @@ export default function DetalleAutoparte() {
     const navigate = useNavigate(); // Hook para navegar programáticamente
 
     const [deleting, setDeleting] = useState(false); // Estado para controlar si se está eliminando la autoparte
+    const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar si se está agregando al carrito
 
     const {
         autopartes,
@@ -97,39 +98,9 @@ export default function DetalleAutoparte() {
         );
     }
 
-    // Si no existe
-    if (!autoparte) {
-        return (
-            <div className="container mt-5 text-center">
-
-                <h2>Autoparte no encontrada</h2>
-
-                <p>
-                    La autoparte que estás buscando no existe.
-                    (ID: {id})
-                </p>
-
-                <button
-                    className="btn btn-primary mt-3"
-                    onClick={() => navigate("/autoparts")}
-                >
-                    Volver a la lista de autopartes
-                </button>
-            </div>
-        );
-    }
-
     return (
 
         <div className="container mt-5 detalle-container">
-
-            {/*Botón volver*/}
-            <button
-                className="btn btn-secondary mb-4"
-                onClick={() => navigate("/autoparts")}
-            >
-                Volver a la lista de autopartes
-            </button>
 
             <div className="card detalle-card shadow">
 
@@ -174,22 +145,38 @@ export default function DetalleAutoparte() {
 
                     </div>
                     {/* Agregar al carrito */}
-                    <div className="card-footer bg-white border-0 text-center">
-
+                    <div className="card-footer bg-white border-0 text-end boton-carrito">
                         {!esEmpleado && (
                             <button
-                                className="btn btn-success w-100 mb-2"
+                                className="btn btn-success mb-3"
+                                disabled={loadingCart} // Deshabilitar el botón mientras se está agregando al carrito
                                 onClick={async () => {
-
                                     try {
+                                        setLoadingCart(true); // Establecer el estado de carga del carrito
+
                                         await addToCart(autoparte.id, 1); // Agregamos 1 unidad al carrito
+
                                         navigate("/carrito");
                                     } catch (err) {
                                         alert('Error al agregar al carrito: ' + err.message);
+                                    } finally {
+                                        setLoadingCart(false); // Restablecer el estado de carga del carrito
                                     }
                                 }}
                             >
-                                Agregar al Carrito
+                                {loadingCart ? (
+                                    <>
+                                        <span
+                                            className="spinner-border spinner-border-sm me-2"
+                                            role="status"
+                                            aria-hidden="true"
+                                        ></span>
+
+                                        Agregando...
+                                    </>
+                                ) : (
+                                    "Agregar al Carrito"
+                                )}
                             </button>
                         )}
                     </div>
@@ -217,6 +204,16 @@ export default function DetalleAutoparte() {
                         </button>
                     )}
                 </div>
+            </div>
+
+            {/*Botón volver*/}
+            <div className="text-end mt-3">
+                <button
+                    className="btn btn-secondary"
+                    onClick={() => navigate("/autoparts")}
+                >
+                    Volver a la lista de autopartes
+                </button>
             </div>
         </div>
     );
