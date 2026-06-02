@@ -169,7 +169,7 @@ export default function DetalleAutoparte() {
                             <strong> Estado: </strong> {autoparte.estado}
                         </p>
                         <p>
-                            <strong> stock: </strong> {autoparte.stock}
+                            <strong> Stock: </strong> {autoparte.stock}
                         </p>
 
                     </div>

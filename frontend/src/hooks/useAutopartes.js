@@ -34,12 +34,12 @@ export const useAutopartes = () => {
 
 
   // Función para agregar una autoparte al carrito
-  const addToCart = async (id, cantidad = 1) => {
+  const addToCart = async (id, stock = 1) => {
 
     try {
       const response = await api.post(`/api/carrito`, {
         autopart_id: id,
-        cantidad
+        stock
       });
 
       console.log("Respuesta carrito:", response.data);

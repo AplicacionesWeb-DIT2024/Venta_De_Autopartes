@@ -67,12 +67,12 @@ export default function Carrito() {
         }
     };
 
-    const actualizarCantidad = async (id, cantidad) => {
+    const actualizarCantidad = async (id, stock) => {
 
-        if (cantidad < 1) return;
+        if (stock < 1) return;
 
         try {
-            await api.put(`/api/carrito/${id}`, { cantidad }, {
+            await api.put(`/api/carrito/${id}`, { stock }, {
                 headers: {
                     Accept: "application/json",
                 },
@@ -103,7 +103,7 @@ export default function Carrito() {
     };
 
     const total = items.reduce((acc, item) => {
-        return acc + item.autopart.precio * item.cantidad;
+        return acc + item.autopart.precio * item.stock;
     }, 0);
 
     if (loading) {
@@ -149,7 +149,7 @@ export default function Carrito() {
                                 <tr>
                                     <th>Autoparte</th>
                                     <th>Precio</th>
-                                    <th>Cantidad</th>
+                                    <th>Stock</th>
                                     <th>Total</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -178,7 +178,7 @@ export default function Carrito() {
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
-                                                            item.cantidad - 1
+                                                            item.stock - 1
                                                         )
                                                     }
                                                 >
@@ -186,7 +186,7 @@ export default function Carrito() {
                                                 </button>
 
                                                 <span>
-                                                    {item.cantidad}
+                                                    {item.stock}
                                                 </span>
 
                                                 <button
@@ -194,7 +194,7 @@ export default function Carrito() {
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
-                                                            item.cantidad + 1
+                                                            item.stock + 1
                                                         )
                                                     }
                                                 >
@@ -210,7 +210,7 @@ export default function Carrito() {
                                             {
                                                 Number(
                                                     item.autopart.precio *
-                                                    item.cantidad
+                                                    item.stock
                                                 ).toFixed(2)}
                                         </td>
 
