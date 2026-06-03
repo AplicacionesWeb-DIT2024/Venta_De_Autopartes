@@ -2,70 +2,61 @@
 
 /* Estilos generales para el cuerpo de la página */
 body {
-    background: #0f172a;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    font-family: var(--body);
 }
 
 /* Estilos para el formulario */
 .crear-container {
-    max-width: 450px;
-    margin: 80px auto;
-    padding: 30px 25px;
-    background: #1e293b;
-    border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    color: #f1f5f9
+    background-color: #ffffff;
+    padding: 40px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    max-width: 600px;
+    margin: 40px auto;
 }
 
 /* Estilos para el título */
 .crear-container h2 {
-    text-align: center;
+    font-weight: 700;
+    color: #212529;
     margin-bottom: 25px;
-    font-weight: 600;
 }
 
 /* Estilos para el formulario */
 .crear-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
 }
 
 /* Estilos para los campos del formulario */
 .crear-form input,
 .crear-form select {
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 10px;
-    border: 1px solid #334155;
-    background-color: #0f172a;
-    color: #e2e8f0;
-    transition: all 0.2s ease;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
 }
 
 /* Estilos para el placeholder de los campos */
 .crear-form input,
 .crear-form select {
-    padding: 10px;
-    font-size: 14px;
-    border-radius: 10px;
-    border: 1px solid #334155;
-    background-color: #0f172a;
-    color: #e2e8f0;
-    transition: all 0.2s ease;
+    color: var(--text);
 }
 
 /* Estilos para el placeholder de los campos */
 .crear-form input:placeholder {
-    color: #94a3b8
+    color: var(--text-muted);
 }
 
 /* Estilos para el enfoque de los campos */
 .crear-form input:focus,
 .crear-form select:focus {
+    border-color: #80bdff;
     outline: none;
-    border-color: #38bdf8;
-    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
 }
 
 /* Estilos para el cursor en los campos de selección */
@@ -75,36 +66,33 @@ body {
 
 /* Estilos para el botón de envío */
 .crear-form button {
-    margin-top: 10px;
-    padding: 14px;
-    font-size: 14px;
-    border-radius: 10px;
-    border: none;
-    background: linear-gradient(135deg, #22c55e, #16a34a);
+    padding: 12px 20px;
+    background-color: #007bff;
     color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: background-color 0.2s ease;
 }
 
 /* Efectos para el botón de envío */
 .crear-form button:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(135deg, #4ade80, #22c55e);
+    background-color: #0056b3;
 }
 
 /* Efectos para el botón de envío al hacer clic */
 .crear-form button:active {
-    transform: scale(0.98);
+    background-color: #004085;
 }
 
 /* Estilos para las etiquetas de los campos */
 .crear-form label {
-    font-size: 16px;
-    margin-bottom: -10px;
-    color: #e2e8f0;
+    font-weight: 600;
+    color: #212529;
 }
 
 .crear-form button:disabled {
-    opacity: 0.7;
+    background-color: #6c757d;
     cursor: not-allowed;
 }
