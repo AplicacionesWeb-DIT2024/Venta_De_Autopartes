@@ -14,7 +14,7 @@ export default function Carrito() {
     const token = localStorage.getItem('auth_token');
 
     console.log("Token en Carrito:", token); // Log para verificar que el token se está obteniendo correctamente
-    
+
     // Función para cargar el carrito desde la API
     const fetchCarrito = async () => {
         try {
@@ -128,12 +128,7 @@ export default function Carrito() {
             <div className="d-flex justify-content-between align-items-center mb-4 carrito-header">
                 <h2>Mi Carrito</h2>
 
-                <button
-                    className="btn btn-outline-dark"
-                    onClick={() => navigate("/autoparts")}
-                >
-                    Volver
-                </button>
+
             </div>
 
             {items.length === 0 ? (
@@ -228,32 +223,36 @@ export default function Carrito() {
 
                                     </tr>
                                 ))}
-
                             </tbody>
-
                         </table>
-
                     </div>
 
-                    <div className="d-flex justify-content-between align-items-center mb-4 carrito-header">
+                    <div className="d-flex justify-content-between align-items-center mb-4 carrito-header acciones-carrito">
                         <button
                             className="btn btn-outline-danger btn-vaciar"
                             onClick={vaciarCarrito}
                         >
                             Vaciar carrito
                         </button>
+                    </div>
 
-                        <div className="text-end">
-                            <h4 className="carrito-total">
-                                Total: ${total.toFixed(2)}
-                            </h4>
+                    <button
+                        className="btn btn-outline-dark btn-volver"
+                        onClick={() => navigate("/autoparts")}
+                    >
+                        Volver
+                    </button>
 
-                            <button
-                                className="btn btn-success mt-2 btn-finalizar"
-                            >
-                                Finalizar Compra
-                            </button>
-                        </div>
+                    <div className="text-end">
+                        <h4 className="carrito-total">
+                            Total: ${total.toFixed(2)}
+                        </h4>
+
+                        <button
+                            className="btn btn-success mt-2 btn-finalizar"
+                        >
+                            Finalizar Compra
+                        </button>
                     </div>
                 </>
             )}

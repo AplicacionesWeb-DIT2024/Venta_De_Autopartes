@@ -21,6 +21,7 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem; /* Espacio entre la tabla y el pie de página del carrito */
 }
 
 .carrito-table table {
@@ -128,5 +129,15 @@
         top: 15px;
         font-weight: 600;
         color: #6c757d;
+    }
+
+    /* Ajustes para el pie de página del carrito en móvil */
+    .acciones-carrito {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Ajuste para el botón de volver en móvil */
+    .btn-volver {
+        margin-top: 0;
     }
 }

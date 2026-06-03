@@ -2,7 +2,7 @@
 
 /* Estilos generales para el cuerpo de la página */
 body {
-    background-color: var(--background);
+    background-color: #5086b8; /*COLOR DE FONDO PRINCIPAL*/
     color: var(--text);
     font-family: var(--body);
 }
