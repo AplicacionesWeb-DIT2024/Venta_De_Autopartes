@@ -23,23 +23,23 @@ class CarritoController extends Controller
     {
         $validated = $request->validate([
             'autopart_id' => 'required|exists:autoparts,id',
-            'cantidad' => 'required|integer|min:1',
+            'stock' => 'required|integer|min:1',
         ]);
         $autopart = Autopart::find($validated['autopart_id']);
         $carritoItem = Carrito::where('user_id', Auth::id())
             ->where('autopart_id', $validated['autopart_id'])
             ->first();
         if ($carritoItem) {
-            $nuevaCantidad = $carritoItem->cantidad + $validated['cantidad'];
+            $nuevaCantidad = $carritoItem->stock + $validated['stock'];
             if ($nuevaCantidad > $autopart->stock) {
                 return response()->json([
                     'message' => 'Cantidad solicitada excede el stock disponible'
                 ], 400);
             }
-            $carritoItem->cantidad = $nuevaCantidad;
+            $carritoItem->stock = $nuevaCantidad;
             $carritoItem->save();
         } else {
-            if ($validated['cantidad'] > $autopart->stock) {
+            if ($validated['stock'] > $autopart->stock) {
                 return response()->json([
                     'message' => 'Cantidad solicitada excede el stock disponible'
                 ], 400);
@@ -47,7 +47,7 @@ class CarritoController extends Controller
             $carritoItem = Carrito::create([
                 'user_id' => Auth::id(),
                 'autopart_id' => $validated['autopart_id'],
-                'cantidad' => $validated['cantidad'],
+                'stock' => $validated['stock'],
             ]);
         }
         return response()->json($carritoItem, 201);
@@ -68,7 +68,7 @@ class CarritoController extends Controller
     {
         // Validar la cantidad
         $validated = $request->validate([
-            'cantidad' => 'required|integer|min:1',
+            'stock' => 'required|integer|min:1',
         ]);
         // Buscar el elemento del carrito
         $carritoItem = Carrito::where('id', $id)
@@ -82,13 +82,13 @@ class CarritoController extends Controller
         // Obtener autoparte
         $autopart = Autopart::find($carritoItem->autopart_id);
         // Validar stock
-        if ($validated['cantidad'] > $autopart->stock) {
+        if ($validated['stock'] > $autopart->stock) {
             return response()->json([
                 'message' => 'Cantidad solicitada excede el stock disponible'
             ], 400);
         }
         // Actualizar cantidad
-        $carritoItem->cantidad = $validated['cantidad'];
+        $carritoItem->stock = $validated['stock'];
         $carritoItem->save();
         // Resupuesta
         return response()->json($carritoItem);

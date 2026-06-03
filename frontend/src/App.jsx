@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import Autopartes from './pages/Autopartes'; // Importa la página de Autopartes
 import Crear from './pages/Crear'; // Importa la página de Crear
 import DetalleAutoparte from './pages/DetalleAutoparte'; // Importa la página de DetalleAutopartes
+import Carrito from './pages/Carrito'; // Importa la página de Carrito
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/autoparts" element={<Autopartes />} /> {/* Ruta para la página de Autopartes */}
         <Route path="/autoparts/crear" element={<Crear />} /> {/* Ruta para crear - DEBE IR ANTES DEL :id */}
         <Route path="/autoparts/:id" element={<DetalleAutoparte />} /> {/* Ruta para la página de DetalleAutopartes */}
+        <Route path="/carrito" element={<Carrito />} /> {/* Ruta para la página del Carrito */}
       </Routes>
     </Router>
   );

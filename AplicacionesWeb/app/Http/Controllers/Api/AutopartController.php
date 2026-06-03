@@ -30,7 +30,8 @@ class AutopartController extends Controller
             'precio', 
             'estado', 
             'anioVehiculo', 
-            'color', 
+            'color',
+            'stock',
             'created_at'
             )
             ->orderBy('created_at', 'desc')
@@ -55,6 +56,7 @@ class AutopartController extends Controller
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
             'color' => 'required|string|max:255',
+            'stock' => 'required|integer|min:1|max:99' // Valida que el stock sea un número entero entre 1 y 99
         ]);
         $autopart = Autopart::create($validated);
         return response()->json($autopart, 201);
@@ -79,6 +81,7 @@ class AutopartController extends Controller
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
             'color' => 'sometimes|required|string|max:255',
+            'stock' => 'required|integer|min:1|max:99'
         ]);
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON

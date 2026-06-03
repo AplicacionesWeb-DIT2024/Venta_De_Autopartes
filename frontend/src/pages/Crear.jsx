@@ -13,6 +13,7 @@ const Crear = () => {
         estado: "",
         precio: "",
         color: "",
+        stock: "",
     });
 
     const [loading, setLoading] = useState(false);
@@ -44,7 +45,8 @@ const Crear = () => {
                 codigo: formData.codigo,
                 estado: formData.estado,
                 precio: formData.precio,
-                color: formData.color
+                color: formData.color,
+                stock: formData.stock
             });
 
             alert("Autoparte creada exitosamente!");
@@ -117,6 +119,9 @@ const Crear = () => {
 
                 <label>Color</label>
                 <input type="text" name="color" value={formData.color} onChange={handleChange} required />
+
+                <label>Stock</label>
+                <input type="text" name="stock" value={formData.stock} onChange={handleChange} required />
 
                 <button
                     type="submit"

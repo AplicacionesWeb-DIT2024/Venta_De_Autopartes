@@ -222,7 +222,7 @@ const Register = () => {
         {/* Enlace para iniciar sesión */}
         <div className="register-footer">
           <p>
-            ¿Ya tenés una cuenta?{""}
+            ¿Ya tenés una cuenta? {""}
             <Link to="/">
               Iniciar sesión
             </Link>
