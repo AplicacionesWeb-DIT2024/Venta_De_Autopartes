@@ -70,7 +70,7 @@ const Register = () => {
 
       alert('Registro exitoso! Bienvenido a Venta de Autopartes.');
 
-      navigate('/autoparts');
+      navigate('/'); //Redireccionar al inicio de sesión después del registro
 
     } catch (error) {
       console.error(error)
