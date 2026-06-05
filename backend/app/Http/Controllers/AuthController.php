@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class AuthController extends Controller
 {
@@ -28,15 +29,33 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            //  'role' => $request->role,
+            'role' => $request->role, // Guardar el rol en la columna role de la tabla users
         ]);
 
+        // Asegurar que el rol existe, si no, crearlo
+        $role = Role::firstOrCreate(
+            ['name' => $request->role, 'guard_name' => 'web'],
+            ['name' => $request->role, 'guard_name' => 'web']
+        );
 
-        $user->assignRole($request->role);
+        // Asignar el rol al usuario en la tabla model_has_roles
+        $user->assignRole($role);
 
         Auth::login($user);
 
-        return response()-> json(['messagge' => 'Usuario registrado correctamente']);
+        // Generar token de autenticación
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        // Retornar los datos del usuario con el rol asignado
+        return response()->json([
+            'message' => 'Usuario registrado correctamente',
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $request->role, // Retornar el rol que se acaba de asignar
+            ],
+            'token' => $token,
+        ]);
     }
 
 

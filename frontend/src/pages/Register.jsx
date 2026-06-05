@@ -41,7 +41,7 @@ const Register = () => {
       await api.get('/sanctum/csrf-cookie');
 
       // Registrar al usuario
-      await api.post('/register', {
+      const response = await api.post('/register', { // Enviamos los datos del formulario al backend
         name: username,
         email,
         password,
@@ -55,9 +55,22 @@ const Register = () => {
         }
       });
 
-      alert('Registro existoso! Ahora podés iniciar sesión.');
+      // Guardar el usuario y token en localStorage
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          name: response.data.user.name,
+          email: response.data.user.email,
+          role: response.data.user.role
+        })
+      );
 
-      navigate('/');
+      // Guardar el token en localStorage
+      localStorage.setItem('auth_token', response.data.token);
+
+      alert('Registro exitoso! Bienvenido a Venta de Autopartes.');
+
+      navigate('/autoparts');
 
     } catch (error) {
       console.error(error)
