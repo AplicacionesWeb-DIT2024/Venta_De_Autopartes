@@ -5,6 +5,7 @@ import api from '../api';
 import './Register.css';
 import Cookies from 'js-cookie';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -68,9 +69,14 @@ const Register = () => {
       // Guardar el token en localStorage
       localStorage.setItem('auth_token', response.data.token);
 
-      alert('Registro exitoso! Bienvenido a Venta de Autopartes.');
-
-      navigate('/'); //Redireccionar al inicio de sesión después del registro
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro exitoso',
+        text: '¡Bienvenido a AutoPartes!',
+        confirmButtonText: 'Ir al inicio'
+      }).then(() => {
+        navigate('/'); //Redireccionar al inicio de sesión después del registro
+      });
 
     } catch (error) {
       console.error(error)
