@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import "./Carrito.css";
+import "../index.css"; // importamos index.css para los estilos globales
 
 export default function Carrito() {
 
@@ -124,7 +125,7 @@ export default function Carrito() {
     }
 
     return (
-        <div className="container mt-5 carrito-container">
+        <div className="container mt-5 general-container">
             <div className="d-flex justify-content-between align-items-center mb-4 carrito-header">
                 <h2>Mi Carrito</h2>
 

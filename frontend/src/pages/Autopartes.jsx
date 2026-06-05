@@ -1,7 +1,9 @@
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
+import "../index.css"; // importamos index.css para los estilos globales
 import { useState } from "react";
+
 // Componente Skeleton para las tarjetas de carga
 function SkeletonCard() {
     return (
@@ -52,11 +54,11 @@ export default function Autopartes() {
     };
 
     return (
-        <div className="container mt-5 autopartes-container">
+        <div className="container mt-5 general-container">
 
             {/* USUARIO */}
             {user && (
-                <div className="text-end mb-3">
+                <div className="text-start mb-3 user-info">
                     <p className="mb-1">
                         Bienvenido, <strong>{user.name}</strong>
                     </p>

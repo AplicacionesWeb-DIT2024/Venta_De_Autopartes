@@ -1,10 +1,4 @@
-.carrito-container {
-    background-color: #f5f5f5;
-    min-height: 100vh;
-    padding: 40px 20px;
-}
-
-.carrito-header {
+.general-container .carrito-header {
     border-bottom: 2px solid #f1f1f1;
     padding-bottom: 15px;
     margin-bottom: 15px;
