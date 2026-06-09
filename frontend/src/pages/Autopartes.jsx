@@ -63,8 +63,8 @@ export default function Autopartes() {
                         Bienvenido, <strong>{user.name}</strong>
                     </p>
                     <p className="mb-0">
-                        <span>Rol:</span>
-                        <span className="ms-2 badge bg-info">{user.role}</span>
+                        <span>Rol: </span>
+                        <strong>{user.role}</strong>
                     </p>
                 </div>
             )}
