@@ -44,3 +44,13 @@
 .boton-carrito {
     margin-top: 0px; /*Aumenta el espacio entre la descripción y el botón*/
 }
+.boton-carrito button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}

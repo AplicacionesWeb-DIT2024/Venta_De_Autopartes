@@ -111,11 +111,6 @@ export default function DetalleAutoparte() {
                         {autoparte.autoparte}
                     </h1>
 
-                    {/* Marca */}
-                    <span className="badge bg-dark mb-3">
-                        {autoparte.marca}
-                    </span>
-
                     {/* Precio */}
                     <h2 className="text-success mb-4">
                         ${Number(autoparte.precio).toFixed(2)}
@@ -123,7 +118,9 @@ export default function DetalleAutoparte() {
 
                     {/* Información */}
                     <div className="detalle-info">
-
+                        <p>
+                            <strong> Marca: </strong> {autoparte.marca}
+                        </p>
                         <p>
                             <strong> Modelo: </strong> {autoparte.modelo}
                         </p>
