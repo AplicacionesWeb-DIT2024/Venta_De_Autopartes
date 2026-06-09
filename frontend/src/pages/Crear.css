@@ -1,98 +1,144 @@
-/* Archivo CSS para la página de creación de productos */
+/* Estilos para la página de creación de eventos */
 
-/* Estilos generales para el cuerpo de la página */
+/* Fondo principal de la página */
 body {
-    background-color: #5086b8; /*COLOR DE FONDO PRINCIPAL*/
-    color: var(--text);
-    font-family: var(--body);
+    background-color: #5086b8;
+    font-family: sans-serif;
 }
 
-/* Estilos para el formulario */
-.crear-container {
-    background-color: #ffffff;
+/*Contenedor del formulario*/
+.crear-container{
+    background-color: #f4f7fa;
     padding: 40px 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-top: 5px solid #007bff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
     max-width: 600px;
     margin: 40px auto;
 }
 
-/* Estilos para el título */
+
+/* Titulo*/
 .crear-container h2 {
     font-weight: 700;
+    font-size: 2rem;
+    text-align: center;
     color: #212529;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    position: relative;
 }
 
-/* Estilos para el formulario */
+/* Decoración debajo del título */
+.crear-container h2:after{
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #007bff;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* Formulario */
 .crear-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
 }
 
-/* Estilos para los campos del formulario */
+/* Estilos para el contenedor del formulario */
+.crear-form label {
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: -10px;
+}
+
+
+/* Estilos para el contenedor del formulario */
 .crear-form input,
 .crear-form select {
-    padding: 10px 15px;
-    border: 1px solid #ced4da;
+    background-color: #eef6ff;
+    color: #212529;
+    padding: 12px 15px;
+    border: 1px solid #b6d4fe;
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
-/* Estilos para el placeholder de los campos */
-.crear-form input,
-.crear-form select {
-    color: var(--text);
+/* Estilos para los campos de entrada y el selector */
+.crear-form input::placeholder {
+    color: #6c757d;
 }
 
-/* Estilos para el placeholder de los campos */
-.crear-form input:placeholder {
-    color: var(--text-muted);
-}
-
-/* Estilos para el enfoque de los campos */
+/* Estilos para los campos de entrada y el selector */
 .crear-form input:focus,
 .crear-form select:focus {
-    border-color: #80bdff;
+    background-color: #ffffff;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
     outline: none;
 }
 
-/* Estilos para el cursor en los campos de selección */
+/* Estilos para los campos de entrada y el selector */
+/*.crear-form input,*/
 .crear-form select {
     cursor: pointer;
 }
 
 /* Estilos para el botón de envío */
 .crear-form button {
+    margin-top: 10px;
     padding: 12px 20px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 8px;
     font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
-/* Efectos para el botón de envío */
+/* Efectos para el botón de envío al pasar el mouse */
 .crear-form button:hover {
     background-color: #0056b3;
+    transform: translateY(-1px);
 }
 
 /* Efectos para el botón de envío al hacer clic */
 .crear-form button:active {
     background-color: #004085;
+    transform: translateY(0);
 }
 
-/* Estilos para las etiquetas de los campos */
-.crear-form label {
-    font-weight: 600;
-    color: #212529;
-}
-
+/* Estilos para el botón de envío cuando está deshabilitado */
 .crear-form button:disabled {
     background-color: #6c757d;
     cursor: not-allowed;
+}
+
+.crear-form .volver-button {
+    margin-top: 10px;
+    padding: 12px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Efectos para el botón de volver al pasar el mouse */
+.crear-form .volver-button:hover {
+    background-color: #a52834;
+    transform: translateY(-1px);
+}
+
+/* Efectos para el botón de volver al hacer clic */
+.crear-form .volver-button:active {
+    background-color: #a52834;
+    transform: translateY(0);
 }
