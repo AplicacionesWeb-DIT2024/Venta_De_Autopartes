@@ -10,9 +10,22 @@
 }
 
 .detalle-titulo{
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 2rem;
+    text-align: center;
+    color: #212529;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.detalle-titulo:after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #007bff;
+    margin: 10px auto 0;
+    border-radius: 2px;
 }
 
 .detalle-info p {
