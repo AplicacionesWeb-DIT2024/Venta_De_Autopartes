@@ -19,13 +19,25 @@ body {
 
 
 /* Titulo*/
-.crear.container h2 {
+.crear-container h2 {
     font-weight: 700;
-    color: #212529;
+    font-size: 2rem;
     text-align: center;
-    margin-bottom: 25px;
+    color: #212529;
+    margin-bottom: 30px;
+    position: relative;
 }
 
+/* Decoración debajo del título */
+.crear-container h2:after{
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #007bff;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
 
 /* Formulario */
 .crear-form {
@@ -104,4 +116,29 @@ body {
 .crear-form button:disabled {
     background-color: #6c757d;
     cursor: not-allowed;
+}
+
+.crear-form .volver-button {
+    margin-top: 10px;
+    padding: 12px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Efectos para el botón de volver al pasar el mouse */
+.crear-form .volver-button:hover {
+    background-color: #a52834;
+    transform: translateY(-1px);
+}
+
+/* Efectos para el botón de volver al hacer clic */
+.crear-form .volver-button:active {
+    background-color: #a52834;
+    transform: translateY(0);
 }

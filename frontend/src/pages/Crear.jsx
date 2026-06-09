@@ -141,6 +141,15 @@ const Crear = () => {
                         "Agregar Autoparte"
                     )}
                 </button>
+
+                {/*Botón rojo para volver a la lista de autopartes */}
+                <button
+                    type="button"
+                    onClick={() => navigate("/autoparts")}
+                    className="volver-button"
+                >
+                    Volver
+                </button>
             </form>
         </div>
     );
