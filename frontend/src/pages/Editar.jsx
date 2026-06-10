@@ -24,20 +24,24 @@ export default function Editar() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Cargo las caracteristicas de la autoparte a modificar
         const cargarAutoparte = async () => {
             try {
-                const response = await api.get(`/autopartes/${id}`);
+                const response = await api.get(`/api/autoparts/${id}`);
+
+                console.log(response.data)
+
+                const autoparte = response.data;
 
                 setFormData({
-                    nombre: response.data.nombre || "",
-                    marca: response.data.marca || "",
-                    modelo: response.data.modelo || "",
-                    anio: response.data.anio || "",
-                    codigo: response.data.codigo || "",
-                    estado: response.data.estado || "",
-                    precio: response.data.precio || "",
-                    color: response.data.color || "",
-                    stock: response.data.stock || ""
+                    nombre: autoparte.autoparte || "",
+                    marca: autoparte.marca || "",
+                    modelo: autoparte.modelo || "",
+                    anio: autoparte.anioVehiculo || "",
+                    codigo: autoparte.codigo || "",
+                    precio: autoparte.precio || "",
+                    color: autoparte.color || "",
+                    stock: autoparte.stock || ""
                 });
             } catch (error) {
                 console.error("Error al cargar la autoparte:", error);
@@ -53,7 +57,7 @@ export default function Editar() {
         e.preventDefault();
 
         try {
-            await api.put(`/autopartes/${id}`, formData);
+            await api.put(`/api/autoparts/${id}`, formData);
             navigate("/autoparts"); // Redirige a la página principal después de actualizar
         } catch (error) {
             console.error("Error al actualizar la autoparte:", error);
