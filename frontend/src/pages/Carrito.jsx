@@ -128,8 +128,6 @@ export default function Carrito() {
         <div className="container mt-5 general-container">
             <div className="d-flex justify-content-between align-items-center mb-4 carrito-header">
                 <h2>Mi Carrito</h2>
-
-
             </div>
 
             {items.length === 0 ? (
