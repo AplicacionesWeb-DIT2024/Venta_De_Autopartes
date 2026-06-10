@@ -39,6 +39,7 @@ export default function Editar() {
                     modelo: autoparte.modelo || "",
                     anio: autoparte.anioVehiculo || "",
                     codigo: autoparte.codigo || "",
+                    estado: autoparte.estado || "",
                     precio: autoparte.precio || "",
                     color: autoparte.color || "",
                     stock: autoparte.stock || ""
@@ -127,14 +128,17 @@ export default function Editar() {
                     className="form-control mb-3"
                 />
 
-                <input
-                    type="text"
+                <select
                     name="estado"
                     value={formData.estado}
-                    onChange={handleInputChange}
-                    placeholder="Estado"
-                    className="form-control mb-3"
-                />
+                    onChange={handleInputChange}>
+                    <option value="">Seleccione un estado</option>
+                    <option value="Muy Bueno">Muy Bueno</option>
+                    <option value="Bueno">Bueno</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Malo">Malo</option>
+                    <option value="Muy Malo">Muy Malo</option>
+                </select>
 
                 <input
                     type="number"
