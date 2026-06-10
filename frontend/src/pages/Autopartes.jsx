@@ -159,6 +159,30 @@ export default function Autopartes() {
                                                     </button>
                                                 )}
                                             </div>
+
+                                            <div className="card-footer bg-white border-0 text-center">
+                                                {esEmpleado && (
+                                                    <>
+                                                        <Link
+                                                            to={`/autoparts/editar/${autopart.id}`}
+                                                            className="btn btn-warning w-100 mb-2"
+                                                            onClick={(e) => e.stopPropagation()} // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                        >
+                                                            Editar
+                                                        </Link>
+
+                                                        <button
+                                                            className="btn btn-danger w-100"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                                handleDelete(autopart.id);
+                                                            }}
+                                                        >
+                                                            Eliminar
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 ))}
@@ -167,7 +191,7 @@ export default function Autopartes() {
                     </>
                 )
             }
-
+            
             {/* HEADER */}
             <div className="mb-4 text-center">
                 {esEmpleado ? ( // Si es Empleado solo tenemos habilitada la creación de Autopartes
