@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from "../api";
-import './Crear.css'; // Importa el CSS para el formulario
+import './Editar.css'; // Importa el CSS para el formulario
 
 
 export default function Editar() {
@@ -71,12 +71,12 @@ export default function Editar() {
     }
 
     return (
-        <div className="form-container">
-            <h2 className="text-center mb-4">
+        <div className="editar-container">
+            <h2>
                 Editar Autoparte
             </h2>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="editar-form">
 
                 <input
                     type="text"
@@ -154,7 +154,7 @@ export default function Editar() {
                     type="number"
                     name="stock"
                     value={formData.stock}
-                    onChange={handleChange}
+                    onChange={handleInputChange}
                     placeholder="Stock"
                     className="form-control mb-3"
                 />

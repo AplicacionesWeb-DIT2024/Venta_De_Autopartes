@@ -164,7 +164,7 @@ export default function Autopartes() {
                                                 {esEmpleado && (
                                                     <>
                                                         <Link
-                                                            to={`/autoparts/editar/${autopart.id}`}
+                                                            to={`/autoparts/${autopart.id}/editar`}
                                                             className="btn btn-warning w-100 mb-2"
                                                             onClick={(e) => e.stopPropagation()} // Evitar que el clic en el botón dispare la navegación a los detalles
                                                         >
