@@ -22,6 +22,7 @@ export default function Editar() {
     });
 
     const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         // Cargo las caracteristicas de la autoparte a modificar
@@ -39,6 +40,7 @@ export default function Editar() {
                     modelo: autoparte.modelo || "",
                     anio: autoparte.anioVehiculo || "",
                     codigo: autoparte.codigo || "",
+                    estado: autoparte.estado || "",
                     precio: autoparte.precio || "",
                     color: autoparte.color || "",
                     stock: autoparte.stock || ""
@@ -53,22 +55,38 @@ export default function Editar() {
         cargarAutoparte();
     }, [id]);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        try {
-            await api.put(`/api/autoparts/${id}`, formData);
-            navigate("/autoparts"); // Redirige a la página principal después de actualizar
-        } catch (error) {
-            console.error("Error al actualizar la autoparte:", error);
-            alert("Hubo un error al actualizar la autoparte. Por favor, inténtalo de nuevo.");
-        }
-    };
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            setSaving(true);
+
+            await api.put(`/api/autoparts/${id}`, {
+                autoparte: formData.nombre,
+                marca: formData.marca,
+                modelo: formData.modelo,
+                anioVehiculo: formData.anio,
+                codigo: formData.codigo,
+                estado: formData.estado,
+                precio: formData.precio,
+                color: formData.color,
+                stock: formData.stock
+            });
+
+            navigate("/autoparts");
+
+        } catch (error) {
+            console.error("Error al actualizar la autoparte", error);
+            alert("Hubo un error al actualizar la autoparte.")
+        } finally {
+            setSaving(false);
+        }
+    }
 
     if (loading) {
         return <div>Cargando...</div>;
@@ -82,6 +100,7 @@ export default function Editar() {
 
             <form onSubmit={handleSubmit} className="editar-form">
 
+                <label>Nombre</label>
                 <input
                     type="text"
                     name="nombre"
@@ -91,6 +110,7 @@ export default function Editar() {
                     className="form-control mb-3"
                 />
 
+                <label>Marca</label>
                 <input
                     type="text"
                     name="marca"
@@ -100,6 +120,7 @@ export default function Editar() {
                     className="form-control mb-3"
                 />
 
+                <label>Modelo</label>
                 <input
                     type="text"
                     name="modelo"
@@ -109,6 +130,7 @@ export default function Editar() {
                     className="form-control mb-3"
                 />
 
+                <label>Año</label>
                 <input
                     type="number"
                     name="anio"
@@ -118,6 +140,7 @@ export default function Editar() {
                     className="form-control mb-3"
                 />
 
+                <label>Código</label>
                 <input
                     type="text"
                     name="codigo"
@@ -127,15 +150,20 @@ export default function Editar() {
                     className="form-control mb-3"
                 />
 
-                <input
-                    type="text"
+                <label>Estado</label>
+                <select
                     name="estado"
                     value={formData.estado}
-                    onChange={handleInputChange}
-                    placeholder="Estado"
-                    className="form-control mb-3"
-                />
+                    onChange={handleInputChange}>
+                    <option value="">Seleccione un estado</option>
+                    <option value="Muy Bueno">Muy Bueno</option>
+                    <option value="Bueno">Bueno</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Malo">Malo</option>
+                    <option value="Muy Malo">Muy Malo</option>
+                </select>
 
+                <label>Precio</label>
                 <input
                     type="number"
                     name="precio"
@@ -145,6 +173,7 @@ export default function Editar() {
                     className="form-control mb-3"
                 />
 
+                <label>Color</label>
                 <input
                     type="text"
                     name="color"
@@ -153,7 +182,7 @@ export default function Editar() {
                     placeholder="Color"
                     className="form-control mb-3"
                 />
-
+                <label>Stock</label>
                 <input
                     type="number"
                     name="stock"
@@ -165,8 +194,30 @@ export default function Editar() {
 
                 <button
                     type="submit"
-                    className="btn btn-primary w-100">
-                    Guardar Cambios
+                    disabled={saving}
+                    className="d-flex justify-content-center align-items-center gap-2"
+                >
+                    {saving ? (
+                        <>
+                            <span
+                                className="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                            ></span>
+                            Editando...
+                        </>
+                    ) : (
+                        "Guardar Cambios"
+                    )}
+                </button>
+
+                {/*Botón rojo para volver a la lista de autopartes */}
+                <button
+                    type="button"
+                    onClick={() => navigate("/autoparts")}
+                    className="volver-button"
+                >
+                    Volver
                 </button>
             </form>
         </div>

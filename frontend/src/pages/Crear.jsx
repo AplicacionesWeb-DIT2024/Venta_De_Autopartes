@@ -102,7 +102,13 @@ const Crear = () => {
                 </select>
 
                 <label>Código</label>
-                <input type="text" name="codigo" value={formData.codigo} onChange={handleChange} required />
+                <input
+                    type="text"
+                    name="codigo"
+                    value={formData.codigo}
+                    onChange={handleChange}
+                    required
+                />
 
                 <label>Estado</label>
                 <select name="estado" value={formData.estado} onChange={handleChange}>

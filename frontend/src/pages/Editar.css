@@ -1,78 +1,133 @@
+/*Contenedor del formulario*/
 .editar-container {
-    max-width: 500px;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin: 50px auto;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7fa;
+    padding: 40px 20px;
+    border-radius: 12px;
+    border-top: 5px solid #007bff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    max-width: 600px;
+    margin: 40px auto;
 }
 
+/*Título*/
 .editar-container h2 {
+    font-weight: 700;
+    font-size: 2rem;
     text-align: center;
-    color: #333333;
-    margin-bottom: 20px;
+    color: #212529;
+    margin-bottom: 30px;
+    position: relative;
 }
 
+/* Decoración debajo del título */
+.editar-container h2:after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #007bff;
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* Formulario*/
 .editar-form {
     display: flex;
     flex-direction: column;
+    gap: 16px;
 }
 
+/*Estilos para el contenedor del formulario*/
 .editar-form label {
-    margin-bottom: 5px;
-    color: #555555;
     font-weight: 600;
+    color: #212529;
+    margin-bottom: -10px;
 }
 
+/*Estilos para los campos del formulario*/
 .editar-form input,
 .editar-form select {
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    font-size: 16px;
+    background-color: #eef6ff;
+    color: #212529;
+    padding: 12px 15px;
+    border: 1px solid #b6d4fe;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
 }
 
+/* Estilos para los campos de entrada y el selector */
+.crear-form input::placeholder {
+    color: #6c757d;
+}
+
+/* Estilos para los campos de entrada y el selector */
 .editar-form input:focus,
 .editar-form select:focus {
-    border-color: #007BFF;
+    background-color: #ffffff;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
     outline: none;
 }
 
-.editar-form button[type="submit"] {
-    background-color: #007BFF;
-    color: #ffffff;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
+/* Estilos para los campos de entrada y el selector */
+.crear-form select {
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.editar-form button[type="submit"]:hover {
+/* Estilos para el botón de envío*/
+.editar-form button {
+    margin-top: 10px;
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Efectos para el botón de envío al pasar el mouse */
+.editar-form button:hover {
     background-color: #0056b3;
+    transform: translateY(-1px);
 }
 
-.volver-button {
-    display: block;
-    margin: 20px auto 0;
+/* Efectos para el botón de envío al hacer clic */
+.crear-form button:active {
+    background-color: #004085;
+    transform: translateY(0);
+}
+
+/* Estilos para el botón de envío cuando está deshabilitado */
+.crear-form button:disabled {
     background-color: #6c757d;
-    color: #ffffff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.volver-button:hover {
-    background-color: #5a6268;
-}
-
-.editar-form button:disabled {
-    background-color: #cccccc;
     cursor: not-allowed;
+}
+
+.editar-form .volver-button {
+    margin-top: 10px;
+    padding: 12px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Efectos para el botón de volver al pasar el mouse */
+.editar-form .volver-button:hover {
+    background-color: #a52834;
+    transform: translateY(-1px);
+}
+
+/* Efectos para el botón de volver al hacer clic */
+.editar-form .volver-button:active {
+    background-color: #a52834;
+    transform: translateY(0);
 }

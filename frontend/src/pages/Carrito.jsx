@@ -69,21 +69,31 @@ export default function Carrito() {
         }
     };
 
-    const actualizarCantidad = async (id, stock) => {
+    const actualizarCantidad = async (id, nuevoStock, stockDisponible) => {
 
-        if (stock < 1) return;
+        nuevoStock = Number(nuevoStock);
+        stockDisponible = Number(stockDisponible);
+
+        if (nuevoStock < 1) return;
+
+        if (nuevoStock > stockDisponible) {
+            alert("No hay suficiente stock disponible");
+            return;
+        }
+
+        // Actualización optimista: actualizar UI inmediatamente
+        setItems(prevItems => prevItems.map(it => it.id === id ? { ...it, stock: nuevoStock } : it));
 
         try {
-            await api.put(`/api/carrito/${id}`, { stock }, {
+            await api.put(`/api/carrito/${id}`, { stock: nuevoStock }, {
                 headers: {
                     Accept: "application/json",
                 },
             });
-
-            fetchCarrito();
-
         } catch (err) {
             setError(err.message);
+            // Si falla, re-sincronizar con el servidor
+            fetchCarrito();
         }
     };
 
@@ -128,8 +138,6 @@ export default function Carrito() {
         <div className="container mt-5 general-container">
             <div className="d-flex justify-content-between align-items-center mb-4 carrito-header">
                 <h2>Mi Carrito</h2>
-
-
             </div>
 
             {items.length === 0 ? (
@@ -175,7 +183,8 @@ export default function Carrito() {
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
-                                                            item.stock - 1
+                                                            item.stock - 1,
+                                                            item.autopart.stock
                                                         )
                                                     }
                                                 >
@@ -188,10 +197,12 @@ export default function Carrito() {
 
                                                 <button
                                                     className="btn btn-outline-secondary"
+                                                    disabled={item.stock >= item.autopart.stock}
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
-                                                            item.stock + 1
+                                                            item.stock + 1,
+                                                            item.autopart.stock
                                                         )
                                                     }
                                                 >
