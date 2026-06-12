@@ -41,7 +41,7 @@ const Login = () => {
           role: response.data.user.role
         })
       );
-      
+
       // Guardar el token en localStorage
       localStorage.setItem('auth_token', response.data.token);
 
@@ -103,18 +103,26 @@ const Login = () => {
               </button>
             </div>
           </div>
+        
 
-          <button
-            type="submit"
-            className="login-button"
-            disabled={loading}
-          >
-            {loading ? (
-              <span className="spinner"></span>
-            ) : (
-              'Iniciar Sesión'
-            )}
-          </button>
+        <button
+          type="submit"
+          disabled={loading}
+          className="login-button"
+        >
+          {loading ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Iniciando Sesión...
+            </>
+          ) : (
+            "Iniciar Sesión"
+          )}
+        </button>
         </form>
 
         <div className="login-footer">
