@@ -154,7 +154,7 @@ export default function Carrito() {
                                 <tr>
                                     <th>Autoparte</th>
                                     <th>Precio</th>
-                                    <th>Stock</th>
+                                    <th>Cantidad a pedir</th>
                                     <th>Total</th>
                                     <th>Acciones</th>
                                 </tr>
