@@ -69,10 +69,20 @@ export default function DetalleAutoparte() {
     // Si está cargando
     if (loading) {
         return (
-            <div className="container mt-5 text-center">
-                <h4 className="text-muted">
+            <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+                <div
+                    className="spinner-border"
+                    style={{ width: "4rem", height: "4rem" }}
+                    role="status"
+                >
+                    <span className="visually-hidden">
+                        Cargando...
+                    </span>
+                </div>
+
+                <p classNAme="mt-3 fs-5">
                     Cargando autoparte...
-                </h4>
+                </p>
             </div>
         );
     }
