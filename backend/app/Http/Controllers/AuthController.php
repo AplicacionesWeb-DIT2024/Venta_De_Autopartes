@@ -67,7 +67,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Credenciales inválidas'], 401);
+            return response()->json(['message' => 'Usuario o contraseña incorrecto'], 401);
         }
         $user = Auth::user();
         $token = $user->createToken('auth_token')->plainTextToken;
