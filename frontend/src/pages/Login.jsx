@@ -70,7 +70,7 @@ const Login = () => {
 
         {errorMsg && <p className="login-error">{errorMsg}</p>}
 
-        <form onSubmit={handleLogin}>
+        <form className="login-form" onSubmit={handleLogin}>
           <div className="login-input-group">
             <label>Correo Electrónico</label>
             <input
@@ -103,26 +103,26 @@ const Login = () => {
               </button>
             </div>
           </div>
-        
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="login-button"
-        >
-          {loading ? (
-            <>
-              <span
-                className="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              Iniciando Sesión...
-            </>
-          ) : (
-            "Iniciar Sesión"
-          )}
-        </button>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="login-button"
+          >
+            {loading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true" suiza vs bosnia
+                ></span>
+                Iniciando Sesión...
+              </>
+            ) : (
+              "Iniciar Sesión"
+            )}
+          </button>
         </form>
 
         <div className="login-footer">

@@ -1,9 +1,9 @@
 /* Contenedor principal */
 .login-container {
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #f3f4f6;
 }
 
@@ -32,7 +32,7 @@
 }
 
 /* Etiqueta del input */
-.login-input-group label{
+.login-input-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
@@ -52,7 +52,7 @@
 .login-input-group input:focus {
     outline: none;
     border-color: #3b82f6;
-    box-shadow: 0 0 0 1px #3b82f6;  
+    box-shadow: 0 0 0 1px #3b82f6;
 }
 
 /* Botón de login */
@@ -74,9 +74,9 @@
 }
 
 /* Disabled */
-.login-button:disabled{
+.login-button:disabled {
     opacity: 0.7;
-    cursor: not-allowed;    
+    cursor: not-allowed;
 }
 
 /* Spinner */
@@ -108,7 +108,7 @@
 }
 
 /* Footer */
-.login-footer{
+.login-footer {
     text-align: center;
     margin-top: 1rem;
     font-size: 0.9rem;
@@ -144,4 +144,18 @@
     border: none;
     cursor: pointer;
     font-size: 18px;
+    color: #212529
+}
+
+/* Estilos para el contenedor del formulario */
+.login-form input,
+.login-form select {
+    background-color: #eef6ff;
+    color: #212529;
+    padding: 12px 15px;
+    border: 1px solid #b6d4fe;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
 }
