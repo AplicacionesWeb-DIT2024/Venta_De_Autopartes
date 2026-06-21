@@ -213,7 +213,7 @@ export default function Carrito() {
 
                                         </td>
 
-                                        <td className="item-total">
+                                        <td className="item-totaA otral">
                                             $
                                             {
                                                 Number(
@@ -239,21 +239,21 @@ export default function Carrito() {
                         </table>
                     </div>
 
-                    <div className="d-flex justify-content-between align-items-center mb-4 carrito-header acciones-carrito">
+                    <div className="d-flex flex-column align-items-start mb-4 carrito-header acciones-carrito">
                         <button
-                            className="btn btn-outline-danger btn-vaciar"
+                            className="btn btn-outline-danger btn-vaciar mb-3"
                             onClick={vaciarCarrito}
                         >
                             Vaciar carrito
                         </button>
-                    </div>
 
-                    <button
-                        className="btn btn-outline-dark btn-volver"
-                        onClick={() => navigate("/autoparts")}
-                    >
-                        Volver
-                    </button>
+                        <button
+                            className="btn btn-outline-dark btn-volver"
+                            onClick={() => navigate("/autoparts")}
+                        >
+                            Agregar otra autoparte
+                        </button>
+                    </div>
 
                     <div className="text-end">
                         <h4 className="carrito-total">
