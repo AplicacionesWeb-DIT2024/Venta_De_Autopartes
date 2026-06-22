@@ -17,11 +17,20 @@ const Crear = () => {
     });
 
     const [loading, setLoading] = useState(false);
+    const [errorPrecio, setErrorPrecio] = useState("");
 
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        // No mostrar error en tiempo real: sólo limpiar error existente
+        // si el usuario corrige el precio tras un intento de envío.
+        if (name === "precio" && errorPrecio) {
+            const num = Number(value);
+            if (!isNaN(num) && num >= 1 && num <= 5000000) {
+                setErrorPrecio("");
+            }
+        }
         setFormData({
             ...formData,
             [name]: value,
@@ -31,6 +40,18 @@ const Crear = () => {
     // Función para manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const precioNum = Number(formData.precio);
+        if (isNaN(precioNum) || precioNum < 1 || precioNum > 5000000) {
+            setErrorPrecio("Ingrese un precio entre $1 y 5.000.000");
+            return;
+        }
+
+        if (errorPrecio) {
+            return;
+        }
+
+        setErrorPrecio("");
 
         try {
             setLoading(true);
@@ -55,10 +76,16 @@ const Crear = () => {
         } catch (error) {
             console.error("Error al crear la autoparte:", error);
 
-            alert(
-                error.response?.data?.message ||
-                "Error al crear la autoparte. Por favor, inténtalo de nuevo."
-            );
+            const errors = error.response?.data?.errors;
+            if (errors?.precio) {
+                setErrorPrecio(errors.precio[0]);
+            } else {
+                alert(
+                    error.response?.data?.message ||
+                    "Error al crear la autoparte. Por favor, inténtalo de nuevo."
+                );
+            }
+
         } finally {
             setLoading(false);
         }
@@ -75,16 +102,34 @@ const Crear = () => {
         <div className="crear-container">
             <h2>Agregar Nueva Autoparte</h2>
 
-            <form onSubmit={handleSubmit} className="crear-form">
+            <form onSubmit={handleSubmit} className="crear-form" noValidate>
 
                 <label>Nombre</label>
-                <input type="text" name="nombre" value={formData.nombre} onChange={handleChange} required />
+                <input
+                    type="text"
+                    name="nombre"
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    required
+                />
 
                 <label>Marca</label>
-                <input type="text" name="marca" value={formData.marca} onChange={handleChange} required />
+                <input
+                    type="text"
+                    name="marca"
+                    value={formData.marca}
+                    onChange={handleChange}loguearme
+                    required
+                />
 
                 <label>Modelo</label>
-                <input type="text" name="modelo" value={formData.modelo} onChange={handleChange} required />
+                <input
+                    type="text"
+                    name="modelo"
+                    value={formData.modelo}
+                    onChange={handleChange}
+                    required
+                />
 
                 <label>Año</label>
                 <select
@@ -121,13 +166,39 @@ const Crear = () => {
                 </select>
 
                 <label>Precio</label>
-                <input type="number" name="precio" value={formData.precio} onChange={handleChange} required />
+                <input
+                    type="number"
+                    name="precio"
+                    value={formData.precio}
+                    onChange={handleChange}
+                    min="1"
+                    max="5000000"
+                    required
+                />
+
+                {errorPrecio && (
+                    <small className='text-danger'>
+                        {errorPrecio}
+                    </small>
+                )}
 
                 <label>Color</label>
-                <input type="text" name="color" value={formData.color} onChange={handleChange} required />
+                <input
+                    type="text"
+                    name="color"
+                    value={formData.color}
+                    onChange={handleChange}
+                    required
+                />
 
                 <label>Stock</label>
-                <input type="text" name="stock" value={formData.stock} onChange={handleChange} required />
+                <input
+                    type="text"
+                    name="stock"
+                    value={formData.stock}
+                    onChange={handleChange}
+                    required
+                />
 
                 <button
                     type="submit"

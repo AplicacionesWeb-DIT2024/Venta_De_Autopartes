@@ -54,7 +54,7 @@ class AutopartController extends Controller
             'anioVehiculo' => 'required|integer|min:1900|max:' . date('Y'), // Valida que el año del vehículo sea un número entero entre 1900 y el año actual
             'codigo' => 'required|string|max:255|unique:autoparts,codigo', // Valida que el código sea único en la tabla autoparts, ignorando el registro actual en caso de actualización
             'estado' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
+            'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
             'stock' => 'required|integer|min:1|max:99' // Valida que el stock sea un número entero entre 1 y 99
         ]);
@@ -79,7 +79,7 @@ class AutopartController extends Controller
                 Rule::unique('autoparts')->ignore($id),
             ],
             'estado' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
+            'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'sometimes|required|string|max:255',
             'stock' => 'required|integer|min:1|max:99'
         ]);
