@@ -43,7 +43,7 @@ const Crear = () => {
 
         const precioNum = Number(formData.precio);
         if (isNaN(precioNum) || precioNum < 1 || precioNum > 5000000) {
-            setErrorPrecio("Ingrese un precio entre $1 y 5.000.000");
+            setErrorPrecio("Ingrese un precio entre $1 y $5.000.000");
             return;
         }
 
