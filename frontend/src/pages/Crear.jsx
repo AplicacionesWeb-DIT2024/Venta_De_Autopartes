@@ -17,19 +17,23 @@ const Crear = () => {
     });
 
     const [loading, setLoading] = useState(false);
-    const [errorPrecio, setErrorPrecio] = useState("");
+    const [errorPrecio, setErrorPrecio] = useState(""); // Para manejar el error en caso de precio fuera de rango
+    const [errorCodigo, setErrorCodigo] = useState(""); // Para manejar el error en caso de código repetido
 
     const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
 
+        if (name === "codigo" && errorCodigo) {
+            setErrorCodigo("");
+        }
+
         if (name === "stock") {
             if (!/^\d*$/.test(value)) {
                 return;
             }
         }
-
         // No mostrar error en tiempo real: sólo limpiar error existente
         // si el usuario corrige el precio tras un intento de envío.
         if (name === "precio" && errorPrecio) {
@@ -84,9 +88,16 @@ const Crear = () => {
             console.error("Error al crear la autoparte:", error);
 
             const errors = error.response?.data?.errors;
+
             if (errors?.precio) {
                 setErrorPrecio(errors.precio[0]);
-            } else {
+            }
+
+            if (errors?.codigo) {
+                setErrorCodigo("El código ya existe. Ingrese uno diferente.");
+            }
+
+            if (!error?.precio && !errors?.codigo) {
                 alert(
                     error.response?.data?.message ||
                     "Error al crear la autoparte. Por favor, inténtalo de nuevo."
@@ -170,6 +181,11 @@ const Crear = () => {
                     onChange={handleChange}
                     required
                 />
+                {errorCodigo && (
+                    <small className="text-danger">
+                        {errorCodigo}
+                    </small>
+                )}
 
                 <label>Estado</label>
                 <select name="estado" value={formData.estado} onChange={handleChange}>
