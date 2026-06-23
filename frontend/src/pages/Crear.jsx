@@ -23,6 +23,13 @@ const Crear = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        if (name === "stock") {
+            if (!/^\d*$/.test(value)) {
+                return;
+            }
+        }
+
         // No mostrar error en tiempo real: sólo limpiar error existente
         // si el usuario corrige el precio tras un intento de envío.
         if (name === "precio" && errorPrecio) {
@@ -98,6 +105,15 @@ const Crear = () => {
         years.push(year);
     }
 
+
+    const handleStockKeyDown = (e) => {
+        const invalidKeys = ["e", "E", "+", "-", "."];
+
+        if (invalidKeys.includes(e.key)) {
+            e.preventDefault()
+        }
+    };
+
     return (
         <div className="crear-container">
             <h2>Agregar Nueva Autoparte</h2>
@@ -118,7 +134,7 @@ const Crear = () => {
                     type="text"
                     name="marca"
                     value={formData.marca}
-                    onChange={handleChange}loguearme
+                    onChange={handleChange}
                     required
                 />
 
@@ -171,6 +187,7 @@ const Crear = () => {
                     name="precio"
                     value={formData.precio}
                     onChange={handleChange}
+                    onKeyDown={handleStockKeyDown}
                     min="1"
                     max="5000000"
                     required
@@ -193,10 +210,14 @@ const Crear = () => {
 
                 <label>Stock</label>
                 <input
-                    type="text"
+                    type="number"
                     name="stock"
                     value={formData.stock}
                     onChange={handleChange}
+                    onKeyDown={handleStockKeyDown}
+                    min="1"
+                    max="99"
+                    step="1"
                     required
                 />
 
