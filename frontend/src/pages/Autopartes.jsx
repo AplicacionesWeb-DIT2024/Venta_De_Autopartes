@@ -46,6 +46,12 @@ export default function Autopartes() {
     const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const esEmpleado = user?.role === 'Empleado'; // Verificamos si el usuario es un empleado
     const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar la carga al agregar al carrito
+    const formatPrecio = (precio) => {
+        return Number(precio).toLocaleString("es-AR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    };
 
     const handleDelete = (id) => {
         if (window.confirm("¿Estás seguro de que deseas eliminar esta autoparte?")) {
@@ -118,7 +124,7 @@ export default function Autopartes() {
 
                                                 {/* Precio */}
                                                 <h4 className="text-success mt-auto">
-                                                    ${Number(autopart.precio).toFixed(2)}
+                                                    ${formatPrecio(autopart.precio)}
                                                 </h4>
                                             </div>
 
@@ -191,7 +197,7 @@ export default function Autopartes() {
                     </>
                 )
             }
-            
+
             {/* HEADER */}
             <div className="mb-4 text-center">
                 {esEmpleado ? ( // Si es Empleado solo tenemos habilitada la creación de Autopartes
