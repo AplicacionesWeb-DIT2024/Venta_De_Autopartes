@@ -24,6 +24,12 @@ export default function Editar() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
+    const formatMiles = (valor) => {
+        if (!valor) return "";
+        const numero = Math.trunc(Number(valor));
+        return numero.toLocaleString("es-AR");
+    };
+
     useEffect(() => {
         // Cargo las caracteristicas de la autoparte a modificar
         const cargarAutoparte = async () => {
@@ -41,7 +47,7 @@ export default function Editar() {
                     anio: autoparte.anioVehiculo || "",
                     codigo: autoparte.codigo || "",
                     estado: autoparte.estado || "",
-                    precio: autoparte.precio || "",
+                    precio: String(autoparte.precio || ""),
                     color: autoparte.color || "",
                     stock: autoparte.stock || ""
                 });
@@ -73,7 +79,7 @@ export default function Editar() {
                 anioVehiculo: formData.anio,
                 codigo: formData.codigo,
                 estado: formData.estado,
-                precio: formData.precio,
+                precio: Number(formData.precio),
                 color: formData.color,
                 stock: formData.stock
             });
@@ -165,10 +171,16 @@ export default function Editar() {
 
                 <label>Precio</label>
                 <input
-                    type="number"
+                    type="text"
                     name="precio"
-                    value={formData.precio}
-                    onChange={handleInputChange}
+                    value={formatMiles(formData.precio)}
+                    onChange={(e) => {
+                        const limpio = e.target.value.replace(/\D/g, "");
+                        setFormData(prev => ({
+                            ...prev,
+                            precio: limpio
+                        }));
+                    }}
                     placeholder="Precio"
                     className="form-control mb-3"
                 />
