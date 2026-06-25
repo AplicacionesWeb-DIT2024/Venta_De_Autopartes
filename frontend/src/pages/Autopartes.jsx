@@ -48,8 +48,8 @@ export default function Autopartes() {
     const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar la carga al agregar al carrito
     const formatPrecio = (precio) => {
         return Number(precio).toLocaleString("es-AR", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
         });
     };
 

@@ -22,6 +22,16 @@ const Crear = () => {
 
     const navigate = useNavigate();
 
+    const formatMiles = (valor) => {
+        if (!valor) return "";
+
+        const numero = valor
+            .toString()
+            .replace(/\D/g, "");
+
+        return numero.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -76,7 +86,7 @@ const Crear = () => {
                 anioVehiculo: formData.anio,
                 codigo: formData.codigo,
                 estado: formData.estado,
-                precio: formData.precio,
+                precio: Number(formData.precio),
                 color: formData.color,
                 stock: formData.stock
             });
@@ -199,13 +209,19 @@ const Crear = () => {
 
                 <label>Precio</label>
                 <input
-                    type="number"
+                    type="text"
                     name="precio"
-                    value={formData.precio}
-                    onChange={handleChange}
+                    value={formatMiles(formData.precio)}
+                    onChange={(e) => {
+                        const limpio = e.target.value
+                            .replace(/\./g, "")
+                            .replace(/\D/g, "");
+                        setFormData({
+                            ...formData,
+                            precio: limpio
+                        });
+                    }}
                     onKeyDown={handleStockKeyDown}
-                    min="1"
-                    max="5000000"
                     required
                 />
 
