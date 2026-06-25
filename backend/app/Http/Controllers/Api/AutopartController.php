@@ -15,13 +15,27 @@ class AutopartController extends Controller
     {
         // Obtener el parámetro per_page, por defecto 50
         $perPage = $request->input('per_page', 50);
-        
+
         // Validar que per_page no sea mayor a 100 (seguridad)
         if ($perPage > 100) {
             $perPage = 100;
         }
-        
-        return Autopart::orderBy('created_at', 'desc')->paginate($perPage); // Devuelve una lista paginada de autopartes ordenadas por fecha de creación en orden descendente
+
+        // Seleccionar solo las columnas necesarias para mejorar el rendimiento
+        return Autopart::select(
+            'id', 
+            'autoparte', 
+            'marca', 
+            'modelo', 
+            'precio', 
+            'estado', 
+            'anioVehiculo', 
+            'color',
+            'stock',
+            'created_at'
+            )
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 
     // Método para mostrar una autoparte específica
@@ -40,8 +54,9 @@ class AutopartController extends Controller
             'anioVehiculo' => 'required|integer|min:1900|max:' . date('Y'), // Valida que el año del vehículo sea un número entero entre 1900 y el año actual
             'codigo' => 'required|string|max:255|unique:autoparts,codigo', // Valida que el código sea único en la tabla autoparts, ignorando el registro actual en caso de actualización
             'estado' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
+            'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
+            'stock' => 'required|integer|min:1|max:99' // Valida que el stock sea un número entero entre 1 y 99
         ]);
         $autopart = Autopart::create($validated);
         return response()->json($autopart, 201);
@@ -61,11 +76,12 @@ class AutopartController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('autoparts')->ignore($id), 
+                Rule::unique('autoparts')->ignore($id),
             ],
             'estado' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
+            'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'sometimes|required|string|max:255',
+            'stock' => 'required|integer|min:1|max:99'
         ]);
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON

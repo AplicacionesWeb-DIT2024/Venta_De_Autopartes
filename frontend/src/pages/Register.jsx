@@ -5,6 +5,7 @@ import api from '../api';
 import './Register.css';
 import Cookies from 'js-cookie';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ const Register = () => {
   const [role, setRole] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfimPassword, setShowConfirmPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +42,7 @@ const Register = () => {
       await api.get('/sanctum/csrf-cookie');
 
       // Registrar al usuario
-      await api.post('/register', {
+      const response = await api.post('/register', { // Enviamos los datos del formulario al backend
         name: username,
         email,
         password,
@@ -55,9 +56,27 @@ const Register = () => {
         }
       });
 
-      alert('Registro existoso! Ahora podés iniciar sesión.');
+      // Guardar el usuario y token en localStorage
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          name: response.data.user.name,
+          email: response.data.user.email,
+          role: response.data.user.role
+        })
+      );
 
-      navigate('/');
+      // Guardar el token en localStorage
+      localStorage.setItem('auth_token', response.data.token);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Registro exitoso',
+        text: '¡Bienvenido a AutoPartes!',
+        confirmButtonText: 'Ir al inicio'
+      }).then(() => {
+        navigate('/'); //Redireccionar al inicio de sesión después del registro
+      });
 
     } catch (error) {
       console.error(error)
@@ -133,8 +152,8 @@ const Register = () => {
                 }
               >
                 {showPassword
-                  ? <FaEye /> // Icono de ojo abierto
-                  : <FaEyeSlash /> // Icono de ojo cerrado
+                  ? <FaEye /> // Icono de ojo cerrado
+                  : <FaEyeSlash /> // Icono de ojo abierto
                 }
               </button>
 
@@ -149,7 +168,7 @@ const Register = () => {
 
               <input
                 type={
-                  showConfimPassword
+                  showConfirmPassword
                     ? "text"
                     : "password"
                 }
@@ -165,13 +184,13 @@ const Register = () => {
                 className="show-password-btn"
                 onClick={() =>
                   setShowConfirmPassword(
-                    !showConfimPassword
+                    !showConfirmPassword
                   )
                 }
               >
-                {showPassword
-                  ? <FaEye /> // Icono de ojo abierto
-                  : <FaEyeSlash /> // Icono de ojo cerrado
+                {showConfirmPassword
+                  ? <FaEye /> // Icono de ojo cerrado
+                  : <FaEyeSlash /> // Icono de ojo abierto
                 }
               </button>
 
@@ -222,7 +241,7 @@ const Register = () => {
         {/* Enlace para iniciar sesión */}
         <div className="register-footer">
           <p>
-            ¿Ya tenés una cuenta?{""}
+            ¿Ya tenés una cuenta? {""}
             <Link to="/">
               Iniciar sesión
             </Link>

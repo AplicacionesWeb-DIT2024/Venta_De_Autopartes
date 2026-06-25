@@ -42,6 +42,9 @@ const Login = () => {
         })
       );
 
+      // Guardar el token en localStorage
+      localStorage.setItem('auth_token', response.data.token);
+
       navigate('/autoparts'); // Redirige a la página de autopartes después del login exitoso
 
     } catch (error) {
@@ -67,7 +70,7 @@ const Login = () => {
 
         {errorMsg && <p className="login-error">{errorMsg}</p>}
 
-        <form onSubmit={handleLogin}>
+        <form className="login-form" onSubmit={handleLogin}>
           <div className="login-input-group">
             <label>Correo Electrónico</label>
             <input
@@ -101,15 +104,23 @@ const Login = () => {
             </div>
           </div>
 
+
           <button
             type="submit"
-            className="login-button"
             disabled={loading}
+            className="login-button"
           >
             {loading ? (
-              <span className="spinner"></span>
+              <>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true" suiza vs bosnia
+                ></span>
+                Iniciando Sesión...
+              </>
             ) : (
-              'Iniciar Sesión'
+              "Iniciar Sesión"
             )}
           </button>
         </form>

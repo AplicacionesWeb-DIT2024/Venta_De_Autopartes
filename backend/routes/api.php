@@ -21,14 +21,14 @@ Route::middleware('auth:sanctum')->prefix('autoparts')->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register']);
 
-// Rutas protegidas por autenticación
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/comprar', [CarritoController::class, 'comprar']);
-});
-
-Route::post('/carrito', [CarritoController::class, 'store'])->name('carrito.store');
-
 // Rutas para la compra
 Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
 
-
+// Rutas para la gestión del carrito de compras
+Route::middleware('auth:sanctum')->prefix('carrito')->group(function (){
+    Route::get('/', [CarritoController::class, 'index']);
+    Route::post('/', [CarritoController::class, 'store']);
+    Route::put('/{id}', [CarritoController::class, 'update']);
+    Route::delete('/{id}', [CarritoController::class, 'destroy']);
+    Route::delete('/', [CarritoController::class, 'clear']);
+});

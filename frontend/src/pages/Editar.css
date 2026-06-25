@@ -1,13 +1,5 @@
-/* Estilos para la página de creación de eventos */
-
-/* Fondo principal de la página */
-body {
-    background-color: #5086b8;
-    font-family: sans-serif;
-}
-
 /*Contenedor del formulario*/
-.crear-container{
+.editar-container {
     background-color: #f4f7fa;
     padding: 40px 20px;
     border-radius: 12px;
@@ -17,9 +9,8 @@ body {
     margin: 40px auto;
 }
 
-
-/* Titulo*/
-.crear-container h2 {
+/*Título*/
+.editar-container h2 {
     font-weight: 700;
     font-size: 2rem;
     text-align: center;
@@ -29,7 +20,7 @@ body {
 }
 
 /* Decoración debajo del título */
-.crear-container h2:after{
+.editar-container h2:after {
     content: "";
     display: block;
     width: 60px;
@@ -39,25 +30,24 @@ body {
     border-radius: 2px;
 }
 
-/* Formulario */
-.crear-form {
+/* Formulario*/
+.editar-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-/* Estilos para el contenedor del formulario */
-.crear-form label {
+/*Estilos para el contenedor del formulario*/
+.editar-form label {
     font-weight: 600;
     color: #212529;
     margin-bottom: -10px;
 }
 
-
-/* Estilos para el contenedor del formulario */
-.crear-form input,
-.crear-form select {
-    background-color: #ffffff;
+/*Estilos para los campos del formulario*/
+.editar-form input,
+.editar-form select {
+    background-color: #eef6ff;
     color: #212529;
     padding: 12px 15px;
     border: 1px solid #b6d4fe;
@@ -68,27 +58,12 @@ body {
 
 /* Estilos para los campos de entrada y el selector */
 .crear-form input::placeholder {
-    color: #007bff;
-}
-
-.crear-form input[type="text"],
-.crear-form input[type="number"] {
-    color: #212529;
-    background-color: #ffffff;
-}
-
-/* Override browser autofill background/text color */
-input:-webkit-autofill,
-textarea:-webkit-autofill,
-select:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
-    box-shadow: 0 0 0px 1000px #ffffff inset !important;
-    -webkit-text-fill-color: #212529 !important;
+    color: #6c757d;
 }
 
 /* Estilos para los campos de entrada y el selector */
-.crear-form input:focus,
-.crear-form select:focus {
+.editar-form input:focus,
+.editar-form select:focus {
     background-color: #ffffff;
     border-color: #007bff;
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
@@ -100,8 +75,8 @@ select:-webkit-autofill {
     cursor: pointer;
 }
 
-/* Estilos para el botón de envío */
-.crear-form button {
+/* Estilos para el botón de envío*/
+.editar-form button {
     margin-top: 10px;
     padding: 12px 20px;
     background-color: #007bff;
@@ -115,7 +90,7 @@ select:-webkit-autofill {
 }
 
 /* Efectos para el botón de envío al pasar el mouse */
-.crear-form button:hover {
+.editar-form button:hover {
     background-color: #0056b3;
     transform: translateY(-1px);
 }
@@ -132,7 +107,7 @@ select:-webkit-autofill {
     cursor: not-allowed;
 }
 
-.crear-form .volver-button {
+.editar-form .volver-button {
     margin-top: 10px;
     padding: 12px 20px;
     background-color: #dc3545;
@@ -146,27 +121,13 @@ select:-webkit-autofill {
 }
 
 /* Efectos para el botón de volver al pasar el mouse */
-.crear-form .volver-button:hover {
+.editar-form .volver-button:hover {
     background-color: #a52834;
     transform: translateY(-1px);
 }
 
 /* Efectos para el botón de volver al hacer clic */
-.crear-form .volver-button:active {
+.editar-form .volver-button:active {
     background-color: #a52834;
     transform: translateY(0);
-}
-
-/* Quitar las flechitas del input number */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-    -moz-appearance: textfield;
-    -webkit-appearance: textfield;
-    appearance: textfield;
 }

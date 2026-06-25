@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios"; // Importa axios para realizar solicitudes HTTP
 import api from "../api";
-
-const API = import.meta.env.VITE_API_URL;
 
 export const useAutopartes = () => {
   const [autopartes, setAutopartes] = useState([]); // Estado para almacenar las autopartes
@@ -11,42 +8,56 @@ export const useAutopartes = () => {
 
   // Cargar las autopartes al montar el componente
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-    
-    api.get('/api/autoparts?per_page=50', config)
+
+    api.get('/api/autoparts?per_page=100')
       .then(res => {
+
         console.log("Respuesta de autopartes:", res.data);
+
         // Obtener datos de paginación de Laravel
         const data = res.data.data || res.data || [];
+
         setAutopartes(data);
+
         setLoading(false);
       })
       .catch(err => {
+
         console.error('Error al cargar autopartes:', err);
+
         setError(err);
+
         setLoading(false);
       }
       )
   }, []);
 
-  const addToCart = async (id) => {
-    await fetch(`${API}/carrito`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ autopart_id: id })
-    });
+
+  // Función para agregar una autoparte al carrito
+  const addToCart = async (id, stock = 1) => {
+
+    try {
+      const response = await api.post(`/api/carrito`, {
+        autopart_id: id,
+        stock
+      });
+
+      console.log("Respuesta carrito:", response.data);
+
+      return response.data;
+    } catch (error) {
+      console.error('Error al agregar al carrito:', error);
+      throw new Error(error.response?.data?.message || 'Error al agregar al carrito');
+    }
   };
 
   const deleteAutoparte = async (id) => {
-    const token = localStorage.getItem('token');
-    const config = { headers: { Authorization: `Bearer ${token}` } };
-
     try {
-      await axios.delete(`http://localhost:8000/api/autoparts/${id}`, config);
+      await api.delete(`/api/autoparts/${id}`);
       setAutopartes(autopartes.filter(autopart => autopart.id !== id));
+      // Invalidar caché cuando se elimina una autoparte
+      cache.data = null;
+      cache.timestamp = null;
     } catch (err) {
       console.error('Error al eliminar autoparte:', err);
       setError(err);

@@ -170,3 +170,29 @@
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+/* Animación de carga (Skeleton Loading) */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+.skeleton-title,
+.skeleton-price {
+    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.user-info {
+    color: black;
+}
+
+.autopartes-container{
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    padding: 40px 20px;
+    border-radius: 20px;
+}

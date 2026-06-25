@@ -1,6 +1,42 @@
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
+import "../index.css"; // importamos index.css para los estilos globales
+import { useState } from "react";
+
+// Componente Skeleton para las tarjetas de carga
+function SkeletonCard() {
+    return (
+        <div className="col-md-3 mb-4">
+            <div className="card h-100 shadow-sm" style={{ opacity: 0.7 }}>
+                <div className="card-body d-flex flex-column text-center">
+                    <div className="skeleton-title" style={{
+                        height: '20px',
+                        backgroundColor: '#e0e0e0',
+                        borderRadius: '4px',
+                        marginBottom: '12px',
+                        animation: 'pulse 1.5s infinite'
+                    }}></div>
+                    <div className="skeleton-price" style={{
+                        height: '24px',
+                        backgroundColor: '#e0e0e0',
+                        borderRadius: '4px',
+                        marginTop: 'auto',
+                        animation: 'pulse 1.5s infinite'
+                    }}></div>
+                </div>
+                <div className="card-footer bg-white border-0 text-center">
+                    <div style={{
+                        height: '38px',
+                        backgroundColor: '#e0e0e0',
+                        borderRadius: '4px',
+                        animation: 'pulse 1.5s infinite'
+                    }}></div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 export default function Autopartes() {
     const { autopartes, error, loading, addToCart, deleteAutoparte } = useAutopartes(); // Obtenemos las autopartes y funciones del hook
@@ -9,6 +45,13 @@ export default function Autopartes() {
     const lista = autopartes || []; // Aseguramos que autopartes sea un array
     const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const esEmpleado = user?.role === 'Empleado'; // Verificamos si el usuario es un empleado
+    const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar la carga al agregar al carrito
+    const formatPrecio = (precio) => {
+        return Number(precio).toLocaleString("es-AR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    };
 
     const handleDelete = (id) => {
         if (window.confirm("¿Estás seguro de que deseas eliminar esta autoparte?")) {
@@ -17,17 +60,17 @@ export default function Autopartes() {
     };
 
     return (
-        <div className="container mt-5 autopartes-container">
+        <div className="container mt-5 general-container">
 
             {/* USUARIO */}
             {user && (
-                <div className="text-end mb-3">
+                <div className="text-start mb-3 user-info">
                     <p className="mb-1">
                         Bienvenido, <strong>{user.name}</strong>
                     </p>
                     <p className="mb-0">
-                        <span>Rol:</span>
-                        <span className="ms-2 badge bg-info">{user.role}</span>
+                        <span>Rol: </span>
+                        <strong>{user.role}</strong>
                     </p>
                 </div>
             )}
@@ -45,6 +88,14 @@ export default function Autopartes() {
                 </button>
             </div>
 
+            {/* SKELETON LOADING */}
+            {loading && (
+                <div className="row">
+                    {[...Array(4)].map((_, i) => (
+                        <SkeletonCard key={i} />
+                    ))}
+                </div>
+            )}
 
             {/* LISTADO*/}
             {
@@ -73,28 +124,69 @@ export default function Autopartes() {
 
                                                 {/* Precio */}
                                                 <h4 className="text-success mt-auto">
-                                                    ${Number(autopart.precio).toFixed(2)}
+                                                    ${formatPrecio(autopart.precio)}
                                                 </h4>
                                             </div>
 
+                                            {/* Botón Agregar al Carrito */}
                                             <div className="card-footer bg-white border-0 text-center">
-
                                                 {!esEmpleado && (
                                                     <button
                                                         className="btn btn-success w-100 mb-2"
-                                                        onClick={() => addToCart(autopart.id)}
+                                                        disabled={loadingCart} // Deshabilitar el botón mientras se está agregando al carrito
+                                                        onClick={async (e) => {
+                                                            e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                            try {
+                                                                setLoadingCart(true); // Activamos el estado de carga
+
+                                                                await addToCart(autopart.id, 1); // Agregamos al carrito
+
+                                                                navigate('/carrito'); // Navegamos al carrito
+                                                            } catch (err) {
+                                                                alert('Error al agregar al carrito: ' + err.message);
+                                                            } finally {
+                                                                setLoadingCart(false); // Desactivamos el estado de carga
+                                                            }
+                                                        }}
                                                     >
-                                                        Agregar al Carrito
+                                                        {loadingCart ? (
+                                                            <>
+                                                                <span
+                                                                    className="spinner-border spinner-border-sm me-2"
+                                                                    role="status"
+                                                                    aria-hidden="true"
+                                                                ></span>
+
+                                                                Agregando...
+                                                            </>
+                                                        ) : (
+                                                            "Agregar al Carrito"
+                                                        )}
                                                     </button>
                                                 )}
+                                            </div>
 
+                                            <div className="card-footer bg-white border-0 text-center">
                                                 {esEmpleado && (
-                                                    <button
-                                                        className="btn btn-danger w-100"
-                                                        onClick={() => handleDelete(autopart.id)}
-                                                    >
-                                                        Eliminar
-                                                    </button>
+                                                    <>
+                                                        <Link
+                                                            to={`/autoparts/${autopart.id}/editar`}
+                                                            className="btn btn-warning w-100 mb-2"
+                                                            onClick={(e) => e.stopPropagation()} // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                        >
+                                                            Editar
+                                                        </Link>
+
+                                                        <button
+                                                            className="btn btn-danger w-100"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                                handleDelete(autopart.id);
+                                                            }}
+                                                        >
+                                                            Eliminar
+                                                        </button>
+                                                    </>
                                                 )}
                                             </div>
                                         </div>
