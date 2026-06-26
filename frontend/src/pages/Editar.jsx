@@ -95,7 +95,25 @@ export default function Editar() {
     }
 
     if (loading) {
-        return <div>Cargando...</div>;
+        return (
+            <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+                <div
+                    className="spinner-border"
+                    style={{ width: "4rem", height: "4rem" }}
+                    role="status"
+                >
+                    <span className="visually-hidden">
+                        Cargando...
+                    </span>
+                </div>
+
+                <p className="mt-3 fs-5">
+                    Cargando autoparte...
+                </p>
+            </div>
+
+
+        )
     }
 
     return (
