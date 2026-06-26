@@ -47,6 +47,7 @@ export default function Autopartes() {
     const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const esEmpleado = user?.role === 'Empleado'; // Verificamos si el usuario es un empleado
     const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar la carga al agregar al carrito
+    const [deletingId, setDeletingId] = useState(null);
     const formatPrecio = (precio) => {
         return Number(precio).toLocaleString("es-AR", {
             minimumFractionDigits: 0,
@@ -64,9 +65,14 @@ export default function Autopartes() {
             confirmButtonText: 'Eliminar',
             cancelButtonText: 'Cancelar'
         });
+
         if (result.isConfirmed) {
             try {
+
+                setDeletingId(id); // activamos el spinner del botón específico
+
                 await deleteAutoparte(id);
+
                 Swal.fire({
                     icon: 'success',
                     title: 'Autoparte eliminada',
@@ -81,6 +87,8 @@ export default function Autopartes() {
                     title: 'Error',
                     text: 'No se pudo eliminar la autoparte selccionada.'
                 });
+            } finally {
+                setDeletingId(null); // quitamos el spinner
             }
         }
     };
@@ -139,8 +147,13 @@ export default function Autopartes() {
                                     <div key={autopart.id} className="col-md-3 mb-4">
 
                                         <div
-                                            className="card h-100 shadow-sm card-clickable"
-                                            onClick={() => navigate(`/autoparts/${autopart.id}`)}
+                                            className={`card h-100 shadow-sm card-clickeable ${
+                                                deletingId === autopart.id ? "opacity-50" : ""
+                                            }`}
+                                            onClick={() => {
+                                                if (deletingId === autopart.id) return;
+                                                navigate(`/autoparts/${autopart.id}`);
+                                            }}
                                         >
                                             <div className="card-body d-flex flex-column text-center">
 
@@ -196,21 +209,40 @@ export default function Autopartes() {
                                                 {esEmpleado && (
                                                     <>
                                                         <Link
-                                                            to={`/autoparts/${autopart.id}/editar`}
-                                                            className="btn btn-warning w-100 mb-2"
-                                                            onClick={(e) => e.stopPropagation()} // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                            to={deletingId === autopart.id ? "#" : `/autoparts/${autopart.id}/editar`}
+                                                            className={`btn btn-warning w-100 mb-2 ${deletingId === autopart.id ? "disabled" : ""}`}
+                                                            onClick={(e) => {
+                                                                if (deletingId === autopart.id) {
+                                                                    e.preventDefault();
+                                                                    return;
+                                                                }
+                                                                e.stopPropagation();
+                                                            }}
                                                         >
                                                             Editar
                                                         </Link>
 
                                                         <button
                                                             className="btn btn-danger w-100"
+                                                            disabled={deletingId === autopart.id}
                                                             onClick={(e) => {
-                                                                e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                                e.stopPropagation();
                                                                 handleDelete(autopart.id);
                                                             }}
                                                         >
-                                                            Eliminar
+                                                            {deletingId === autopart.id ? (
+                                                                <>
+                                                                    <span
+                                                                        className="spinner-border spinner-border-sm me-2"
+                                                                        role="status"
+                                                                        aria-hidden="true"
+                                                                    ></span>
+
+                                                                    Eliminando...
+                                                                </>
+                                                            ) : (
+                                                                "Eliminar"
+                                                            )}
                                                         </button>
                                                     </>
                                                 )}
@@ -259,3 +291,5 @@ export default function Autopartes() {
         </div >
     );
 }
+
+
