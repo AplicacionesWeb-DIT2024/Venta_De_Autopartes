@@ -47,6 +47,7 @@ export default function Autopartes() {
     const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const esEmpleado = user?.role === 'Empleado'; // Verificamos si el usuario es un empleado
     const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar la carga al agregar al carrito
+    const [deletingId, setDeletingId] = useState(null);
     const formatPrecio = (precio) => {
         return Number(precio).toLocaleString("es-AR", {
             minimumFractionDigits: 0,
@@ -64,9 +65,14 @@ export default function Autopartes() {
             confirmButtonText: 'Eliminar',
             cancelButtonText: 'Cancelar'
         });
+
         if (result.isConfirmed) {
             try {
+
+                setDeletingId(id); // activamos el spinner del botón específico
+
                 await deleteAutoparte(id);
+
                 Swal.fire({
                     icon: 'success',
                     title: 'Autoparte eliminada',
@@ -81,6 +87,8 @@ export default function Autopartes() {
                     title: 'Error',
                     text: 'No se pudo eliminar la autoparte selccionada.'
                 });
+            } finally {
+                setDeletginId(null); // quitamos el spinner
             }
         }
     };
@@ -205,12 +213,25 @@ export default function Autopartes() {
 
                                                         <button
                                                             className="btn btn-danger w-100"
+                                                            disabled={deletingId === autopart.id}
                                                             onClick={(e) => {
-                                                                e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                                e.stopPropagation();
                                                                 handleDelete(autopart.id);
                                                             }}
                                                         >
-                                                            Eliminar
+                                                            {deletingId === autopart.id ? (
+                                                                <>
+                                                                    <span
+                                                                        className="spinner-border spinner-border-sm me-2"
+                                                                        role="status"
+                                                                        aria-hidden="true"
+                                                                    ></span>
+
+                                                                    Eliminando...
+                                                                </>
+                                                            ) : (
+                                                                "Eliminar"
+                                                            )}
                                                         </button>
                                                     </>
                                                 )}
