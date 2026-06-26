@@ -54,13 +54,15 @@ export const useAutopartes = () => {
   const deleteAutoparte = async (id) => {
     try {
       await api.delete(`/api/autoparts/${id}`);
-      setAutopartes(autopartes.filter(autopart => autopart.id !== id));
-      // Invalidar caché cuando se elimina una autoparte
-      cache.data = null;
-      cache.timestamp = null;
+      
+      setAutopartes( prev =>
+        prev.filter(autopart => autopart.id !== id)
+      );
+    
     } catch (err) {
       console.error('Error al eliminar autoparte:', err);
       setError(err);
+      throw err
     }
   };
 

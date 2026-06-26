@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
 import "../index.css"; // importamos index.css para los estilos globales
 import { useState } from "react";
+import Swal from 'sweetalert2'
 
 // Componente Skeleton para las tarjetas de carga
 function SkeletonCard() {
@@ -53,9 +54,34 @@ export default function Autopartes() {
         });
     };
 
-    const handleDelete = (id) => {
-        if (window.confirm("¿Estás seguro de que deseas eliminar esta autoparte?")) {
-            deleteAutoparte(id); // Llamamos a la función para eliminar la autoparte
+    // Con este confirmamos la eliminación de una autoparte de forma estética
+    const handleDelete = async (id) => {
+        const result = await Swal.fire({
+            title: 'Eliminar autoparte?',
+            text: 'Está seguro de que desea eliminar la autoparte?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+        if (result.isConfirmed) {
+            try {
+                await deleteAutoparte(id);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Autoparte eliminada',
+                    text: 'La autoparte fue eliminada exitosamente.',
+                    confirmButtonText: 'Aceptar'
+                }).then(() => {
+                    window.location.reload();
+                });
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'No se pudo eliminar la autoparte selccionada.'
+                });
+            }
         }
     };
 
