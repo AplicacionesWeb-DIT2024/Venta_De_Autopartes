@@ -80,7 +80,7 @@ export default function DetalleAutoparte() {
                     </span>
                 </div>
 
-                <p classNAme="mt-3 fs-5">
+                <p className="mt-3 fs-5">
                     Cargando autoparte...
                 </p>
             </div>
