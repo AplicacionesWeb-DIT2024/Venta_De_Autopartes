@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Crear.css";
 import api from "../api"
+import Swal from 'sweetalert2'
 
 const Crear = () => {
     const [formData, setFormData] = useState({
@@ -91,8 +92,15 @@ const Crear = () => {
                 stock: formData.stock
             });
 
-            alert("Autoparte creada exitosamente!");
-            navigate("/autoparts"); // Redirige a la página de listado de autopartes después de crear una nueva
+            Swal.fire({
+                icon: 'success',
+                title: 'Autoparte creada',
+                text: 'La autoparte se creó correctamente.',
+                confirmButtonText: 'Aceptar'
+            }).then(() => {
+                navigate("/autoparts"); // Redirige a la página de listado de autopartes después de crear una nueva
+            });
+
 
         } catch (error) {
             console.error("Error al crear la autoparte:", error);
