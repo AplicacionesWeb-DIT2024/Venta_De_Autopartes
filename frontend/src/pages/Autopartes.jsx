@@ -88,7 +88,7 @@ export default function Autopartes() {
                     text: 'No se pudo eliminar la autoparte selccionada.'
                 });
             } finally {
-                setDeletginId(null); // quitamos el spinner
+                setDeletingId(null); // quitamos el spinner
             }
         }
     };
@@ -147,8 +147,13 @@ export default function Autopartes() {
                                     <div key={autopart.id} className="col-md-3 mb-4">
 
                                         <div
-                                            className="card h-100 shadow-sm card-clickable"
-                                            onClick={() => navigate(`/autoparts/${autopart.id}`)}
+                                            className={`card h-100 shadow-sm card-clickeable ${
+                                                deletingId === autopart.id ? "opacity-50" : ""
+                                            }`}
+                                            onClick={() => {
+                                                if (deletingId === autopart.id) return;
+                                                navigate(`/autoparts/${autopart.id}`);
+                                            }}
                                         >
                                             <div className="card-body d-flex flex-column text-center">
 
@@ -204,9 +209,15 @@ export default function Autopartes() {
                                                 {esEmpleado && (
                                                     <>
                                                         <Link
-                                                            to={`/autoparts/${autopart.id}/editar`}
-                                                            className="btn btn-warning w-100 mb-2"
-                                                            onClick={(e) => e.stopPropagation()} // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                            to={deletingId === autopart.id ? "#" : `/autoparts/${autopart.id}/editar`}
+                                                            className={`btn btn-warning w-100 mb-2 ${deletingId === autopart.id ? "disabled" : ""}`}
+                                                            onClick={(e) => {
+                                                                if (deletingId === autopart.id) {
+                                                                    e.preventDefault();
+                                                                    return;
+                                                                }
+                                                                e.stopPropagation();
+                                                            }}
                                                         >
                                                             Editar
                                                         </Link>
@@ -280,3 +291,5 @@ export default function Autopartes() {
         </div >
     );
 }
+
+
