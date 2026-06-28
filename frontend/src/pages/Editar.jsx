@@ -263,7 +263,7 @@ export default function Editar() {
                 <button
                     type="submit"
                     disabled={saving}
-                    className="d-flex justify-content-center align-items-center gap-2"
+                    className={`d-flex justify-content-center align-items-center gap-2 ${saving ? "btn-disabled" : ""}`}
                 >
                     {saving ? (
                         <>
@@ -283,7 +283,8 @@ export default function Editar() {
                 <button
                     type="button"
                     onClick={() => navigate("/autoparts")}
-                    className="volver-button"
+                    disabled={saving}
+                    className={`volver-button ${saving ? "btn-disabled" : ""}`}
                 >
                     Volver
                 </button>
