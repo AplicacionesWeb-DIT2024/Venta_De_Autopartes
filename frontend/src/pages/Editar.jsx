@@ -30,6 +30,39 @@ export default function Editar() {
         return numero.toLocaleString("es-AR");
     };
 
+    const currentYear = new Date().getFullYear();
+
+    const years = [];
+    for (let year = currentYear; year >= 1930; year--) {
+        years.push(year);
+    }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        if (name === "codigo" && errorCodigo) {
+            setErrorCodigo("");
+        }
+
+        if (name === "stock") {
+            if (!/^\d*$/.test(value)) {
+                return;
+            }
+        }
+        // No mostrar error en tiempo real: sólo limpiar error existente
+        // si el usuario corrige el precio tras un intento de envío.
+        if (name === "precio" && errorPrecio) {
+            const num = Number(value);
+            if (!isNaN(num) && num >= 1 && num <= 5000000) {
+                setErrorPrecio("");
+            }
+        }
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
     useEffect(() => {
         // Cargo las caracteristicas de la autoparte a modificar
         const cargarAutoparte = async () => {
@@ -155,14 +188,19 @@ export default function Editar() {
                 />
 
                 <label>Año</label>
-                <input
-                    type="number"
+                <select
                     name="anio"
                     value={formData.anio}
-                    onChange={handleInputChange}
-                    placeholder="Año"
-                    className="form-control mb-3"
-                />
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="">Seleccione un año</option>
+                    {years.map((year) => (
+                        <option key={year} value={year}>
+                            {year}
+                        </option>
+                    ))}
+                </select>
 
                 <label>Código</label>
                 <input
