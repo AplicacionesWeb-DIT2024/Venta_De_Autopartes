@@ -109,7 +109,7 @@ export default function Editar() {
                 autoparte: formData.nombre,
                 marca: formData.marca,
                 modelo: formData.modelo,
-                anioVehiculo: formData.anio,
+                anioVehiculo: Number(formData.anio),
                 codigo: formData.codigo,
                 estado: formData.estado,
                 precio: Number(formData.precio),
@@ -162,7 +162,7 @@ export default function Editar() {
                     type="text"
                     name="nombre"
                     value={formData.nombre}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                     placeholder="Nombre"
                     className="form-control mb-3"
                 />
