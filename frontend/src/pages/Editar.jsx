@@ -23,6 +23,7 @@ export default function Editar() {
 
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [error, setErrors] = useState({});
 
     const formatMiles = (valor) => {
         if (!valor) return "";
@@ -38,33 +39,29 @@ export default function Editar() {
     }
 
     const handleChange = (e) => {
+
         const { name, value } = e.target;
 
-        if (name === "codigo" && errorCodigo) {
-            setErrorCodigo("");
+        if (error[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ""
+            }));
         }
 
-        if (name === "stock") {
-            if (!/^\d*$/.test(value)) {
-                return;
-            }
+        if (name === "stock" && !/^\d*$/.test(value)) {
+            return;
         }
-        // No mostrar error en tiempo real: sólo limpiar error existente
-        // si el usuario corrige el precio tras un intento de envío.
-        if (name === "precio" && errorPrecio) {
-            const num = Number(value);
-            if (!isNaN(num) && num >= 1 && num <= 5000000) {
-                setErrorPrecio("");
-            }
-        }
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
+
     useEffect(() => {
-        // Cargo las caracteristicas de la autoparte a modificar
+        // Cargo las caracteristicas de la autopif () {arte a modificar
         const cargarAutoparte = async () => {
             try {
                 const response = await api.get(`/api/autoparts/${id}`);
@@ -94,18 +91,59 @@ export default function Editar() {
         cargarAutoparte();
     }, [id]);
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
-
     const handleSubmit = async (e) => {
+
         e.preventDefault();
+
+        let nuevosErrores = {};
+
+        const nombreCampos = {
+            nombre: "Nombre",
+            marca: "Marca",
+            modelo: "Modelo",
+            anio: "Año",
+            codigo: "Código",
+            estado: "Estado",
+            precio: "Precio",
+            color: "Color",
+            stock: "Stock"
+        };
+
+        Object.entries(formData).forEach(([campo, valor]) => {
+
+            if (valor === "") {
+
+                nuevosErrores[campo] =
+                    `El campo ${nombreCampos[campo]} es obligatorio`;
+            }
+
+        });
+
+        const precioNum = Number(formData.precio);
+
+        if (
+            formData.precio &&
+            (isNaN(precioNum) ||
+                precioNum < 1 ||
+                precioNum > 5000000)
+        ) {
+
+            nuevosErrores.precio =
+                "Ingrese un precio entre $1 y 5.000.000";
+
+        }
+
+        if (Object.keys(nuevosErrores).length > 0) {
+            setErrors(nuevosErrores);
+            return;
+
+        }
 
         try {
             setSaving(true);
 
             await api.put(`/api/autoparts/${id}`, {
+
                 autoparte: formData.nombre,
                 marca: formData.marca,
                 modelo: formData.modelo,
@@ -115,13 +153,31 @@ export default function Editar() {
                 precio: Number(formData.precio),
                 color: formData.color,
                 stock: formData.stock
+
             });
 
             navigate("/autoparts");
-
         } catch (error) {
-            console.error("Error al actualizar la autoparte", error);
-            alert("Hubo un error al actualizar la autoparte.")
+
+            const backendErrors = error.response?.data?.errors;
+
+            if (backendErrors?.codigo) {
+
+                setErrors(prev => ({
+                    ...prev,
+                    codigo: "Este código ya se utilizó"
+                }));
+
+            }
+
+            if (backendErrors?.precio) {
+
+                setErrors(prev => ({
+                    ...prev,
+                    precio: backendErrors.precio[0]
+                }));
+
+            }
         } finally {
             setSaving(false);
         }
@@ -166,33 +222,47 @@ export default function Editar() {
                     placeholder="Nombre"
                     className="form-control mb-3"
                 />
+                {error.nombre && (
+                    <small className="text-danger">
+                        {error.nombre}
+                    </small>
+                )}
 
                 <label>Marca</label>
                 <input
                     type="text"
                     name="marca"
                     value={formData.marca}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                     placeholder="Marca"
                     className="form-control mb-3"
                 />
+                {error.marca && (
+                    <small className="text-danger">
+                        {error.marca}
+                    </small>
+                )}
 
                 <label>Modelo</label>
                 <input
                     type="text"
                     name="modelo"
                     value={formData.modelo}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                     placeholder="Modelo"
                     className="form-control mb-3"
                 />
+                {error.modelo && (
+                    <small className="text-danger">
+                        {error.modelo}
+                    </small>
+                )}
 
                 <label>Año</label>
                 <select
                     name="anio"
                     value={formData.anio}
                     onChange={handleChange}
-                    required
                 >
                     <option value="">Seleccione un año</option>
                     {years.map((year) => (
@@ -201,22 +271,32 @@ export default function Editar() {
                         </option>
                     ))}
                 </select>
+                {error.anio && (
+                    <small className="text-danger">
+                        {error.anio}
+                    </small>
+                )}
 
                 <label>Código</label>
                 <input
                     type="text"
                     name="codigo"
                     value={formData.codigo}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                     placeholder="Código"
                     className="form-control mb-3"
                 />
+                {error.codigo && (
+                    <small className="text-danger">
+                        {error.codigo}
+                    </small>
+                )}
 
                 <label>Estado</label>
                 <select
                     name="estado"
                     value={formData.estado}
-                    onChange={handleInputChange}>
+                    onChange={handleChange}>
                     <option value="">Seleccione un estado</option>
                     <option value="Muy Bueno">Muy Bueno</option>
                     <option value="Bueno">Bueno</option>
@@ -224,6 +304,11 @@ export default function Editar() {
                     <option value="Malo">Malo</option>
                     <option value="Muy Malo">Muy Malo</option>
                 </select>
+                {error.estado && (
+                    <small className="text-danger">
+                        {error.estado}
+                    </small>
+                )}
 
                 <label>Precio</label>
                 <input
@@ -232,33 +317,62 @@ export default function Editar() {
                     value={formatMiles(formData.precio)}
                     onChange={(e) => {
                         const limpio = e.target.value.replace(/\D/g, "");
+                        handleChange({
+                            target: {
+                                name: "precio",
+                                value: limpio
+                            }
+                        });
                         setFormData(prev => ({
                             ...prev,
                             precio: limpio
                         }));
+
+                        if (error.precio) {
+                            setErrors(prev => ({
+                                ...prev,
+                                precio: ""
+                            }));
+                        }
                     }}
                     placeholder="Precio"
                     className="form-control mb-3"
                 />
+                {error.precio && (
+                    <small className="text-danger">
+                        {error.precio}
+                    </small>
+                )}
 
                 <label>Color</label>
                 <input
                     type="text"
                     name="color"
                     value={formData.color}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                     placeholder="Color"
                     className="form-control mb-3"
                 />
+                {error.color && (
+                    <small className="text-danger">
+                        {error.color}
+                    </small>
+                )}
+
                 <label>Stock</label>
                 <input
                     type="number"
                     name="stock"
                     value={formData.stock}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                     placeholder="Stock"
                     className="form-control mb-3"
                 />
+                {error.stock && (
+                    <small className="text-danger">
+                        {error.stock}
+                    </small>
+                )}
 
                 <button
                     type="submit"
@@ -290,5 +404,5 @@ export default function Editar() {
                 </button>
             </form>
         </div>
-    );
-}
+    )
+};
