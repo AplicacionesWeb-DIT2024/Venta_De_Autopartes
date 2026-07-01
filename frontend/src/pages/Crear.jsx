@@ -94,8 +94,8 @@ const Crear = () => {
 
             Swal.fire({
                 icon: 'success',
-                title: 'Autoparte creada',
-                text: 'La autoparte se creó correctamente.',
+                title: 'Autoparte agregada',
+                text: 'La autoparte se agregó correctamente.',
                 confirmButtonText: 'Aceptar'
             }).then(() => {
                 navigate("/autoparts"); // Redirige a la página de listado de autopartes después de crear una nueva

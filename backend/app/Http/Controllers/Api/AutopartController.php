@@ -70,7 +70,7 @@ class AutopartController extends Controller
             'autoparte' => 'sometimes|required|string|max:255',
             'marca' => 'sometimes|required|string|max:255',
             'modelo' => 'sometimes|required|string|max:255',
-            'añoVehiculo' => 'sometimes|required|integer',
+            'anioVehiculo' => 'sometimes|required|integer',
             'codigo' => [
                 'sometimes',
                 'required',

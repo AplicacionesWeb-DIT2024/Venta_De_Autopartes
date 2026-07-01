@@ -131,3 +131,9 @@
     background-color: #a52834;
     transform: translateY(0);
 }
+
+.btn-disabled {
+    opacity: 0.6;
+    cursor: not not-allowed;
+    pointer-events: none;
+}
