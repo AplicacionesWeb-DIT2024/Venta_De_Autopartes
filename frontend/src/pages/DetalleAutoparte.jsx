@@ -123,7 +123,7 @@ export default function DetalleAutoparte() {
 
                     {/* Precio */}
                     <h2 className="text-success mb-4">
-                        ${Number(autoparte.precio).toFixed(2)}
+                        ${Number(autoparte.precio).toLocaleString("es-AR")}
                     </h2>
 
                     {/* Información */}
