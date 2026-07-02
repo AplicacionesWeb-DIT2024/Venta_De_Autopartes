@@ -7,7 +7,7 @@ body {
 }
 
 /*Contenedor del formulario*/
-.crear-container{
+.crear-container {
     background-color: #f4f7fa;
     padding: 40px 20px;
     border-radius: 12px;
@@ -29,7 +29,7 @@ body {
 }
 
 /* Decoración debajo del título */
-.crear-container h2:after{
+.crear-container h2:after {
     content: "";
     display: block;
     width: 60px;
@@ -169,4 +169,35 @@ input[type="number"] {
     -moz-appearance: textfield;
     -webkit-appearance: textfield;
     appearance: textfield;
+}
+
+.crear-form .volver-button:disabled {
+    background-color: #dc3545;
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Hover solo cuando no está deshabilitado */
+.crear-form .volver-button:not(:disabled):hover {
+    background-color: #a52834;
+    transform: translateY(-1px);
+}
+
+/* Active solo cuando no está deshabilitado */
+.crear-form .volver-button:not(:disabled):active {
+    background-color: #a52834;
+    transform: translateY(0);
+}
+
+/* Hover solo cuando no está deshabilitado */
+.crear-form button:not(:disabled):hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+/* Active solo cuando no está deshabilitado */
+.crear-form button:not(:disabled):active {
+    background-color: #004085;
+    transform: translateY(0);
 }

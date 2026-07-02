@@ -285,6 +285,7 @@ const Crear = () => {
                     type="button"
                     onClick={() => navigate("/autoparts")}
                     className="volver-button"
+                    disabled={loading}
                 >
                     Volver
                 </button>
