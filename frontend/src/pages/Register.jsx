@@ -19,6 +19,7 @@ const Register = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [errors, setErrors] = useState({});
   const [errorMsg, setErrorMsg] = useState('');
 
   const navigate = useNavigate();
@@ -26,12 +27,59 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setErrors({});
     setErrorMsg('');
     setLoading(true);
 
     // Validar que las contraseñas coincidan
     if (password !== confirmPassword) {
-      setErrorMsg('Las contraseñas no coinciden');
+      setErrors(prev => ({
+        ...prev,
+        confirmPassword: 'Las contraseñas no coinciden'
+      }));
+      setLoading(false);
+      return;
+    }
+
+    let nuevosErrores = {};
+
+    if (!username.trim()) {
+      nuevosErrores.username =
+        "El nombre de usuario es obligatorio";
+    }
+
+    if (!email.trim()) {
+      nuevosErrores.email =
+        "El correo electrónico es obligatorio";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      nuevosErrores.email =
+        "El correo electrónico no es válido";
+    }
+
+    if (!password) {
+      nuevosErrores.password =
+        "La contraseña es obligatoria";
+    } else if (password.length < 8) {
+      nuevosErrores.password =
+        "La contraseña debe tener al menos 8 caracteres";
+    }
+
+    if (!confirmPassword) {
+      nuevosErrores.confirmPassword =
+        "Debe confirmar la contraseña";
+    }
+    else if (password !== confirmPassword) {
+      nuevosErrores.confirmPassword =
+        "Las contraseñas no coinciden";
+    }
+
+    if (!role) {
+      nuevosErrores.role =
+        "Debe seleccionar un rol";
+    }
+
+    if (Object.keys(nuevosErrores).length > 0) {
+      setErrors(nuevosErrores);
       setLoading(false);
       return;
     }
@@ -81,12 +129,60 @@ const Register = () => {
     } catch (error) {
       console.error(error)
 
-      setErrorMsg(
-        error.response?.data?.message ||
-        'Error al registrarse'
-      );
+      const backendErrors = error.response?.data.errors;
+
+      if (backendErrors) {
+        setNewErrors({
+          username: backendErrors.name?.[0],
+          email: backendErrors.email?.[0],
+          password: backendErrors.password?.[0],
+          role: backendErrors.role?.[0]
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de registro',
+          text: error.response?.data.message || 'Ocurrió un error al registrar el usuario. Por favor, inténtelo de nuevo.',
+        });
+      }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }))
+    }
+
+    switch (name) {
+      case 'username':
+        setUsername(value);
+        break;
+
+      case 'email':
+        setEmail(value);
+        break;
+
+      case 'password':
+        setPassword(value);
+        break;
+
+      case 'confirmPassword':
+        setConfirmPassword(value);
+        break;
+
+      case 'role':
+        setRole(value);
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -110,76 +206,77 @@ const Register = () => {
           {/* Nombre de usuario */}
           <div className="register-input-group">
             <label>Nombre de usuario</label>
-
             <input
               type="text"
+              name="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
+              onChange={handleChange}
             />
+            {/* Mostrar mensaje de error si existe */}
+            {errors.username && (
+              <small className="text-danger">
+                {errors.username}
+              </small>
+            )}
           </div>
 
           {/* Correo electrónico */}
           <div className="register-input-group">
             <label>Correo electrónico</label>
-
             <input
               type="email"
+              name="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
+              onChange={handleChange}
             />
           </div>
+          {errors.email && (
+            <small className="text-danger">
+              {errors.email}
+            </small>
+          )}
+
 
           {/* Contraseña */}
           <div className="register-input-group">
             <label>Contraseña</label>
-
             <div className="register-password-container">
-
               <input
                 type={showPassword ? "text" : "password"}
+                name="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                onChange={handleChange}
               />
-
+              {/*Botón para mostrar/ocultar contraseña*/}
               <button
                 type="button"
                 className="show-password-btn"
-                onClick={() =>
-                  setShowPassword(!showPassword)
-                }
+                onClick={() => setShowPassword(!showPassword)}
               >
-                {showPassword
-                  ? <FaEye /> // Icono de ojo cerrado
-                  : <FaEyeSlash /> // Icono de ojo abierto
-                }
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
               </button>
-
             </div>
+            {/*Mostrar mensaje de error si existe */}
+            {errors.password && (
+              <small className="text-danger">
+                {errors.password}
+              </small>
+            )}
           </div>
+
 
           {/* Confirmar contraseña */}
           <div className="register-input-group">
             <label>Confirmar contraseña</label>
 
             <div className="register-password-container">
-
               <input
-                type={
-                  showConfirmPassword
-                    ? "text"
-                    : "password"
-                }
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
                 value={confirmPassword}
-                onChange={(e) =>
-                  setConfirmPassword(e.target.value)
-                }
-                required
+                onChange={handleChange}
               />
-
-              <button
+              <button /*Botón para mostrar/ocultar contraseña*/
                 type="button"
                 className="show-password-btn"
                 onClick={() =>
@@ -193,8 +290,15 @@ const Register = () => {
                   : <FaEyeSlash /> // Icono de ojo abierto
                 }
               </button>
-
             </div>
+            {errors.confirmPassword && (
+              <small className="text-danger">
+                {errors.confirmPassword}
+              </small>
+            )}
+
+
+
           </div>
 
           {/* Selección de rol */}
@@ -202,10 +306,10 @@ const Register = () => {
             <label>Rol</label>
 
             <select
+              name="role"
               className="register-select"
               value={role}
-              onChange={(e) => setRole(e.target.value)}
-              required
+              onChange={handleChange}
             >
               <option value="">
                 Seleccionar rol
@@ -219,6 +323,11 @@ const Register = () => {
                 Empleado
               </option>
             </select>
+            {errors.role && (
+              <small className="text-danger">
+                {errors.role}
+              </small>
+            )}
           </div>
 
           {/* Botón de registro */}
@@ -229,8 +338,8 @@ const Register = () => {
           >
             {loading ? (
               <>
-              <span className="spinner"></span>
-              Registrando...
+                <span className="spinner"></span>
+                Registrando...
               </>
             ) : (
               'Registrarse'
