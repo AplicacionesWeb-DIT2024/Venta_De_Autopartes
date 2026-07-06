@@ -47,7 +47,8 @@ export default function Autopartes() {
     const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const esEmpleado = user?.role === 'Empleado'; // Verificamos si el usuario es un empleado
     const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar la carga al agregar al carrito
-    const [deletingId, setDeletingId] = useState(null);
+    const [deletingId, setDeletingId] = useState(null); // Estado para controlar qué autoparte se está eliminando
+    const isDeleting = deletingId !== null; // Estado para controlar la eliminación de autopartes
     const formatPrecio = (precio) => {
         return Number(precio).toLocaleString("es-AR", {
             minimumFractionDigits: 0,
@@ -147,11 +148,10 @@ export default function Autopartes() {
                                     <div key={autopart.id} className="col-md-3 mb-4">
 
                                         <div
-                                            className={`card h-100 shadow-sm card-clickeable ${
-                                                deletingId === autopart.id ? "opacity-50" : ""
-                                            }`}
+                                            className={`card h-100 shadow-sm card-clickeable ${isDeleting ? "opacity-50" : ""
+                                                }`}
                                             onClick={() => {
-                                                if (deletingId === autopart.id) return;
+                                                if (isDeleting) return;
                                                 navigate(`/autoparts/${autopart.id}`);
                                             }}
                                         >
@@ -172,9 +172,10 @@ export default function Autopartes() {
                                                 {!esEmpleado && (
                                                     <button
                                                         className="btn btn-success w-100 mb-2"
-                                                        disabled={loadingCart} // Deshabilitar el botón mientras se está agregando al carrito
+                                                        disabled={loadingCart || isDeleting} // Deshabilitar el botón mientras se está agregando al carrito
                                                         onClick={async (e) => {
                                                             e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
+                                                            if (isDeleting) return; // Evitar acción si se está eliminando
                                                             try {
                                                                 setLoadingCart(true); // Activamos el estado de carga
 
@@ -209,10 +210,10 @@ export default function Autopartes() {
                                                 {esEmpleado && (
                                                     <>
                                                         <Link
-                                                            to={deletingId === autopart.id ? "#" : `/autoparts/${autopart.id}/editar`}
-                                                            className={`btn btn-warning w-100 mb-2 ${deletingId === autopart.id ? "disabled" : ""}`}
+                                                            to={isDeleting ? "#" : `/autoparts/${autopart.id}/editar`}
+                                                            className={`btn btn-warning w-100 mb-2 ${isDeleting ? "disabled" : ""}`}
                                                             onClick={(e) => {
-                                                                if (deletingId === autopart.id) {
+                                                                if (isDeleting) {
                                                                     e.preventDefault();
                                                                     return;
                                                                 }
@@ -224,7 +225,7 @@ export default function Autopartes() {
 
                                                         <button
                                                             className="btn btn-danger w-100"
-                                                            disabled={deletingId === autopart.id}
+                                                            disabled={isDeleting} // Deshabilitar el botón mientras se está eliminando
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 handleDelete(autopart.id);
@@ -237,7 +238,6 @@ export default function Autopartes() {
                                                                         role="status"
                                                                         aria-hidden="true"
                                                                     ></span>
-
                                                                     Eliminando...
                                                                 </>
                                                             ) : (
@@ -291,5 +291,3 @@ export default function Autopartes() {
         </div >
     );
 }
-
-
