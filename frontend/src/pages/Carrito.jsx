@@ -263,7 +263,7 @@ export default function Carrito() {
                         <button
                             className="btn btn-success mt-2 btn-finalizar"
                         >
-                            Finalizar Compra
+                            Proceder al pago
                         </button>
                     </div>
                 </>
