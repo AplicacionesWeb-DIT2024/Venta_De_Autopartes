@@ -262,6 +262,7 @@ export default function Carrito() {
 
                         <button
                             className="btn btn-success mt-2 btn-finalizar"
+                            onClick={() => navigate("/confirmar-compra")}
                         >
                             Proceder al pago
                         </button>
