@@ -6,7 +6,7 @@ import "./ConfirmarCompra.css";
 export default function ConfirmarCompra() {
 
     const [items, setItems] = useState([]);
-    const [formaPago, setFormaPago] = useState("Credit/Debito");
+    const [formaPago, setFormaPago] = useState("Credito/Debito");
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
@@ -34,8 +34,8 @@ export default function ConfirmarCompra() {
 
         try {
 
-            await api.post("/api/compra", {
-                formaPago: formaPago,
+            await api.post("/api/comprar", { /*Tengo que poner la ruta del POST en el backend (api/comprar)*/
+                forma_pago: formaPago,
             });
 
             alert("Compra realizada con éxito");
@@ -60,12 +60,14 @@ export default function ConfirmarCompra() {
 
             <p>Estás seguro que deseas realizar la compra?</p>
 
-            <table className="table table-brodered">
+            <table className="table table-bordered">
 
                 <thead className="table table-dark">
 
                     <tr>
                         <th>Autoparte</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
                         <th>Total</th>
@@ -87,7 +89,7 @@ export default function ConfirmarCompra() {
 
                             <td>{item.stock}</td>
 
-                            <td>${Number((item.autopart.precio * item.stock).toFixed(2))}</td>
+                            <td>${(item.autopart.precio * item.stock).toFixed(2)}</td>
 
                             <td>
                                 $
@@ -119,7 +121,7 @@ export default function ConfirmarCompra() {
                     <input
                         className="form-check-input"
                         type="radio"
-                        checked={formaPago === "Credit/Debito"}
+                        checked={formaPago === "Credito/Debito"}
                         onChange={() => setFormaPago("Credito/Debito")}
                     />
 
@@ -163,7 +165,7 @@ export default function ConfirmarCompra() {
             </div>
 
             <button
-                className="=btn btn-success me-2"
+                className="btn btn-success me-2"
                 onClick={ConfirmarCompra}
             >
                 Confirmar Compra

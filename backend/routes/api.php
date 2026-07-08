@@ -34,5 +34,5 @@ Route::middleware('auth:sanctum')->prefix('carrito')->group(function () {
 
 // Ruta para confirmar la compra
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/comprar', [CompraController::class, 'comprar']);
+    Route::post('/comprar', [CompraController::class, 'procesarCompra']);
 });
