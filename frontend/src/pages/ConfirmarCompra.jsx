@@ -54,15 +54,15 @@ export default function ConfirmarCompra() {
 
     return (
 
-        <div className="container mt-5">
+        <div className="container confirmar-container">
 
             <h2>Confirmar Compra</h2>
 
             <p>Estás seguro que deseas realizar la compra?</p>
 
-            <table className="table table-bordered">
+            <table className="table-responsive confirmar-table">
 
-                <thead className="table table-dark">
+                <thead className="table table-bordered">
 
                     <tr>
                         <th>Autoparte</th>
@@ -80,22 +80,12 @@ export default function ConfirmarCompra() {
                     {items.map((item) => (
 
                         <tr key={item.id}>
-
                             <td>{item.autopart.autoparte}</td>
-
                             <td>{item.autopart.marca}</td>
-
                             <td>{item.autopart.modelo}</td>
-
-                            <td>{item.stock}</td>
-
                             <td>${(item.autopart.precio * item.stock).toFixed(2)}</td>
-
-                            <td>
-                                $
-                                {(item.autopart.precio * item.stock).toFixed(2)}
-                            </td>
-
+                            <td>{item.stock}</td>
+                            <td>${(item.autopart.precio * item.stock).toFixed(2)}</td>
                         </tr>
 
                     ))}
@@ -104,7 +94,7 @@ export default function ConfirmarCompra() {
 
             </table>
 
-            <div className="text-end mb-4">
+            <div className="text-end mb-4 confirmar-total">
 
                 <h4>
                     Total: ${total.toFixed(2)}
@@ -112,7 +102,7 @@ export default function ConfirmarCompra() {
 
             </div>
 
-            <div className="mb-4">
+            <div className="forma-pago">
 
                 <h5>Forma de Pago</h5>
 
@@ -163,9 +153,10 @@ export default function ConfirmarCompra() {
                 </div>
 
             </div>
+            <div className="confirmar-botones">
 
             <button
-                className="btn btn-success me-2"
+                className="btn btn-success"
                 onClick={ConfirmarCompra}
             >
                 Confirmar Compra
@@ -178,6 +169,7 @@ export default function ConfirmarCompra() {
                 Volver al carrito
             </button>
 
+            </div>
         </div>
     );
 };
