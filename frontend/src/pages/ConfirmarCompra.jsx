@@ -30,7 +30,7 @@ export default function ConfirmarCompra() {
         return acc + (item.autopart.precio * item.stock);
     }, 0);
 
-    const ConfirmarCompra = async () => {
+    const procesarCompra = async () => {
 
         try {
 
@@ -60,39 +60,43 @@ export default function ConfirmarCompra() {
 
             <p>Estás seguro que deseas realizar la compra?</p>
 
-            <table className="table-responsive confirmar-table">
+            <div className="table-responsive confirmar-table">
 
-                <thead className="table table-bordered">
+                <table className="table table-bordered">
+                    
+                    <thead className="table-dark">
 
-                    <tr>
-                        <th>Autoparte</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Precio</th>
-                        <th>Cantidad</th>
-                        <th>Total</th>
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {items.map((item) => (
-
-                        <tr key={item.id}>
-                            <td>{item.autopart.autoparte}</td>
-                            <td>{item.autopart.marca}</td>
-                            <td>{item.autopart.modelo}</td>
-                            <td>${(item.autopart.precio * item.stock).toFixed(2)}</td>
-                            <td>{item.stock}</td>
-                            <td>${(item.autopart.precio * item.stock).toFixed(2)}</td>
+                        <tr>
+                            <th>Autoparte</th>
+                            <th>Marca</th>
+                            <th>Modelo</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
                         </tr>
 
-                    ))}
+                    </thead>
 
-                </tbody>
+                    <tbody>
 
-            </table>
+                        {items.map((item) => (
+
+                            <tr key={item.id}>
+                                <td>{item.autopart.autoparte}</td>
+                                <td>{item.autopart.marca}</td>
+                                <td>{item.autopart.modelo}</td>
+                                <td>${Number(item.autopart.precio).toFixed(2)}</td>
+                                <td>{item.stock}</td>
+                                <td>${(item.autopart.precio * item.stock).toFixed(2)}</td>
+                            </tr>
+
+                        ))}
+
+                    </tbody>
+
+                </table>
+
+            </div>
 
             <div className="text-end mb-4 confirmar-total">
 
@@ -155,19 +159,19 @@ export default function ConfirmarCompra() {
             </div>
             <div className="confirmar-botones">
 
-            <button
-                className="btn btn-success"
-                onClick={ConfirmarCompra}
-            >
-                Confirmar Compra
-            </button>
+                <button
+                    className="btn btn-success"
+                    onClick={procesarCompra}
+                >
+                    Confirmar Compra
+                </button>
 
-            <button
-                className="btn btn-secondary"
-                onClick={() => navigate("/carrito")}
-            >
-                Volver al carrito
-            </button>
+                <button
+                    className="btn btn-secondary"
+                    onClick={() => navigate("/carrito")}
+                >
+                    Volver al carrito
+                </button>
 
             </div>
         </div>
