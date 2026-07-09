@@ -1,0 +1,115 @@
+/* ConfirmarCompra.css */
+
+/* Estilos para la página de Confirmar Compra */
+.confirmar-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Título */
+.confirmar-container h2 {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #212529;
+}
+
+.confirmar-container p {
+    color: #6c757d;
+    margin-bottom: 25px;
+}
+
+/* Tabla */
+.confirmar-table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.confirmar-table table{
+    margin-bottom: 0;
+}
+
+.confirmar-table thead th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.confirmar-table tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Total */
+.confirmar-total {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #198754;
+}
+
+/* Sección forma de pago */
+.forma-pago{
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    background: #f8f9fa;
+}
+
+.forma-pago h5 {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.form-check {
+    margin-bottom: 12px;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-label {
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Botones */
+.confirmar-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.confirmar-botones .btn {
+    min-width: 170px;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+.confirmar-botones .btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    .confirmar-container {
+        padding: 20px;
+    }
+
+    .confirmar-botones {
+        flex-direction: column;
+    }
+
+    .confirmar-botones .btn {
+        width: 100%;
+    }
+
+    .confirmar-total {
+        text-align: center;
+    }
+}

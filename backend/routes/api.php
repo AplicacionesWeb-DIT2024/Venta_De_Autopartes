@@ -1,5 +1,7 @@
 <?php
 
+/* Acá es donde se registran las rutas API. */
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AutopartController;
 use App\Http\Controllers\Api\CarritoController;
@@ -21,14 +23,16 @@ Route::middleware('auth:sanctum')->prefix('autoparts')->group(function () {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register']);
 
-// Rutas para la compra
-Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
-
 // Rutas para la gestión del carrito de compras
-Route::middleware('auth:sanctum')->prefix('carrito')->group(function (){
+Route::middleware('auth:sanctum')->prefix('carrito')->group(function () {
     Route::get('/', [CarritoController::class, 'index']);
     Route::post('/', [CarritoController::class, 'store']);
     Route::put('/{id}', [CarritoController::class, 'update']);
     Route::delete('/{id}', [CarritoController::class, 'destroy']);
     Route::delete('/', [CarritoController::class, 'clear']);
+});
+
+// Ruta para confirmar la compra
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/comprar', [CompraController::class, 'procesarCompra']);
 });
