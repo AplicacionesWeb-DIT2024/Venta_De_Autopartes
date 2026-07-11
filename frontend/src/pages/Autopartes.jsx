@@ -46,7 +46,7 @@ export default function Autopartes() {
     const lista = autopartes || []; // Aseguramos que autopartes sea un array
     const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const esEmpleado = user?.role === 'Empleado'; // Verificamos si el usuario es un empleado
-    const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar la carga al agregar al carrito
+    const [loadingCartId, setLoadingCartId] = useState(null); // Estado para controlar la carga al agregar al carrito
     const [deletingId, setDeletingId] = useState(null); // Estado para controlar qué autoparte se está eliminando
     const isDeleting = deletingId !== null; // Estado para controlar la eliminación de autopartes
     const formatPrecio = (precio) => {
@@ -172,12 +172,12 @@ export default function Autopartes() {
                                                 {!esEmpleado && (
                                                     <button
                                                         className="btn btn-success w-100 mb-2"
-                                                        disabled={loadingCart || isDeleting} // Deshabilitar el botón mientras se está agregando al carrito
+                                                        disabled={loadingCartId === autopart.id || isDeleting} // Deshabilitar el botón mientras se está agregando al carrito
                                                         onClick={async (e) => {
                                                             e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
                                                             if (isDeleting) return; // Evitar acción si se está eliminando
                                                             try {
-                                                                setLoadingCart(true); // Activamos el estado de carga
+                                                                setLoadingCartId(autopart.id); // Activamos el estado de carga
 
                                                                 await addToCart(autopart.id, 1); // Agregamos al carrito
 
@@ -185,11 +185,11 @@ export default function Autopartes() {
                                                             } catch (err) {
                                                                 alert('Error al agregar al carrito: ' + err.message);
                                                             } finally {
-                                                                setLoadingCart(false); // Desactivamos el estado de carga
+                                                                setLoadingCartId(null); // Desactivamos el estado de carga
                                                             }
                                                         }}
                                                     >
-                                                        {loadingCart ? (
+                                                        {loadingCartId === autopart.id ? (
                                                             <>
                                                                 <span
                                                                     className="spinner-border spinner-border-sm me-2"
