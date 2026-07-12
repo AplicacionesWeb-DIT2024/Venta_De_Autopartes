@@ -115,6 +115,7 @@ export default function Autopartes() {
             <div className="d-flex justify-content-end mb-3">
                 <button
                     className="btn btn-danger"
+                    disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
                     onClick={() => {
                         localStorage.removeItem('user');
                         navigate('/');
@@ -274,6 +275,7 @@ export default function Autopartes() {
                 ) : ( // Si no es Empleado, mostramos el botón para ver el carrito
                     <button
                         className="btn btn-primary"
+                        disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
                         onClick={() => navigate('/carrito')}
                     >
                         Ver Carrito
