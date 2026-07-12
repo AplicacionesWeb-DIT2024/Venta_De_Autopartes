@@ -47,6 +47,7 @@ export default function Autopartes() {
     const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const esEmpleado = user?.role === 'Empleado'; // Verificamos si el usuario es un empleado
     const [loadingCartId, setLoadingCartId] = useState(null); // Estado para controlar la carga al agregar al carrito
+    const isAddingToCart = loadingCartId !== null;
     const [deletingId, setDeletingId] = useState(null); // Estado para controlar qué autoparte se está eliminando
     const isDeleting = deletingId !== null; // Estado para controlar la eliminación de autopartes
     const formatPrecio = (precio) => {
@@ -148,10 +149,11 @@ export default function Autopartes() {
                                     <div key={autopart.id} className="col-md-3 mb-4">
 
                                         <div
-                                            className={`card h-100 shadow-sm card-clickeable ${isDeleting ? "opacity-50" : ""
-                                                }`}
+                                            className={`card h-100 shadow-sm card-clickeable ${
+                                                isDeleting || isAddingToCart ? "opacity-50" : ""
+                                            }`}
                                             onClick={() => {
-                                                if (isDeleting) return;
+                                                if (isDeleting || isAddingToCart) return;
                                                 navigate(`/autoparts/${autopart.id}`);
                                             }}
                                         >
@@ -172,10 +174,10 @@ export default function Autopartes() {
                                                 {!esEmpleado && (
                                                     <button
                                                         className="btn btn-success w-100 mb-2"
-                                                        disabled={loadingCartId === autopart.id || isDeleting} // Deshabilitar el botón mientras se está agregando al carrito
+                                                        disabled={isAddingToCart || isDeleting} // Deshabilitar el botón mientras se está agregando al carrito
                                                         onClick={async (e) => {
                                                             e.stopPropagation(); // Evitar que el clic en el botón dispare la navegación a los detalles
-                                                            if (isDeleting) return; // Evitar acción si se está eliminando
+                                                            if (isDeleting || isAddingToCart) return; // Evitar acción si se está eliminando
                                                             try {
                                                                 setLoadingCartId(autopart.id); // Activamos el estado de carga
 
