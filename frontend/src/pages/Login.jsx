@@ -115,7 +115,7 @@ const Login = () => {
                 <span
                   className="spinner-border spinner-border-sm"
                   role="status"
-                  aria-hidden="true" suiza vs bosnia
+                  aria-hidden="true"
                 ></span>
                 Iniciando Sesión...
               </>
@@ -127,11 +127,22 @@ const Login = () => {
 
         <div className="login-footer">
           <p>
-            ¿No tienes una cuenta? <Link to="/register">Regístrate aquí</Link>
+            ¿No tienes una cuenta?
+            <Link
+              to={loading ? "#" : "/register"}  // Si el login está en proceso, deshabilita el link; sino, el link está normal.
+              onClick={(e) => {
+                if (loading) {
+                  e.preventDefault();
+                }
+              }}
+              className={loading ? "disabled" : ""} //Aspecto de deshabilitación armado en el css
+            >
+              Regístrate aquí
+            </Link>
           </p>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

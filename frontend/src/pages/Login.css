@@ -157,5 +157,11 @@
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.2s ease;
+}
 
+/* Disabled para el botón de navegación a Register*/
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
