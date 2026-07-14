@@ -216,5 +216,11 @@
 .register-footer a:hover {
 
     color: #2563eb;
+}
 
+/* Disabled para el botón de navegación a Login*/
+.disableLogin {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
 }

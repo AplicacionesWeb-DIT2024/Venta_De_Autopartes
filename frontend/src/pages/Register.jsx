@@ -351,7 +351,15 @@ const Register = () => {
         <div className="register-footer">
           <p>
             ¿Ya tenés una cuenta? {""}
-            <Link to="/">
+            <Link
+              to={loading ? "#" : "/"} // Si el register está en proceso, deshabilita el link; sino, el link está normal.
+              onClick={(e) => {
+                if (loading) {
+                  e.preventDefault();
+                }
+              }}
+              className={loading ? "disableLogin" : ""} //Aspecto de deshabilitación armado en el css
+            >
               Iniciar sesión
             </Link>
           </p>

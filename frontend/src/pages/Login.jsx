@@ -127,7 +127,7 @@ const Login = () => {
 
         <div className="login-footer">
           <p>
-            ¿No tienes una cuenta?
+            ¿No tienes una cuenta?{" "}
             <Link
               to={loading ? "#" : "/register"}  // Si el login está en proceso, deshabilita el link; sino, el link está normal.
               onClick={(e) => {
