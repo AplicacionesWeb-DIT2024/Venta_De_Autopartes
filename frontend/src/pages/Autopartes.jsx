@@ -150,16 +150,15 @@ export default function Autopartes() {
                                     <div key={autopart.id} className="col-md-3 mb-4">
 
                                         <div
-                                            className={`card h-100 shadow-sm card-clickeable ${
-                                                isDeleting || isAddingToCart ? "opacity-50" : ""
-                                            }`}
+                                            className={`card h-100 shadow-sm card-clickeable ${isDeleting || isAddingToCart ? "opacity-50" : ""
+                                                }`}
                                             onClick={() => {
                                                 if (isDeleting || isAddingToCart) return;
                                                 navigate(`/autoparts/${autopart.id}`);
                                             }}
                                         >
                                             <div className="card-body d-flex flex-column text-center">
-
+                                                {/* Nombre */}
                                                 <h5 className="card-title">
                                                     {autopart.autoparte}
                                                 </h5>
@@ -168,6 +167,12 @@ export default function Autopartes() {
                                                 <h4 className="text-success mt-auto">
                                                     ${formatPrecio(autopart.precio)}
                                                 </h4>
+                                                {/* Stock */}
+                                                <div className="mt-2">
+                                                    <span className="badge bg-secondary">
+                                                        Stock: {autopart.stock}
+                                                    </span>
+                                                </div>
                                             </div>
 
                                             {/* Botón Agregar al Carrito */}
