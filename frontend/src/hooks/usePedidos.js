@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../api";
 
 export const usePedidos = () => {
-    const [Pedidos, setPedidos] = useState([]);
+    const [pedidos, setPedidos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
