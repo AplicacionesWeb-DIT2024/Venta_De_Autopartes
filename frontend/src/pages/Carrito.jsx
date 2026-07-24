@@ -213,7 +213,7 @@ export default function Carrito() {
 
                                         </td>
 
-                                        <td className="item-totaA otral">
+                                        <td className="item-total">
                                             $
                                             {
                                                 Number(
@@ -260,12 +260,21 @@ export default function Carrito() {
                             Total: ${total.toFixed(2)}
                         </h4>
 
-                        <button
-                            className="btn btn-success mt-2 btn-finalizar"
-                            onClick={() => navigate("/confirmar-compra")}
-                        >
-                            Proceder al pago
-                        </button>
+                        <div className="d-flex justify-content-end gap-2 mt-2">
+                            <button
+                                className="btn btn-primary"
+                                onClick={() => navigate("/pedidos")}
+                            >
+                                Ver Pedidos
+                            </button>
+
+                            <button
+                                className="btn btn-success btn-finalizar"
+                                onClick={() => navigate("/confirmar-compra")}
+                            >
+                                Proceder al pago
+                            </button>
+                        </div>
                     </div>
                 </>
             )}

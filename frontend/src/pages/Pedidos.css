@@ -1,0 +1,58 @@
+/* Contenedor de la tabla */
+.table-responsive {
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Encabezado */
+.table thead th {
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Celdas */
+.table td {
+    vertical-align: middle;
+}
+
+/* Total */
+.table td.text-success {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* Hover de filas */
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Botón */
+.table .btn {
+    min-width: 110px;
+}
+
+/* Título */
+h2 {
+    font-weight: 700;
+    color: #343a40;
+}
+
+/* Mensaje sin pedidos */
+.alert-info {
+    border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .table {
+        font-size:0.9rem;
+    }
+    .table .btn {
+        width: 100%;
+    }
+}
