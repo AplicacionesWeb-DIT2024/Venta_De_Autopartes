@@ -1,5 +1,5 @@
 import { usePedidos } from "../hooks/usePedidos";
-import { useNaviagte } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "./Pedidos.css"
 import "../index.css"
