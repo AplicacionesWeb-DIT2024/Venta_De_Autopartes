@@ -267,36 +267,47 @@ export default function Autopartes() {
             {/* HEADER */}
             <div className="mb-4 text-center">
                 {esEmpleado ? ( // Si es Empleado solo tenemos habilitada la creación de Autopartes
-                    <>
-                        <div className="d-flex justify-content-start">
-                            <button
-                                className="btn btn-primary"
-                                onClick={() => navigate('/autoparts/crear')}
-                            >
-                                Agregar Autoparte
-                            </button>
-                        </div>
-                    </>
-                ) : ( // Si no es Empleado, mostramos el botón para ver el carrito
-                    <button
-                        className="btn btn-primary"
-                        disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
-                        onClick={() => navigate('/carrito')}
-                    >
-                        Ver Carrito
-                    </button>
-                )}
-            </div>
 
-            {/* ERROR */}
-            {
-                error && (
-                    <div className="alert alert-danger" role="alert">
-                        Error al cargar autopartes: {error.message}
+                    <div className="d-flex justify-content-start">
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => navigate('/autoparts/crear')}
+                        >
+                            Agregar Autoparte
+                        </button>
                     </div>
-                )
-            }
 
-        </div >
-    );
+                ) : ( // Si no es Empleado, mostramos el botón para ver el carrito
+                    <div className="d-flex justify-content-center gap-2">
+                        <button
+                            className="btn btn-primary"
+                            disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
+                            onClick={() => navigate('/carrito')}
+                        >
+                            Ver Carrito
+                        </button>
+
+                        <button
+                            className="btn btn-outline-primary"
+                            disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
+                            onClick={() => navigate('/pedidos')}
+                        >
+                            Ver Pedidos
+                        </button>
+
+                    </div>
+                )}
+                {/* ERROR */}
+                {
+                    error && (
+                        <div className="alert alert-danger" role="alert">
+                            Error al cargar autopartes: {error.message}
+                        </div>
+                    )
+                }
+
+            </div >
+
+        </div>
+    )
 }
