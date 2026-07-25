@@ -42,4 +42,5 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->prefix('pedidos')->group(function () {
     Route::get('/', [PedidoController::class, 'index']);
     Route::get('/{id}', [PedidoController::class, 'show']);
+    Route::delete('/{id}', [PedidoController::class, 'destroy']);
 });
