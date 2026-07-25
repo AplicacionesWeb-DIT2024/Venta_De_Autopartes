@@ -33,18 +33,26 @@ export default function ConfirmarCompra() {
     const procesarCompra = async () => {
 
         try {
-
-            await api.post("/api/comprar", { /*Tengo que poner la ruta del POST en el backend (api/comprar)*/
+            console.log(items);
+            console.log(total);
+            await api.post("/api/comprar", { /*Tengo que poner la ruta que tiene el POST en el backend (api/comprar)*/
                 forma_pago: formaPago,
             });
 
             alert("Compra realizada con éxito");
 
-            navigate("/autoparts");
+            navigate("/pedidos");
 
         } catch (err) {
             console.error(err);
-            alert("Error al realizar la compra");
+
+            console.log(err.respone?.data);
+
+            alert(
+                err.response?.data?.message ||
+                JSON.stringify(err.response?.data) ||
+                "Error al realizar la compra"
+            );
         }
     };
 
@@ -63,7 +71,7 @@ export default function ConfirmarCompra() {
             <div className="table-responsive confirmar-table">
 
                 <table className="table table-bordered">
-                    
+
                     <thead className="table-dark">
 
                         <tr>
