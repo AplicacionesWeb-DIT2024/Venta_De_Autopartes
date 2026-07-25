@@ -1,6 +1,6 @@
 <?php
 
-/* Acá es donde se registran las rutas API. */
+/* Acá es donde se registran las rutas API para que las registre Laravel. */
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AutopartController;
@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\CarritoController;
 use App\Http\Controllers\Api\CompraController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\PedidoController;
 
 // Rutas para la gestión de autopartes
 Route::middleware('auth:sanctum')->prefix('autoparts')->group(function () {
@@ -35,4 +36,10 @@ Route::middleware('auth:sanctum')->prefix('carrito')->group(function () {
 // Ruta para confirmar la compra
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/comprar', [CompraController::class, 'procesarCompra']);
+});
+
+//Rutas para los pedidos
+Route::middleware('auth:sanctum')->prefix('pedidos')->group(function () {
+    Route::get('/', [PedidoController::class, 'index']);
+    Route::get('/{id}', [PedidoController::class, 'show']);
 });

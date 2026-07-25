@@ -15,7 +15,7 @@ export default function Pedidos() {
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const formatPrecio = (precio) => {
-        return Number(precio).toLocalesString("es-AR", {
+        return Number(precio).toLocaleString("es-AR", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
         });

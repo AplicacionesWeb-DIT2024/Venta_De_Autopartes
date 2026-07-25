@@ -2691,3 +2691,18 @@ DETAIL:  A field with precision 8, scale 2 must round to an absolute value less 
 #62 /home/franco/Venta_De_Autopartes/backend/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(16): require_once('...')
 #63 {main}
 "} 
+[2026-07-25 20:23:02] local.ERROR: There are no commands defined in the "optimizer" namespace.
+
+Did you mean this?
+    optimize {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"optimizer\" namespace.
+
+Did you mean this?
+    optimize at /home/franco/Venta_De_Autopartes/backend/vendor/symfony/console/Application.php:669)
+[stacktrace]
+#0 /home/franco/Venta_De_Autopartes/backend/vendor/symfony/console/Application.php(720): Symfony\\Component\\Console\\Application->findNamespace()
+#1 /home/franco/Venta_De_Autopartes/backend/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find()
+#2 /home/franco/Venta_De_Autopartes/backend/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun()
+#3 /home/franco/Venta_De_Autopartes/backend/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run()
+#4 /home/franco/Venta_De_Autopartes/backend/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle()
+#5 {main}
+"} 
