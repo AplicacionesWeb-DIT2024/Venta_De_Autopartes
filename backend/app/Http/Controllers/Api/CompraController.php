@@ -34,7 +34,7 @@ class CompraController extends Controller
         foreach ($carritoItems as $item) {
             $total += $item->autopart->precio * $item->stock;
         }
-
+        //El nombre de las columnas del pedido
         $pedido = Pedido::create([
             'user_id' => Auth::id(),
             'fecha_cierre' => now(),

@@ -15,6 +15,8 @@ export default function Pedidos() {
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
     const formatPrecio = (precio) => {
+        if (precio == null) return "0";
+
         return Number(precio).toLocaleString("es-AR", {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
@@ -24,6 +26,8 @@ export default function Pedidos() {
     const formatFecha = (fecha) => {
         return new Date(fecha).toLocaleDateString("es-AR");
     };
+
+    console.log(pedidos);
 
     return (
         <div className="container mt-5 general-container">
@@ -94,10 +98,10 @@ export default function Pedidos() {
                                                 #{pedido.id}
                                             </td>
                                             <td>
-                                                {formatFecha(pedido.created_at)}
+                                                {formatFecha(pedido.fecha_cierre)}
                                             </td>
                                             <td className="text-success fw-bold">
-                                                ${formatPrecio(pedido.total)}
+                                                ${formatPrecio(pedido.costo_total)} {/* costo_total porque así se ve en  el backend (CompraController)*/}
                                             </td>
 
                                             <td className="text-center">
