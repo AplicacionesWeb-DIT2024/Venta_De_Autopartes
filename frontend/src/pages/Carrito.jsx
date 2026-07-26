@@ -179,7 +179,7 @@ export default function Carrito() {
                                             <div className="cantidad-control">
 
                                                 <button
-                                                    className="btn btn-outline-secondary"
+                                                    className="btn btn-cantidad"
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
@@ -196,7 +196,7 @@ export default function Carrito() {
                                                 </span>
 
                                                 <button
-                                                    className="btn btn-outline-secondary"
+                                                    className="btn btn-cantidad"
                                                     disabled={item.stock >= item.autopart.stock}
                                                     onClick={() =>
                                                         actualizarCantidad(
