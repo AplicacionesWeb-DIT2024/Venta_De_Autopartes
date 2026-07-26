@@ -1,0 +1,16 @@
+.detalle-pedido {
+    margin-top: 30px;
+}
+
+.detalle-pedido h2 {
+    margin-bottom: 20px;
+}
+
+.detalle-pedido table {
+    margin-top: 20px;
+}
+
+.detalle-pedido h4 {
+    color: #198754;
+    font-weight: bold;
+}
