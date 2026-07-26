@@ -171,7 +171,10 @@ export default function Carrito() {
                                         </td>
 
                                         <td>
-                                            ${Number(item.autopart.precio).toFixed(2)}
+                                            ${Number(item.autopart.precio).toLocaleString("es-AR", {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2,
+                                            })}
                                         </td>
 
                                         <td style={{ width: "180px" }}>
@@ -179,7 +182,7 @@ export default function Carrito() {
                                             <div className="cantidad-control">
 
                                                 <button
-                                                    className="btn btn-outline-secondary"
+                                                    className="btn btn-cantidad"
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
@@ -196,7 +199,7 @@ export default function Carrito() {
                                                 </span>
 
                                                 <button
-                                                    className="btn btn-outline-secondary"
+                                                    className="btn btn-cantidad"
                                                     disabled={item.stock >= item.autopart.stock}
                                                     onClick={() =>
                                                         actualizarCantidad(
@@ -216,10 +219,8 @@ export default function Carrito() {
                                         <td className="item-total">
                                             $
                                             {
-                                                Number(
-                                                    item.autopart.precio *
-                                                    item.stock
-                                                ).toFixed(2)}
+                                                Number(item.autopart.precio * item.stock).toLocaleString("es-AR", {})
+                                            }
                                         </td>
 
                                         <td>
@@ -257,7 +258,8 @@ export default function Carrito() {
 
                     <div className="text-end">
                         <h4 className="carrito-total">
-                            Total: ${total.toFixed(2)}
+                            Total: $
+                            {total.toLocaleString("es-AR", {})}
                         </h4>
 
                         <div className="d-flex justify-content-end gap-2 mt-2">
