@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useDetallePedido } from "../hooks/useDetalePedido"; // importo el hook
+import { useDetallePedido } from "../hooks/useDetallePedido"; // importo el hook
 import "./DetallePedido.css"; //importo el CSS
 
 export default function DetallePedido() {
