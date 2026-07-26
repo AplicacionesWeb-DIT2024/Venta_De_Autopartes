@@ -12,6 +12,7 @@ import Carrito from './pages/Carrito'; // Importa la página de Carrito
 import Editar from './pages/Editar'; // Importa la página de Editar
 import ConfirmarCompra from './pages/ConfirmarCompra'; // Importa la página de ConfirmarCompra
 import Pedidos from './pages/Pedidos';
+import DetallePedido from "./pages/DetallePedido";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/pedidos" element={<Pedidos />} />
         <Route path="/autoparts/:id/editar" element={<Editar />} /> {/* Ruta para la página de Editar */}
         <Route path="/confirmar-compra" element={<ConfirmarCompra />} /> {/* Ruta para la página de Confirmar Compra */}
+        <Route path="/pedidos/:id" element={<DetallePedido />} />
       </Routes>
     </Router>
   );
