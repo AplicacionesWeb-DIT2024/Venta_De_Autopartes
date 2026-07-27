@@ -28,7 +28,7 @@
     overflow: hidden;
 }
 
-.confirmar-table table{
+.confirmar-table table {
     margin-bottom: 0;
 }
 
@@ -50,9 +50,10 @@
 }
 
 /* Sección forma de pago */
-.forma-pago{
+.forma-pago {
+    width: 300px;
     margin-top: 30px;
-    padding: 20px;
+    padding: 16px 20px;
     border: 1px solid #dee2e6;
     border-radius: 10px;
     background: #f8f9fa;
@@ -64,14 +65,19 @@
 }
 
 .form-check {
-    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
 .form-check-input {
+    margin-top: 0;
     cursor: pointer;
 }
 
 .form-check-label {
+    margin-bottom: 0;
     cursor: pointer;
     font-size: 1rem;
 }
@@ -99,6 +105,10 @@
 
     .confirmar-container {
         padding: 20px;
+    }
+
+    .forma-pago {
+        width: 100%;
     }
 
     .confirmar-botones {
