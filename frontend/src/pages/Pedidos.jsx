@@ -131,6 +131,14 @@ export default function Pedidos() {
                     Volver a Autopartes
                 </button>
             </div>
+            <div className="text-center mt-4">
+                <button
+                    className="btn btn-primary"
+                    onClick={() => navigate('/carrito')}
+                >
+                    Ver Carrito
+                </button>
+            </div>
 
             {/* ERROR */}
             {error && (
