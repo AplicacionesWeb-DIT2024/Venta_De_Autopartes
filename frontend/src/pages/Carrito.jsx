@@ -171,10 +171,7 @@ export default function Carrito() {
                                         </td>
 
                                         <td>
-                                            ${Number(item.autopart.precio).toLocaleString("es-AR", {
-                                                minimumFractionDigits: 2,
-                                                maximumFractionDigits: 2,
-                                            })}
+                                            ${Number(item.autopart.precio).toLocaleString("es-AR", {})}
                                         </td>
 
                                         <td style={{ width: "180px" }}>
