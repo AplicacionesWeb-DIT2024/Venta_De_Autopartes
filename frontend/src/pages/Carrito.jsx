@@ -143,6 +143,13 @@ export default function Carrito() {
             {items.length === 0 ? (
                 <div className="carrito-vacio">
                     <h4>El carrito está vacío.</h4>
+
+                    <button
+                        className="btn btn-outline-dark mt-3"
+                        onClick={() => navigate("/autoparts")}
+                    >
+                        Ver Autopartes
+                    </button>
                 </div>
             ) : (
                 <>
