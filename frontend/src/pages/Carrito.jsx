@@ -150,6 +150,14 @@ export default function Carrito() {
                     >
                         Ver Autopartes
                     </button>
+                    <div>
+                        <button
+                            className="btn btn-outline-dark btn-pedidos"
+                            onClick={() => navigate("/pedidos")}
+                        >
+                            Ver Pedidos
+                        </button>
+                    </div>
                 </div>
             ) : (
                 <>
