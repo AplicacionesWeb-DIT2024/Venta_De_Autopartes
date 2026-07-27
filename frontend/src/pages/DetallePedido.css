@@ -61,21 +61,25 @@
 /* Total */
 
 .total-box {
-    margin-top: 25px;
+    width: 260px;
+    margin: 25px 0 0 auto;
+    /* arriba | derecha | abajo | izquierda */
     background: #fff;
     border-radius: 12px;
-    padding: 20;
-    text-align: right;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, rgba(0, 0, 0, .08));
+
 }
 
 .total-box span {
     color: #6c757d;
+    font-size: 0.9rem;
 }
 
 .total-box h3 {
     color: #198754;
-    margin-top: 5px;
+    margin-top: 6px;
     font-weight: bold;
 }
 
