@@ -93,9 +93,15 @@ export default function ConfirmarCompra() {
                                 <td>{item.autopart.autoparte}</td>
                                 <td>{item.autopart.marca}</td>
                                 <td>{item.autopart.modelo}</td>
-                                <td>${Number(item.autopart.precio).toFixed(2)}</td>
+                                <td>
+                                    $
+                                    {parseFloat(item.autopart.precio).toLocaleString("es-AR")}
+                                </td>
                                 <td>{item.stock}</td>
-                                <td>${(item.autopart.precio * item.stock).toFixed(2)}</td>
+                                <td>
+                                    $
+                                    {parseFloat(item.autopart.precio * item.stock).toLocaleString("es-AR")}
+                                </td>
                             </tr>
 
                         ))}
@@ -109,7 +115,7 @@ export default function ConfirmarCompra() {
             <div className="text-end mb-4 confirmar-total">
 
                 <h4>
-                    Total: ${total.toFixed(2)}
+                    Total: ${total.toLocaleString("es-AR", {})}
                 </h4>
 
             </div>
