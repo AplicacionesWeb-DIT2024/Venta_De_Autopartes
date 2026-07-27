@@ -9,6 +9,8 @@ export default function Carrito() {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [deleting, setDeleting] = useState(false);
+    const [deletingId, setDeletingId] = useState(null);
 
     const navigate = useNavigate();
 
@@ -56,16 +58,22 @@ export default function Carrito() {
     const eliminarItem = async (itemId) => {
 
         try {
+            setDeleting(true);
+            setDeletingId(itemId);
+
             await api.delete(`/api/carrito/${itemId}`, {
                 headers: {
                     Accept: "application/json",
-                },
+                }
             });
 
             setItems(items.filter(item => item.id !== itemId));
 
         } catch (err) {
             setError(err.message);
+        } finally {
+            setDeleting(false);
+            setDeletingId(null);
         }
     };
 
@@ -153,6 +161,7 @@ export default function Carrito() {
                     <div>
                         <button
                             className="btn btn-outline-dark btn-pedidos"
+                            disabled={deleting}
                             onClick={() => navigate("/pedidos")}
                         >
                             Ver Pedidos
@@ -195,6 +204,7 @@ export default function Carrito() {
 
                                                 <button
                                                     className="btn btn-cantidad"
+                                                    disabled={deleting}
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
@@ -212,7 +222,7 @@ export default function Carrito() {
 
                                                 <button
                                                     className="btn btn-cantidad"
-                                                    disabled={item.stock >= item.autopart.stock}
+                                                    disabled={deleting || item.stock >= item.autopart.stock}
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
@@ -239,9 +249,21 @@ export default function Carrito() {
 
                                             <button
                                                 className="btn btn-danger btn-sm"
+                                                disabled={deleting}
                                                 onClick={() => eliminarItem(item.id)}
                                             >
-                                                Eliminar del Carrito
+                                                {deleting && deletingId === item.id ? (
+                                                    <>
+                                                        <span
+                                                            className="spinner-border spinner-border-sm me-2"
+                                                            role="status"
+                                                            aria-hidden="true"
+                                                        ></span>
+                                                        Eliminando...
+                                                    </>
+                                                ) : (
+                                                    "Eliminar del Carrito"
+                                                )}
                                             </button>
 
                                         </td>
@@ -255,6 +277,7 @@ export default function Carrito() {
                     <div className="d-flex flex-column align-items-start mb-4 carrito-header acciones-carrito">
                         <button
                             className="btn btn-outline-danger btn-vaciar mb-3"
+                            disabled={deleting}
                             onClick={vaciarCarrito}
                         >
                             Vaciar carrito
@@ -262,6 +285,7 @@ export default function Carrito() {
 
                         <button
                             className="btn btn-outline-dark btn-volver"
+                            disabled={deleting}
                             onClick={() => navigate("/autoparts")}
                         >
                             Agregar otra autoparte
@@ -277,6 +301,7 @@ export default function Carrito() {
                         <div className="d-flex justify-content-end gap-2 mt-2">
                             <button
                                 className="btn btn-primary"
+                                disabled={deleting}
                                 onClick={() => navigate("/pedidos")}
                             >
                                 Ver Pedidos
@@ -284,6 +309,7 @@ export default function Carrito() {
 
                             <button
                                 className="btn btn-success btn-finalizar"
+                                disabled={deleting}
                                 onClick={() => navigate("/confirmar-compra")}
                             >
                                 Proceder al pago
