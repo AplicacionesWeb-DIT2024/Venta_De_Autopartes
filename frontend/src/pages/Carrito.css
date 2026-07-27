@@ -58,7 +58,7 @@
     box-shadow: none !important;
 
     padding: 0 6px;
-    font-size: 1.4 rem;
+    font-size: 1.4rem;
     font-weight: 700;
     line-height: 1;
 
@@ -71,8 +71,8 @@
 }
 
 .btn-cantidad:disabled {
-    color: #0d6efd;
-    cursor: not not-allowed;
+    color: #adb5bd;
+    cursor: not-allowed;
 }
 
 .item-total {
@@ -114,6 +114,12 @@
 .carrito-vacio h4 {
     font-size: 1.5rem;
     color: #6c757d;
+}
+
+.carrito-vacio .btn {
+    min-width: 180px;
+    font-weight: 600;
+    margin-top: 20px
 }
 
 @media (max-width: 768px) {
