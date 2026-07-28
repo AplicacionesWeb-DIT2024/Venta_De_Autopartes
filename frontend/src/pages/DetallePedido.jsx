@@ -17,26 +17,29 @@ export default function DetallePedido() {
 
 
     return (
-        <div className="container detalle-pedido">
+        <div className="container mt-5 detalle-pedido">
 
             <h2>Detalle del Pedido #{pedido.id}</h2>
 
-            <p>
-                <strong>Fecha:</strong>{" "}
-                {new Date(pedido.fecha_cierre).toLocaleString()}
-            </p>
+            {/* Información del pedido */}
+            <div className="pedido-info">
+                <div>
+                    <span className="label">Fecha:</span>
+                    <strong>
+                        {new Date(pedido.fecha_cierre).toLocaleDateString("es-AR")}
+                    </strong>
+                </div>
 
-            <p>
+                <div>
+                    <span className="label">Forma de pago</span>
+                    <strong>{pedido.tipo_pago}</strong>
+                </div>
+            </div>
 
-                <strong>Forma de pago:</strong> {pedido.tipo_pago}
-            </p>
-
+            {/* Tabla */}
             <div className="table-responsive">
-
-                <table className="table table-bordered">
-
+                <table className="table table-hover align-middle">
                     <thead className="table-dark">
-
                         <tr>
                             <th>Autoparte</th>
                             <th>Marca</th>
@@ -46,47 +49,62 @@ export default function DetallePedido() {
                             <th>Cantidad</th>
                             <th>Subtotal</th>
                         </tr>
-
                     </thead>
 
                     <tbody>
                         {pedido.detalles.map(detalle => (
-
                             <tr key={detalle.id}>
-
                                 <td>{detalle.autoparte}</td>
                                 <td>{detalle.marca}</td>
                                 <td>{detalle.modelo}</td>
                                 <td>{detalle.codigo}</td>
-                                <td>${Number(detalle.precio).toFixed(2)}</td>
-                                <td>{detalle.cantidad}</td>
-                                <td>
-                                    $
-                                    {(detalle.precio * detalle.cantidad).toFixed(2)}
+                                <td className="text-success fw-bold">
+                                    ${Number(detalle.precio).toFixed(2)}
                                 </td>
-
+                                <td className="text-center">
+                                    {detalle.cantidad}
+                                </td>
+                                <td className="text-success fw-bold">
+                                    ${(detalle.precio * detalle.cantidad).toFixed(2)}
+                                </td>
                             </tr>
-
                         ))}
-
                     </tbody>
-
                 </table>
-
             </div>
 
-            <div className="text-end">
-                <h4>
-                    Total: ${Number(pedido.costo_total).toFixed(2)}
-                </h4>
+            <div className="pie-pedido">
 
+                <div className="acciones-pedido">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => navigate("/pedidos")}
+                    >
+                        Volver a Mis Pedidos
+                    </button>
+
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => navigate("/carrito")}
+                    >
+                        Ver Carrito
+                    </button>
+
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => navigate("/autoparts")}
+                    >
+                        Volver a Autopartes
+                    </button>
+                </div>
+
+                <div className="total-box">
+                    <span>Total del Pedido</span>
+                    <h3>
+                        ${Number(pedido.costo_total).toFixed(2)}
+                    </h3>
+                </div>
             </div>
-            <button
-                className="btn btn-secondary mt-3"
-                onClick={() => navigate("/pedidos")}
-            >
-                Volver
-            </button>
 
         </div>
     );
