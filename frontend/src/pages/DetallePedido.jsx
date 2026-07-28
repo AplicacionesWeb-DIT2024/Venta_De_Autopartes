@@ -3,7 +3,11 @@ import { useDetallePedido } from "../hooks/useDetallePedido"; // importo el hook
 import "./DetallePedido.css"; //importo el CSS
 
 export default function DetallePedido() {
-
+    
+    const formatNumber = (value) => {
+        const n = Math.round(Number(value) || 0);
+        return new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(n);
+    }
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -59,13 +63,13 @@ export default function DetallePedido() {
                                 <td>{detalle.modelo}</td>
                                 <td>{detalle.codigo}</td>
                                 <td className="text-success fw-bold">
-                                    ${Number(detalle.precio).toFixed(2)}
+                                    ${formatNumber(detalle.precio)}
                                 </td>
                                 <td className="text-center">
                                     {detalle.cantidad}
                                 </td>
                                 <td className="text-success fw-bold">
-                                    ${(detalle.precio * detalle.cantidad).toFixed(2)}
+                                    ${formatNumber(detalle.precio * detalle.cantidad)}
                                 </td>
                             </tr>
                         ))}
@@ -101,7 +105,7 @@ export default function DetallePedido() {
                 <div className="total-box">
                     <span>Total del Pedido</span>
                     <h3>
-                        ${Number(pedido.costo_total).toFixed(2)}
+                        ${formatNumber(pedido.costo_total)}
                     </h3>
                 </div>
             </div>

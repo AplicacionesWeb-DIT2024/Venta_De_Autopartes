@@ -26,6 +26,13 @@ export default function DetalleAutoparte() {
     //usuario logueado
     const user = JSON.parse(localStorage.getItem("user") || "null"); // Obtenemos el usuario logueado desde el localStorage
 
+    const formatPrecio = (precio) => {
+        return Number(precio).toLocaleString("es-Ar", {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        });
+    };
+
     // Verificamos si el usuario es un empleado
     const esEmpleado = user?.role === "Empleado"; // Verificamos si el usuario es un empleado
 
@@ -123,7 +130,7 @@ export default function DetalleAutoparte() {
 
                     {/* Precio */}
                     <h2 className="text-success mb-4">
-                        ${Number(autoparte.precio).toLocaleString("es-AR")}
+                        ${formatPrecio(autoparte.precio)}
                     </h2>
 
                     {/* Información */}
