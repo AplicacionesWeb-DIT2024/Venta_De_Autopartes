@@ -73,25 +73,39 @@ export default function DetallePedido() {
                 </table>
             </div>
 
-            {/* Total */}
-            <div className="total-box">
-                <span>Total del Pedido</span>
-                <h3>
-                    ${Number(pedido.costo_total).toFixed(2)}
-                </h3>
+            <div className="pie-pedido">
+
+                <div className="acciones-pedido">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => navigate("/pedidos")}
+                    >
+                        Volver a Mis Pedidos
+                    </button>
+
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => navigate("/carrito")}
+                    >
+                        Ver Carrito
+                    </button>
+
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => navigate("/autoparts")}
+                    >
+                        Volver a Autopartes
+                    </button>
+                </div>
+
+                <div className="total-box">
+                    <span>Total del Pedido</span>
+                    <h3>
+                        ${Number(pedido.costo_total).toFixed(2)}
+                    </h3>
+                </div>
             </div>
 
-            {/* Botón volver */}
-            <div className="text-center mt-4">
-                <button
-                    className="btn btn-primary"
-                    onClick={() => navigate("/pedidos")}
-                >
-                    Volver a Mis Pedidos
-                </button>
-            </div>
-
-
-        </div >
+        </div>
     );
 }

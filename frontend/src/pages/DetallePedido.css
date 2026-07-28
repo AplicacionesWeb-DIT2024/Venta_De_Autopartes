@@ -42,6 +42,7 @@
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+    margin-bottom: 25px;
 }
 
 .table thead th {
@@ -58,18 +59,81 @@
     background: #f8f9fa;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Pie (Botones + Total) */
+
+/* Pie de la página*/
+.pie-pedido {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Botones */
+
+.acciones-pedido {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.acciones-pedido .btn {
+    width: 100%;
+}
+
 /* Total */
 
 .total-box {
     width: 260px;
-    margin: 25px 0 0 auto;
-    /* arriba | derecha | abajo | izquierda */
     background: #fff;
     border-radius: 12px;
     padding: 18px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, rgba(0, 0, 0, .08));
-
+    box-shadow: 0 4px 12px rgba(0, 0, 0, (0, 0, 0, .08));
 }
 
 .total-box span {
@@ -90,7 +154,17 @@
         flex-direction: column;
     }
 
-    .total-box {
-        text-align: center;
+    .pie-pedido {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
     }
+
+    .acciones-pedido,
+    .total-box {
+        width: 100%;
+        max-width: 32opx;
+    }
+
+
 }
