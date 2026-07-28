@@ -11,16 +11,20 @@ export default function ConfirmarCompra() {
 
     const navigate = useNavigate();
 
+    const [procesando, setProcesando] = useState(false);
+
     useEffect(() => {
         cargarCarrito();
     }, []);
 
     const cargarCarrito = async () => {
         try {
-            const respone = await api.get("/api/carrito");
-            setItems(respone.data);
+            const response = await api.get("/api/carrito");
+            setItems(response.data);
         } catch (err) {
-            console.error(err);
+            console.error("Error cargando carrito:", err);
+            alert("Error al cargar el carrito: " + (err.response?.data?.message || err.message));
+            setItems([]);
         } finally {
             setLoading(false);
         }
@@ -32,9 +36,14 @@ export default function ConfirmarCompra() {
 
     const procesarCompra = async () => {
 
+        if (procesando) return;
+
+        setProcesando(true);
+
         try {
             console.log(items);
             console.log(total);
+
             await api.post("/api/comprar", { /*Tengo que poner la ruta que tiene el POST en el backend (api/comprar)*/
                 forma_pago: formaPago,
             });
@@ -44,15 +53,17 @@ export default function ConfirmarCompra() {
             navigate("/pedidos");
 
         } catch (err) {
-            console.error(err);
 
-            console.log(err.respone?.data);
+            console.error(err);
+            console.log(err.response?.data);
 
             alert(
                 err.response?.data?.message ||
                 JSON.stringify(err.response?.data) ||
                 "Error al realizar la compra"
             );
+
+            setProcesando(false);
         }
     };
 
@@ -129,6 +140,7 @@ export default function ConfirmarCompra() {
                     <input
                         className="form-check-input"
                         type="radio"
+                        disabled={procesando}
                         checked={formaPago === "Credito/Debito"}
                         onChange={() => setFormaPago("Credito/Debito")}
                     />
@@ -144,6 +156,7 @@ export default function ConfirmarCompra() {
                     <input
                         className="form-check-input"
                         type="radio"
+                        disabled={procesando}
                         checked={formaPago === "Efectivo"}
                         onChange={() => setFormaPago("Efectivo")}
                     />
@@ -159,6 +172,7 @@ export default function ConfirmarCompra() {
                     <input
                         className="form-check-input"
                         type="radio"
+                        disabled={procesando}
                         checked={formaPago === "MercadoPago"}
                         onChange={() => setFormaPago("MercadoPago")}
                     />
@@ -176,13 +190,26 @@ export default function ConfirmarCompra() {
                 <button
                     className="btn btn-success"
                     onClick={procesarCompra}
+                    disabled={procesando}
                 >
-                    Confirmar Compra
+                    {procesando ? (
+                        <>
+                            <span
+                                className="spinner-border spinner-border-sm me-2"
+                                role="status"
+                                aria-hidden="true"
+                            ></span>
+                            Procesando...
+                        </>
+                    ) : (
+                        "Confirmar Compra"
+                    )}
                 </button>
 
                 <button
                     className="btn btn-secondary"
                     onClick={() => navigate("/carrito")}
+                    disabled={procesando}
                 >
                     Volver al carrito
                 </button>
