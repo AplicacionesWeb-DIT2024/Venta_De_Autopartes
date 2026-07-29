@@ -125,6 +125,10 @@ export default function Autopartes() {
                 </button>
             </div>
 
+            <h2 className="text-center mb-4">
+                Autopartes
+            </h2>
+
             {/* SKELETON LOADING */}
             {loading && (
                 <div className="row">
@@ -158,23 +162,19 @@ export default function Autopartes() {
                                             }}
                                         >
                                             <div className="card-body d-flex flex-column text-center">
-                                                {/* Nombre */}
+                                                {/* Pieza, marca y modelo */}
                                                 <h5 className="card-title">
-                                                    {autopart.autoparte}
+                                                    {autopart.autoparte} {autopart.marca} {autopart.modelo}
                                                 </h5>
-
-                                                {/* Precio */}
-                                                <h4 className="text-success mt-auto">
+                                                 <h4 className="text-success mt-auto">
                                                     ${formatPrecio(autopart.precio)}
                                                 </h4>
                                                 {/* Stock */}
                                                 <div className="mt-2">
-                                                    <span className="badge bg-secondary">
-                                                        Stock: {autopart.stock}
-                                                    </span>
+                                                    En stock: {autopart.stock}
                                                 </div>
+                                                {/* Precio */}
                                             </div>
-
                                             {/* Botón Agregar al Carrito */}
                                             <div className="card-footer bg-white border-0 text-center">
                                                 {!esEmpleado && (
