@@ -125,6 +125,10 @@ export default function Autopartes() {
                 </button>
             </div>
 
+            <h2 className="text-center mb-4">
+                Autopartes
+            </h2>
+
             {/* SKELETON LOADING */}
             {loading && (
                 <div className="row">
