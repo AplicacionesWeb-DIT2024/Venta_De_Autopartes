@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import "./ConfirmarCompra.css";
+import Swal from 'sweetalert2';
 
 export default function ConfirmarCompra() {
 
@@ -48,9 +49,14 @@ export default function ConfirmarCompra() {
                 forma_pago: formaPago,
             });
 
-            alert("Compra realizada con éxito");
-
-            navigate("/pedidos");
+            Swal.fire({
+                icon: "success",
+                title: "Compra realizada con éxito",
+                text: "Gracias por tu compra. Se ha añadido a su listado de pedidos.",
+                confirmButtonText: "Aceptar",
+            }).then(() => {
+                navigate("/pedidos");
+            })
 
         } catch (err) {
 
