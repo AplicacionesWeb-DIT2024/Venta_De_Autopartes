@@ -3,7 +3,7 @@ import { useDetallePedido } from "../hooks/useDetallePedido"; // importo el hook
 import "./DetallePedido.css"; //importo el CSS
 
 export default function DetallePedido() {
-    
+
     const formatNumber = (value) => {
         const n = Math.round(Number(value) || 0);
         return new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 }).format(n);
@@ -22,6 +22,19 @@ export default function DetallePedido() {
 
     return (
         <div className="container mt-5 detalle-pedido">
+
+            {/* BOTÓN LOGOUT */}
+            <div className="d-flex justify-content-end mb-3">
+                <button
+                    className="btn btn-danger"
+                    onClick={() => {
+                        localStorage.removeItem("user");
+                        navigate("/");
+                    }}
+                >
+                    Cerrar Sesión
+                </button>
+            </div>
 
             <h2>Detalle del Pedido #{pedido.id}</h2>
 

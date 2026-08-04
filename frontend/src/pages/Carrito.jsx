@@ -148,6 +148,20 @@ export default function Carrito() {
                 <h2>Mi Carrito</h2>
             </div>
 
+            {/* BOTÓN LOGOUT */}
+            <div className="d-flex justify-content-end mb-3">
+                <button
+                    className="btn btn-danger"
+                    disabled={deleting} // Deshabilitar el botón "Cerrar Sesión" si se está eliminando un item
+                    onClick={() => {
+                        localStorage.removeItem("user");
+                        navigate("/");
+                    }}
+                >
+                    Cerrar Sesión
+                </button>
+            </div>
+
             {items.length === 0 ? (
                 <div className="carrito-vacio">
                     <h4>El carrito está vacío.</h4>
@@ -204,7 +218,7 @@ export default function Carrito() {
 
                                                 <button
                                                     className="btn btn-cantidad"
-                                                    disabled={deleting}
+                                                    disabled={deleting} // Deshabilitar si se está eliminando un item
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
@@ -222,7 +236,7 @@ export default function Carrito() {
 
                                                 <button
                                                     className="btn btn-cantidad"
-                                                    disabled={deleting || item.stock >= item.autopart.stock}
+                                                    disabled={deleting || item.stock >= item.autopart.stock} // Deshabilitar si se alcanza el stock máximo
                                                     onClick={() =>
                                                         actualizarCantidad(
                                                             item.id,
