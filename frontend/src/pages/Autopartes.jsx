@@ -233,7 +233,7 @@ export default function Autopartes() {
 
                                                         <button
                                                             className="btn btn-danger w-100"
-                                                            disabled={isDeleting} // Deshabilitar el botón mientras se está eliminando
+                                                            disabled={isDeleting} // Deshabilitar el botón "Eliminar" mientras se está eliminando
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
                                                                 handleDelete(autopart.id);
@@ -272,6 +272,7 @@ export default function Autopartes() {
                         <button
                             className="btn btn-primary"
                             onClick={() => navigate('/autoparts/crear')}
+                            disabled={isDeleting} // Deshabilitar el botón "Agregar Autoparte" mientras se está eliminando
                         >
                             Agregar Autoparte
                         </button>
