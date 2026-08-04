@@ -80,6 +80,19 @@ export default function ConfirmarCompra() {
     return (
 
         <div className="container confirmar-container">
+            {/* BOTÓN LOGOUT */}
+            <div className="d-flex justify-content-end mb-3">
+                <button
+                    className="btn btn-danger"
+                    disabled={procesando} // Deshabilitar el botón "Cerrar Sesión" si se está procesando la compra
+                    onClick={() => {
+                        localStorage.removeItem("user");
+                        navigate("/");
+                    }}
+                >
+                    Cerrar Sesión
+                </button>
+            </div>
 
             <h2>Confirmar Compra</h2>
 
