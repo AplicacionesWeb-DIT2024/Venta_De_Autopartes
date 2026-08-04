@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from "../api";
 import './Editar.css'; // Importa el CSS para el formulario
@@ -25,6 +25,9 @@ export default function Editar() {
     const [saving, setSaving] = useState(false);
     const [error, setErrors] = useState({});
 
+
+    const editedRef = useRef(false); // Marca si el usuario ya comenzó a editar el formulario
+
     const formatMiles = (valor) => {
         if (!valor) return "";
         const numero = Math.trunc(Number(valor));
@@ -41,6 +44,9 @@ export default function Editar() {
     const handleChange = (e) => {
 
         const { name, value } = e.target;
+
+
+        editedRef.current = true; // Marcar que el usuario editó el formulario para evitar que la carga inicial del servidor sobrescriba sus cambios.
 
         if (error[name]) {
             setErrors(prev => ({
@@ -70,23 +76,28 @@ export default function Editar() {
 
                 const autoparte = response.data;
 
-                setFormData({
-                    nombre: autoparte.autoparte || "",
-                    marca: autoparte.marca || "",
-                    modelo: autoparte.modelo || "",
-                    anio: autoparte.anioVehiculo || "",
-                    codigo: autoparte.codigo || "",
-                    estado: autoparte.estado || "",
-                    precio: String(autoparte.precio || ""),
-                    color: autoparte.color || "",
-                    stock: autoparte.stock || ""
-                });
+                if (!editedRef.current) { // Solo establecer los valores iniciales si el usuario no empezó a editar el formulario aún.
+                    setFormData({
+                        nombre: autoparte.autoparte || "",
+                        marca: autoparte.marca || "",
+                        modelo: autoparte.modelo || "",
+                        anio: autoparte.anioVehiculo || "",
+                        codigo: autoparte.codigo || "",
+                        estado: autoparte.estado || "",
+                        precio: String(autoparte.precio || ""),
+                        color: autoparte.color || "",
+                        stock: autoparte.stock || ""
+                    });
+                }
             } catch (error) {
                 console.error("Error al cargar la autoparte:", error);
             } finally {
                 setLoading(false);
             }
         };
+
+        
+        editedRef.current = false; // Resetear la marca de edición al cambiar de id (nueva carga)
 
         cargarAutoparte();
     }, [id]);
