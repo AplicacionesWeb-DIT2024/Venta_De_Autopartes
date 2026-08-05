@@ -11,6 +11,7 @@ export default function Carrito() {
     const [error, setError] = useState(null);
     const [deleting, setDeleting] = useState(false);
     const [deletingId, setDeletingId] = useState(null);
+    const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
 
     const navigate = useNavigate();
 
@@ -144,6 +145,20 @@ export default function Carrito() {
 
     return (
         <div className="container mt-5 general-container">
+
+            {/* USUARIO Y ROL*/}
+            {user && (
+                <div className="text-start mb-3 user-info">
+                    <p className="mb-1">
+                        Bienvenido, <strong>{user.name}</strong>
+                    </p>
+                    <p className="mb-0">
+                        <span>Rol: </span>
+                        <strong>{user.role}</strong>
+                    </p>
+                </div>
+            )}
+
             <div className="d-flex justify-content-between align-items-center mb-4 carrito-header">
                 <h2>Mi Carrito</h2>
             </div>
