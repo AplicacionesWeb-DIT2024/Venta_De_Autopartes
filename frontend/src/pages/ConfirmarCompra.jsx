@@ -9,7 +9,7 @@ export default function ConfirmarCompra() {
     const [items, setItems] = useState([]);
     const [formaPago, setFormaPago] = useState("Credito/Debito");
     const [loading, setLoading] = useState(true);
-
+    const user = JSON.parse(localStorage.getItem('user') || "null"); // Obtenemos el usuario del localStorage
     const navigate = useNavigate();
 
     const [procesando, setProcesando] = useState(false);
@@ -80,6 +80,20 @@ export default function ConfirmarCompra() {
     return (
 
         <div className="container confirmar-container">
+
+            {/* USUARIO Y ROL*/}
+            {user && (
+                <div className="text-start mb-3 user-info">
+                    <p className="mb-1">
+                        Bienvenido, <strong>{user.name}</strong>
+                    </p>
+                    <p className="mb-0">
+                        <span>Rol: </span>
+                        <strong>{user.role}</strong>
+                    </p>
+                </div>
+            )}
+
             {/* BOTÓN LOGOUT */}
             <div className="d-flex justify-content-end mb-3">
                 <button

@@ -98,7 +98,7 @@ export default function Autopartes() {
     return (
         <div className="container mt-5 general-container">
 
-            {/* USUARIO */}
+            {/* USUARIO Y ROL*/}
             {user && (
                 <div className="text-start mb-3 user-info">
                     <p className="mb-1">

@@ -10,6 +10,7 @@ export default function DetallePedido() {
     }
     const { id } = useParams();
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem("user") || "null"); // Obtenemos el usuario logueado desde el localStorage
 
     const { pedido, loading, error } = useDetallePedido(id);
 
@@ -22,6 +23,19 @@ export default function DetallePedido() {
 
     return (
         <div className="container mt-5 detalle-pedido">
+
+            {/* USUARIO Y ROL*/}
+            {user && (
+                <div className="text-start mb-3 user-info">
+                    <p className="mb-1">
+                        Bienvenido, <strong>{user.name}</strong>
+                    </p>
+                    <p className="mb-0">
+                        <span>Rol: </span>
+                        <strong>{user.role}</strong>
+                    </p>
+                </div>
+            )}
 
             {/* BOTÓN LOGOUT */}
             <div className="d-flex justify-content-end mb-3">
