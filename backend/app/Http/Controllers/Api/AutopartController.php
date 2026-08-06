@@ -21,7 +21,7 @@ class AutopartController extends Controller
             $perPage = 100;
         }
 
-        // Seleccionar solo las columnas necesarias para mejorar el rendimiento
+        // Estas son las columnas que voy a mostrar en el frontend.
         return Autopart::select(
             'id', 
             'autoparte', 
@@ -30,6 +30,7 @@ class AutopartController extends Controller
             'precio', 
             'estado', 
             'anioVehiculo', 
+            'codigo',
             'color',
             'stock',
             'created_at'
