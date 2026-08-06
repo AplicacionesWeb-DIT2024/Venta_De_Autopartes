@@ -55,8 +55,36 @@ export default function Editar() {
             }));
         }
 
-        if (name === "stock" && !/^\d*$/.test(value)) {
-            return;
+        // Validación específica para el campo stock
+        if (name === "stock") {
+
+            if (value === "") { // Si el campo está vacío, no mostrar error y permitir que se borre el valor
+                setErrors(prev => ({
+                    ...prev,
+                    stock: ""
+                }));
+
+                setFormData(prev => ({ // Permitir que el usuario borre el valor del stock sin mostrar error
+                    ...prev,
+                    [name]: ""
+                }));
+
+                return;
+            }
+
+            if (!/^\d+$/.test(value)) { // Validar que sea un número entero positivo
+                setErrors(prev => ({
+                    ...prev,
+                    stock: "El stock debe ser un número entero positivo"
+                }));
+
+                return;
+            }
+
+            setErrors(prev => ({ // Si pasa la validación, limpiar el error
+                ...prev,
+                stock: ""
+            }));
         }
 
         setFormData(prev => ({
@@ -129,7 +157,7 @@ export default function Editar() {
         });
 
         const precioNum = Number(formData.precio);
-
+        const stockNum = Number(formData.stock); // Convertir el valor del stock a número
         if (
             formData.precio &&
             (isNaN(precioNum) ||
@@ -140,6 +168,14 @@ export default function Editar() {
             nuevosErrores.precio =
                 "Ingrese un precio entre $1 y 5.000.000";
 
+        }
+
+        if (
+            formData.stock &&
+            (stockNum < 1 || stockNum > 99)
+        ) {
+            nuevosErrores.stock =
+                "El stock debe ser un número entero entre 1 y 99";
         }
 
         if (Object.keys(nuevosErrores).length > 0) {
@@ -332,11 +368,6 @@ export default function Editar() {
                                 value: limpio
                             }
                         });
-                        setFormData(prev => ({
-                            ...prev,
-                            precio: limpio
-                        }));
-
                         if (error.precio) {
                             setErrors(prev => ({
                                 ...prev,
@@ -370,7 +401,7 @@ export default function Editar() {
 
                 <label>Stock</label>
                 <input
-                    type="number"
+                    type="text"
                     name="stock"
                     value={formData.stock}
                     onChange={handleChange}

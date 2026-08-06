@@ -42,16 +42,41 @@ const Crear = () => {
             }));
         }
 
-        if (name === "stock" && !/^\d*$/.test(value)) {
-            return;
-        }
+        if (name === "stock") {
+            if (value === "") {
+                setErrors(prev => ({
+                    ...prev,
+                    stock: ""
+                }));
 
+                setFormData(prev => ({
+                    ...prev,
+                    stock: ""
+                }));
+                return;
+            }
+
+            if (!/^\d+$/.test(value)) {
+                setErrors(prev => ({
+                    ...prev,
+                    stock: "El stock debe ser un número entero positivo"
+                }));
+                return;
+            }
+
+            setErrors(prev => ({
+                ...prev,
+                stock: ""
+            }));
+        };
+
+        // Actualiza el estado del formulario con los nuevos valores
         setFormData(prev => ({
             ...prev,
             [name]: value
         }));
-    };
 
+    };
     // Función para manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -79,6 +104,7 @@ const Crear = () => {
         });
 
         const precioNum = Number(formData.precio);
+        const stockNum = Number(formData.stock);
 
         if (
             formData.precio &&
@@ -90,6 +116,14 @@ const Crear = () => {
             nuevosErrores.precio =
                 "Ingrese un precio entre $1 y 5.000.000";
 
+        }
+
+        if (
+            formData.stock &&
+            (stockNum < 1 || stockNum > 99)
+        ) {
+            nuevosErrores.stock =
+                "Ingrese un stock entre 1 y 99";
         }
 
         if (Object.keys(nuevosErrores).length > 0) {
@@ -315,14 +349,10 @@ const Crear = () => {
 
                 <label>Stock</label>
                 <input
-                    type="number"
+                    type="text"
                     name="stock"
                     value={formData.stock}
                     onChange={handleChange}
-                    onKeyDown={handleStockKeyDown}
-                    min="1"
-                    max="99"
-                    step="1"
                     required
                 />
                 {error.stock && (
