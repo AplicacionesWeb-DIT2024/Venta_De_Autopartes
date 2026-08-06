@@ -151,6 +151,10 @@ export default function DetalleAutoparte() {
                         </p>
 
                         <p>
+                            <strong> Código: </strong> {autoparte.codigo}
+                        </p>
+
+                        <p>
                             <strong> Estado: </strong> {autoparte.estado}
                         </p>
                         <p>
