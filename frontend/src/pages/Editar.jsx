@@ -96,7 +96,7 @@ export default function Editar() {
             }
         };
 
-        
+
         editedRef.current = false; // Resetear la marca de edición al cambiar de id (nueva carga)
 
         cargarAutoparte();
@@ -120,14 +120,12 @@ export default function Editar() {
             stock: "Stock"
         };
 
+        /* Mensajes de Error */
         Object.entries(formData).forEach(([campo, valor]) => {
-
             if (valor === "") {
-
                 nuevosErrores[campo] =
                     `El campo ${nombreCampos[campo]} es obligatorio`;
             }
-
         });
 
         const precioNum = Number(formData.precio);

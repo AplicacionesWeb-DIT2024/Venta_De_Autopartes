@@ -18,8 +18,7 @@ const Crear = () => {
     });
 
     const [loading, setLoading] = useState(false);
-    const [errorPrecio, setErrorPrecio] = useState(""); // Para manejar el error en caso de precio fuera de rango
-    const [errorCodigo, setErrorCodigo] = useState(""); // Para manejar el error en caso de código repetido
+    const [error, setErrors] = useState({});
 
     const navigate = useNavigate();
 
@@ -36,44 +35,68 @@ const Crear = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        if (name === "codigo" && errorCodigo) {
-            setErrorCodigo("");
+        if (error[name]) {
+            setErrors(prev => ({
+                ...prev,
+                [name]: ""
+            }));
         }
 
-        if (name === "stock") {
-            if (!/^\d*$/.test(value)) {
-                return;
-            }
+        if (name === "stock" && !/^\d*$/.test(value)) {
+            return;
         }
-        // No mostrar error en tiempo real: sólo limpiar error existente
-        // si el usuario corrige el precio tras un intento de envío.
-        if (name === "precio" && errorPrecio) {
-            const num = Number(value);
-            if (!isNaN(num) && num >= 1 && num <= 5000000) {
-                setErrorPrecio("");
-            }
-        }
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
+
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
     // Función para manejar el envío del formulario
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        let nuevosErrores = {};
+
+        const nombreCampos = {
+            nombre: "Nombre",
+            marca: "Marca",
+            modelo: "Modelo",
+            anio: "Año",
+            codigo: "Código",
+            estado: "Estado",
+            precio: "Precio",
+            color: "Color",
+            stock: "Stock"
+        };
+
+        /* Mensajes de Error */
+        Object.entries(formData).forEach(([campo, valor]) => {
+            if (valor === "") {
+                nuevosErrores[campo] =
+                    `El campo ${nombreCampos[campo]} es obligatorio`;
+            }
+        });
+
         const precioNum = Number(formData.precio);
-        if (isNaN(precioNum) || precioNum < 1 || precioNum > 5000000) {
-            setErrorPrecio("Ingrese un precio entre $1 y $5.000.000");
-            return;
+
+        if (
+            formData.precio &&
+            (isNaN(precioNum) ||
+                precioNum < 1 ||
+                precioNum > 5000000)
+        ) {
+
+            nuevosErrores.precio =
+                "Ingrese un precio entre $1 y 5.000.000";
+
         }
 
-        if (errorPrecio) {
+        if (Object.keys(nuevosErrores).length > 0) {
+            setErrors(nuevosErrores);
             return;
-        }
 
-        setErrorPrecio("");
+        }
 
         try {
             setLoading(true);
@@ -107,12 +130,18 @@ const Crear = () => {
 
             const errors = error.response?.data?.errors;
 
-            if (errors?.precio) {
-                setErrorPrecio(errors.precio[0]);
+            if (errors?.codigo) {
+                setErrors(prev => ({
+                    ...prev,
+                    codigo: "El código ya está en uso. Por favor, ingrese un código único."
+                }));
             }
 
-            if (errors?.codigo) {
-                setErrorCodigo("El código ya existe. Ingrese uno diferente.");
+            if (errors?.precio) {
+                setErrors(prev => ({
+                    ...prev,
+                    precio: errors.precio[0]
+                }));
             }
 
             if (!error?.precio && !errors?.codigo) {
@@ -157,6 +186,11 @@ const Crear = () => {
                     onChange={handleChange}
                     required
                 />
+                {error.nombre && (
+                    <small className="text-danger">
+                        {error.nombre}
+                    </small>
+                )}
 
                 <label>Marca</label>
                 <input
@@ -166,6 +200,11 @@ const Crear = () => {
                     onChange={handleChange}
                     required
                 />
+                {error.marca && (
+                    <small className="text-danger">
+                        {error.marca}
+                    </small>
+                )}
 
                 <label>Modelo</label>
                 <input
@@ -175,6 +214,11 @@ const Crear = () => {
                     onChange={handleChange}
                     required
                 />
+                {error.modelo && (
+                    <small className="text-danger">
+                        {error.modelo}
+                    </small>
+                )}
 
                 <label>Año</label>
                 <select
@@ -190,6 +234,11 @@ const Crear = () => {
                         </option>
                     ))}
                 </select>
+                {error.anio && (
+                    <small className="text-danger">
+                        {error.anio}
+                    </small>
+                )}
 
                 <label>Código</label>
                 <input
@@ -199,9 +248,9 @@ const Crear = () => {
                     onChange={handleChange}
                     required
                 />
-                {errorCodigo && (
+                {error.codigo && (
                     <small className="text-danger">
-                        {errorCodigo}
+                        {error.codigo}
                     </small>
                 )}
 
@@ -214,6 +263,11 @@ const Crear = () => {
                     <option value="Malo">Malo</option>
                     <option value="Muy Malo">Muy Malo</option>
                 </select>
+                {error.estado && (
+                    <small className="text-danger">
+                        {error.estado}
+                    </small>
+                )}
 
                 <label>Precio</label>
                 <input
@@ -221,21 +275,27 @@ const Crear = () => {
                     name="precio"
                     value={formatMiles(formData.precio)}
                     onChange={(e) => {
-                        const limpio = e.target.value
-                            .replace(/\./g, "")
-                            .replace(/\D/g, "");
-                        setFormData({
-                            ...formData,
-                            precio: limpio
+                        const limpio = e.target.value.replace(/\D/g, "");
+                        handleChange({
+                            target: {
+                                name: "precio",
+                                value: limpio
+                            }
                         });
+
+                        if (error.precio) {
+                            setErrors(prev => ({
+                                ...prev,
+                                precio: ""
+                            }));
+                        }
                     }}
                     onKeyDown={handleStockKeyDown}
                     required
                 />
-
-                {errorPrecio && (
+                {error.precio && (
                     <small className='text-danger'>
-                        {errorPrecio}
+                        {error.precio}
                     </small>
                 )}
 
@@ -247,6 +307,11 @@ const Crear = () => {
                     onChange={handleChange}
                     required
                 />
+                {error.color && (
+                    <small className="text-danger">
+                        {error.color}
+                    </small>
+                )}
 
                 <label>Stock</label>
                 <input
@@ -260,6 +325,11 @@ const Crear = () => {
                     step="1"
                     required
                 />
+                {error.stock && (
+                    <small className="text-danger">
+                        {error.stock}
+                    </small>
+                )}
 
                 <button
                     type="submit"
