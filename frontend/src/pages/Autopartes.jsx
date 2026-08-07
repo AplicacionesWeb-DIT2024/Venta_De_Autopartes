@@ -166,7 +166,7 @@ export default function Autopartes() {
                                                 <h5 className="card-title">
                                                     {autopart.autoparte} {autopart.marca} {autopart.modelo}
                                                 </h5>
-                                                 <h4 className="text-success mt-auto">
+                                                <h4 className="text-success mt-auto">
                                                     ${formatPrecio(autopart.precio)}
                                                 </h4>
                                                 {/* Stock */}
@@ -191,7 +191,12 @@ export default function Autopartes() {
 
                                                                 navigate('/carrito'); // Navegamos al carrito
                                                             } catch (err) {
-                                                                alert('Error al agregar al carrito: ' + err.message);
+                                                                Swal.fire({
+                                                                    icon: 'warning',
+                                                                    title: 'Autoparte ya agregada',
+                                                                    text: err.message,
+                                                                    confirmButtonText: 'Aceptar'
+                                                                });
                                                             } finally {
                                                                 setLoadingCartId(null); // Desactivamos el estado de carga
                                                             }
