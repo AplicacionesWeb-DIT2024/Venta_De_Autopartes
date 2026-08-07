@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"; // Importamos usePara
 import { useState } from "react";
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import "./DetalleAutoparte.css"; // Importamos el archivo CSS para estilos
+import Swal from 'sweetalert2'; // Importamos SweetAlert2 para mostrar alertas bonitas
 
 export default function DetalleAutoparte() {
 
@@ -176,25 +177,32 @@ export default function DetalleAutoparte() {
 
                                         navigate("/carrito");
                                     } catch (err) {
-                                        alert('Error al agregar al carrito: ' + err.message);
+                                        Swal.fire({
+                                            icon: 'warning',
+                                            title: 'Autoparte ya agregada',
+                                            text: err.message,
+                                            confirmButtonText: 'Aceptar'
+                                        });
                                     } finally {
                                         setLoadingCart(false); // Restablecer el estado de carga del carrito
                                     }
-                                }}
+                                }
+                                }
                             >
-                                {loadingCart ? (
-                                    <>
-                                        <span
-                                            className="spinner-border spinner-border-sm me-2"
-                                            role="status"
-                                            aria-hidden="true"
-                                        ></span>
+                                {
+                                    loadingCart ? (
+                                        <>
+                                            <span
+                                                className="spinner-border spinner-border-sm me-2"
+                                                role="status"
+                                                aria-hidden="true"
+                                            ></span>
 
-                                        Agregando...
-                                    </>
-                                ) : (
-                                    "Agregar al Carrito"
-                                )}
+                                            Agregando...
+                                        </>
+                                    ) : (
+                                        "Agregar al Carrito"
+                                    )}
                             </button>
                         )}
                     </div>
@@ -222,17 +230,17 @@ export default function DetalleAutoparte() {
                         </button>
                     )}
                 </div>
-            </div>
+            </div >
 
             {/*Botón volver*/}
-            <div className="text-end mt-3">
+            < div className="text-end mt-3" >
                 <button
                     className="btn btn-secondary"
                     onClick={() => navigate("/autoparts")}
                 >
                     Volver a la lista de autopartes
                 </button>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
