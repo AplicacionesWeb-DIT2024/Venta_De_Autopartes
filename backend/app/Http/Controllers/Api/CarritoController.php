@@ -25,31 +25,34 @@ class CarritoController extends Controller
             'autopart_id' => 'required|exists:autoparts,id',
             'stock' => 'required|integer|min:1',
         ]);
+
         $autopart = Autopart::find($validated['autopart_id']);
+
+        // Comprobar si la autoparte ya está en el carrito del usuario
         $carritoItem = Carrito::where('user_id', Auth::id())
             ->where('autopart_id', $validated['autopart_id'])
             ->first();
+
         if ($carritoItem) {
-            $nuevaCantidad = $carritoItem->stock + $validated['stock'];
-            if ($nuevaCantidad > $autopart->stock) {
-                return response()->json([
-                    'message' => 'Cantidad solicitada excede el stock disponible'
-                ], 400);
-            }
-            $carritoItem->stock = $nuevaCantidad;
-            $carritoItem->save();
-        } else {
-            if ($validated['stock'] > $autopart->stock) {
-                return response()->json([
-                    'message' => 'Cantidad solicitada excede el stock disponible'
-                ], 400);
-            }
-            $carritoItem = Carrito::create([
-                'user_id' => Auth::id(),
-                'autopart_id' => $validated['autopart_id'],
-                'stock' => $validated['stock'],
-            ]);
+            return response()->json([
+                'message' => 'La autoparte ya está en el carrito'
+            ], 409); // 409 significa que la solicitud entra en conflicto con el estado actual del recurso
         }
+
+        // Comprobar que la cantidad solicitada no exceda el stock disponible
+        if ($validated['stock'] > $autopart->stock) {
+            return response()->json([
+                'message' => 'Cantidad solicitada excede el stock disponible'
+            ], 400);
+        }
+
+        // Crear el elemento del carrito
+        $carritoItem = Carrito::create([
+            'user_id' => Auth::id(),
+            'autopart_id' => $validated['autopart_id'],
+            'stock' => $validated['stock'],
+        ]);
+
         return response()->json($carritoItem, 201);
     }
 
