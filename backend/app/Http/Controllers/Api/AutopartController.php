@@ -23,18 +23,18 @@ class AutopartController extends Controller
 
         // Estas son las columnas que voy a mostrar en el frontend.
         return Autopart::select(
-            'id', 
-            'autoparte', 
-            'marca', 
-            'modelo', 
-            'precio', 
-            'estado', 
-            'anioVehiculo', 
+            'id',
+            'autoparte',
+            'marca',
+            'modelo',
+            'precio',
+            'estado',
+            'anioVehiculo',
             'codigo',
             'color',
             'stock',
             'created_at'
-            )
+        )
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
@@ -57,9 +57,17 @@ class AutopartController extends Controller
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
-            'stock' => 'required|integer|min:1|max:99' // Valida que el stock sea un número entero entre 1 y 99
+            'stock' => 'required|integer|min:1|max:99', // Valida que el stock sea un número entero entre 1 y 99
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120' // Valida que la foto sea una imagen opcional con un tamaño máximo de 2MB
         ]);
+
+        // Si se proporciona una foto, se almacena en el disco público y se guarda la ruta en la base de datos
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('autoparts', 'public'); // Almacena la foto en el disco público y guarda la ruta en la base de datos
+        }
+
         $autopart = Autopart::create($validated);
+
         return response()->json($autopart, 201);
     }
 
