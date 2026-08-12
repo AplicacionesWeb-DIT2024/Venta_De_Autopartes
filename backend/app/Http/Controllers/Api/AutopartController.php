@@ -33,6 +33,7 @@ class AutopartController extends Controller
             'codigo',
             'color',
             'stock',
+            'foto',
             'created_at'
         )
             ->orderBy('created_at', 'desc')
@@ -63,7 +64,9 @@ class AutopartController extends Controller
 
         // Si se proporciona una foto, se almacena en el disco público y se guarda la ruta en la base de datos
         if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('autoparts', 'public'); // Almacena la foto en el disco público y guarda la ruta en la base de datos
+            $validated['foto'] = $request
+                ->file('foto')
+                ->store('autoparts', 'public'); // Almacena la foto en el disco público y guarda la ruta en la base de datos
         }
 
         $autopart = Autopart::create($validated);
@@ -75,6 +78,7 @@ class AutopartController extends Controller
     public function update(Request $request, $id)
     {
         $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
+
         $validated = $request->validate([ // Valida los datos de entrada para la actualización de la autoparte
             'autoparte' => 'sometimes|required|string|max:255',
             'marca' => 'sometimes|required|string|max:255',
@@ -92,7 +96,9 @@ class AutopartController extends Controller
             'color' => 'sometimes|required|string|max:255',
             'stock' => 'required|integer|min:1|max:99'
         ]);
+
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
+
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON
     }
 
@@ -100,7 +106,9 @@ class AutopartController extends Controller
     public function destroy($id)
     {
         $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
+
         $autopart->delete(); // Elimina la autoparte
+
         return response()->json(null, 204);// Devuelve una respuesta sin contenido con el código de estado 204
     }
 }
