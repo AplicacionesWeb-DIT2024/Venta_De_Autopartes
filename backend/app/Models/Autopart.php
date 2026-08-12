@@ -18,7 +18,8 @@ class Autopart extends Model
         'estado',
         'precio',
         'color',
-        'stock'
+        'stock',
+        'foto'
     ];
 
     public function carrito()
