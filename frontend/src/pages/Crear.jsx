@@ -19,6 +19,8 @@ const Crear = () => {
 
     const [loading, setLoading] = useState(false);
     const [error, setErrors] = useState({});
+    const [foto, setFoto] = useState(null);
+    const [previewFoto, setPreviewFoto] = useState(null);
 
     const navigate = useNavigate();
 
@@ -79,6 +81,57 @@ const Crear = () => {
     };
     // Función para manejar el envío del formulario
     const handleSubmit = async (e) => {
+        const archivo = e.target.files[0];
+
+        if (!archivo) {
+            return;
+        }
+
+        // Validar el tipo de archivo
+        const tiposPermitidos = [
+            "image/jpeg",
+            "image/png",
+            "image/jpg",
+            "image/webp"
+        ];
+
+        if (!tiposPermitidos.includes(archivo.type)) {
+            setErrors(prev => ({
+                ...prev,
+                foto: "La imagen debe ser en formato JPG, JPEG, PNG o WEBP."
+            }));
+
+            e.target.value = ""; // Limpia el input de archivo
+            setFoto(null);
+            setPreviewFoto(null);
+            return;
+        }
+
+        if (archivo.size > 5 * 1024 * 1024) { // 5MB
+            setErrors(prev => ({
+                ...prev,
+                foto: "La imagen no debe superar los 5MB."
+            }));
+
+            e.target.value = ""; // Limpia el input de archivo
+            setFoto(null);
+            setPreviewFoto(null);
+            return;
+        }
+
+        // Si pasa las validaciones, actualiza el estado con la foto y su vista previa
+        setFoto(archivo);
+
+        // Genera una URL para la vista previa de la imagen
+        const url = URL.createObjectURL(archivo);
+        setPreviewFoto(url);
+
+        setErrors(prev => ({
+            ...prev,
+            foto: ""
+        }));
+
+
         e.preventDefault();
 
         let nuevosErrores = {};
@@ -137,17 +190,23 @@ const Crear = () => {
 
             await api.get('/sanctum/csrf-cookie');
 
-            await api.post('/api/autoparts', {
-                autoparte: formData.nombre,
-                marca: formData.marca,
-                modelo: formData.modelo,
-                anioVehiculo: formData.anio,
-                codigo: formData.codigo,
-                estado: formData.estado,
-                precio: Number(formData.precio),
-                color: formData.color,
-                stock: formData.stock
-            });
+            const datos = new FormData();
+
+            datos.append("autoparte", formData.nombre);
+            datos.append("marca", formData.marca);
+            datos.append("modelo", formData.modelo);
+            datos.append("anio", formData.anio);
+            datos.append("codigo", formData.codigo);
+            datos.append("estado", formData.estado);
+            datos.append("precio", formData.precio);
+            datos.append("color", formData.color);
+            datos.append("stock", formData.stock);
+
+            if (foto) {
+                datos.append("foto", foto);
+            }
+
+            await api.post("/autoparts", datos);
 
             Swal.fire({
                 icon: 'success',
@@ -178,7 +237,7 @@ const Crear = () => {
                 }));
             }
 
-            if (!error?.precio && !errors?.codigo) {
+            if (!errors?.precio && !errors?.codigo) {
                 alert(
                     error.response?.data?.message ||
                     "Error al crear la autoparte. Por favor, inténtalo de nuevo."
@@ -358,6 +417,63 @@ const Crear = () => {
                 {error.stock && (
                     <small className="text-danger">
                         {error.stock}
+                    </small>
+                )}
+
+                <label>Foto de la autoparte</label>
+                <div className="foto-container">
+                    {previewFoto && (
+                        <div className="foto-preview">
+                            <img src={previewFoto}
+                                alt="Vista previa de la autoparte"
+                            />
+
+                            <button
+                                type="button"
+                                className="foto-remove"
+                                onClick={() => {
+                                    setFoto(null);
+                                    setPreviewFoto(null);
+
+                                    const inputFoto = document.getElementById("fotoInput");
+                                    if (inputFoto) {
+                                        inputFoto.value = "";
+                                    }
+
+                                    setErrors(prev => ({
+                                        ...prev,
+                                        foto: ""
+                                    }));
+                                }}
+                            >
+                                x Quitar foto
+                            </button>
+                        </div>
+                    )}
+
+                    {!previewFoto && (
+                        <div className="foto-placeholder">
+                            <span>(LogoDeCamara)</span>
+                            <p>Selecciona una foto de la autoparte</p>
+                        </div>
+                    )}
+
+                    <input
+                        id="foto"
+                        type="file"
+                        name="foto"
+                        accept="image/jpeg,image/png,image/jpg,image/webp"
+                        onChange={handleFotoChange}
+                    />
+
+                    <small className="foto-ayuda">
+                        JPG, JPEG, PNG O WEBP. Máximo 5MB.
+                    </small>
+
+                </div>
+                {error.foto && (
+                    <small className="text-danger">
+                        {error.foto}
                     </small>
                 )}
 
