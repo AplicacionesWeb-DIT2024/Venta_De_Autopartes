@@ -188,6 +188,12 @@ const Crear = () => {
                 "Ingrese un stock entre 1 y 99";
         }
 
+        // Validar foto (obligatoria)
+        if (!foto) {
+            nuevosErrores.foto =
+                "La foto de la autoparte es obligatoria";
+        }
+
         // Si hay errores, no enviamos el formulario
         if (Object.keys(nuevosErrores).length > 0) {
             setErrors(nuevosErrores);
