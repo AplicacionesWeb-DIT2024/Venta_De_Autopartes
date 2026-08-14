@@ -1,125 +1,106 @@
-/* ConfirmarCompra.css */
+/* ==========================================================================
+   Confirmar compra — el pedido en el mostrador
+   ========================================================================== */
 
-/* Estilos para la página de Confirmar Compra */
 .confirmar-container {
-    max-width: 1100px;
-    margin: 40px auto;
-    background: #fff;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+  max-width: 920px;
+  padding: 3rem 1.25rem 4rem;
+  min-height: 100svh;
 }
 
-/* Título */
 .confirmar-container h2 {
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: #212529;
+  margin-bottom: 0.4rem;
 }
 
-.confirmar-container p {
-    color: #6c757d;
-    margin-bottom: 25px;
+.confirmar-container > p {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--steel);
+  margin-bottom: 1.6rem;
 }
 
 /* Tabla */
 .confirmar-table {
-    border-radius: 12px;
-    overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-.confirmar-table table {
-    margin-bottom: 0;
+.confirmar-table .table {
+  margin-bottom: 0;
 }
 
-.confirmar-table thead th {
-    text-align: center;
-    vertical-align: middle;
+.confirmar-table td {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
 }
 
-.confirmar-table tbody td {
-    text-align: center;
-    vertical-align: middle;
+.confirmar-total h4 {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--signal);
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-/* Total */
-.confirmar-total {
-    font-size: 1.4rem;
-    font-weight: bold;
-    color: #198754;
-}
-
-/* Sección forma de pago */
+/* Forma de pago */
 .forma-pago {
-    width: 300px;
-    margin-top: 30px;
-    padding: 16px 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    background: #f8f9fa;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.6rem 1.8rem;
+  margin-bottom: 1.6rem;
 }
 
 .forma-pago h5 {
-    margin-bottom: 15px;
-    font-weight: 600;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--oil);
 }
 
-.form-check {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 10px;
+.forma-pago .form-check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.form-check-input {
-    margin-top: 0;
-    cursor: pointer;
+.forma-pago .form-check:has(input:checked) {
+  border-color: var(--signal);
+  background: rgba(255, 90, 31, 0.06);
 }
 
-.form-check-label {
-    margin-bottom: 0;
-    cursor: pointer;
-    font-size: 1rem;
+.forma-pago .form-check-label {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--oil);
+  font-weight: 500;
+  cursor: pointer;
 }
 
 /* Botones */
 .confirmar-botones {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 30px;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
-.confirmar-botones .btn {
-    min-width: 170px;
-    font-weight: 600;
-    transition: all .2s ease;
-}
-
-.confirmar-botones .btn:hover {
-    transform: translateY(-2px);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-
-    .confirmar-container {
-        padding: 20px;
-    }
-
-    .forma-pago {
-        width: 100%;
-    }
-
-    .confirmar-botones {
-        flex-direction: column;
-    }
-
-    .confirmar-botones .btn {
-        width: 100%;
-    }
-
-    .confirmar-total {
-        text-align: center;
-    }
+@media (max-width: 576px) {
+  .confirmar-botones {
+    flex-direction: column;
+  }
 }

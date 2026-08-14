@@ -192,6 +192,12 @@ const Register = () => {
 
       <div className="register-card">
 
+        <div className="auth-brand">
+          <span className="brand-name">Autopartes AR</span>
+          <span className="auth-brand-tag">Repuestos de taller</span>
+          <div className="hazard-stripes"></div>
+        </div>
+
         <h2 className="register-title">
           Crear una cuenta
         </h2>

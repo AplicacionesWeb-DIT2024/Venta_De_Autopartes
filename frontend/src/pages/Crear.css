@@ -1,280 +1,178 @@
-/* Estilos para la página de creación de eventos */
+/* ==========================================================================
+   Crear autoparte — ficha de carga de repuesto
+   ========================================================================== */
 
-/* Fondo principal de la página */
-body {
-    background-color: #5086b8;
-    font-family: sans-serif;
-}
-
-/*Contenedor del formulario*/
 .crear-container {
-    background-color: #f4f7fa;
-    padding: 40px 20px;
-    border-radius: 12px;
-    border-top: 5px solid #007bff;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-    max-width: 600px;
-    margin: 40px auto;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 4rem;
+  min-height: 100svh;
 }
 
-
-/* Titulo*/
 .crear-container h2 {
-    font-weight: 700;
-    font-size: 2rem;
-    text-align: center;
-    color: #212529;
-    margin-bottom: 30px;
-    position: relative;
+  margin-bottom: 1.8rem;
 }
 
-/* Decoración debajo del título */
-.crear-container h2:after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 4px;
-    background-color: #007bff;
-    margin: 10px auto 0;
-    border-radius: 2px;
-}
-
-/* Formulario */
+/* El formulario como hoja de trabajo */
 .crear-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.2rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/* Estilos para el contenedor del formulario */
+.crear-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--hazard);
+}
+
 .crear-form label {
-    font-weight: 600;
-    color: #212529;
-    margin-bottom: -10px;
+  margin-top: 1rem;
 }
 
-
-/* Estilos para el contenedor del formulario */
 .crear-form input,
 .crear-form select {
-    background-color: #ffffff;
-    color: #212529;
-    padding: 12px 15px;
-    border: 1px solid #b6d4fe;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
+  width: 100%;
 }
 
-/* Estilos para los campos de entrada y el selector */
-.crear-form input::placeholder {
-    color: #007bff;
+/* Errores */
+.crear-form .text-danger {
+  margin-top: 0.35rem;
 }
 
-.crear-form input[type="text"],
-.crear-form input[type="number"] {
-    color: #212529;
-    background-color: #ffffff;
-}
-
-/* Override browser autofill background/text color */
-input:-webkit-autofill,
-textarea:-webkit-autofill,
-select:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
-    box-shadow: 0 0 0px 1000px #ffffff inset !important;
-    -webkit-text-fill-color: #212529 !important;
-}
-
-/* Estilos para los campos de entrada y el selector */
-.crear-form input:focus,
-.crear-form select:focus {
-    background-color: #ffffff;
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
-    outline: none;
-}
-
-/* Estilos para los campos de entrada y el selector */
-.crear-form select {
-    cursor: pointer;
-}
-
-/* Estilos para el botón de envío */
-.crear-form button {
-    margin-top: 10px;
-    padding: 12px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-/* Efectos para el botón de envío al pasar el mouse */
-.crear-form button:hover {
-    background-color: #0056b3;
-    transform: translateY(-1px);
-}
-
-/* Efectos para el botón de envío al hacer clic */
-.crear-form button:active {
-    background-color: #004085;
-    transform: translateY(0);
-}
-
-/* Estilos para el botón de envío cuando está deshabilitado */
-.crear-form button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-}
-
-.crear-form .volver-button {
-    margin-top: 10px;
-    padding: 12px 20px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-/* Efectos para el botón de volver al pasar el mouse */
-.crear-form .volver-button:hover {
-    background-color: #a52834;
-    transform: translateY(-1px);
-}
-
-/* Efectos para el botón de volver al hacer clic */
-.crear-form .volver-button:active {
-    background-color: #a52834;
-    transform: translateY(0);
-}
-
-/* Quitar las flechitas del input number */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Firefox */
-input[type="number"] {
-    -moz-appearance: textfield;
-    -webkit-appearance: textfield;
-    appearance: textfield;
-}
-
-.crear-form .volver-button:disabled {
-    background-color: #dc3545;
-    opacity: 0.65;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Hover solo cuando no está deshabilitado */
-.crear-form .volver-button:not(:disabled):hover {
-    background-color: #a52834;
-    transform: translateY(-1px);
-}
-
-/* Active solo cuando no está deshabilitado */
-.crear-form .volver-button:not(:disabled):active {
-    background-color: #a52834;
-    transform: translateY(0);
-}
-
-/* Hover solo cuando no está deshabilitado */
-.crear-form button:not(:disabled):hover {
-    background-color: #0056b3;
-    transform: translateY(-1px);
-}
-
-/* Active solo cuando no está deshabilitado */
-.crear-form button:not(:disabled):active {
-    background-color: #004085;
-    transform: translateY(0);
-}
+/* --- Foto ---------------------------------------------------------------- */
 
 .foto-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-    padding: 20px;
-    border: 1px solid #c9dce5;
-    border-radius: 12px;
-    background-color: #f8fcfe;
+  border: 2px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  background: var(--canv);
+  margin-top: 0.4rem;
 }
 
-.foto-placeholder {
-    width: 100%;
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #6c757d
-}
-
-.foto-placeholder span {
-    font-size: 45px;
-    margin-bottom: 8px;
-}
-
-.foto-placeholder p {
-    width: 100%;
-    min-height: 160px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #6c757d
-}
-
-.foto-placeholder p {
-    margin: 0;
-    font-size: 14px;
-}
-
-.foto-container input[type="file"] {
-    width: 100%;
-    cursor: pointer;
+.foto-preview {
+  position: relative;
+  margin-bottom: 1rem;
 }
 
 .foto-preview img {
-    width: 220px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 12px;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12)
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
 }
 
 .foto-remove {
-    border: none;
-    background-color: #dc3545;
-    color: white;
-    padding: 7px 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.2s ease;
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: var(--danger);
+  border: none;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius);
+  cursor: pointer;
 }
 
 .foto-remove:hover {
-    background-color: #bb2d3b;
+  background: #a52727;
+}
+
+.foto-placeholder {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--steel);
+  text-align: center;
+  padding: 1.2rem 0;
+}
+
+.foto-container input[type='file'] {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--steel);
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .foto-ayuda {
-    color: #6c757d;
-    font-size: 12px;
-    text-align: center;
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--steel);
+  font-size: 0.68rem;
+}
+
+/* --- Botones -------------------------------------------------------------- */
+
+.crear-form button[type='submit'] {
+  margin-top: 1.8rem;
+  background: var(--signal);
+  border: 2px solid var(--signal);
+  border-radius: var(--radius);
+  color: var(--oil);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 1.05rem;
+  padding: 0.8rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+  width: 100%;
+}
+
+.crear-form button[type='submit']:hover {
+  background: var(--signal-dark);
+  border-color: var(--signal-dark);
+}
+
+.crear-form button[type='submit']:active {
+  transform: translateY(1px);
+}
+
+.crear-form button[type='submit']:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.volver-button {
+  margin-top: 1rem;
+  background: transparent;
+  border: 2px solid var(--oil);
+  border-radius: var(--radius);
+  color: var(--oil);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 1rem;
+  padding: 0.7rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  width: 100%;
+}
+
+.volver-button:hover {
+  background: var(--oil);
+  color: var(--paper);
+}
+
+.volver-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }

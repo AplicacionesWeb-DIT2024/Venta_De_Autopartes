@@ -1,58 +1,34 @@
-/* Contenedor de la tabla */
+/* ==========================================================================
+   Pedidos — historial de órdenes
+   ========================================================================== */
+
+.pedidos-container {
+  max-width: 960px;
+}
+
+/* Tabla de pedidos */
 .table-responsive {
-    background-color: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-/* Encabezado */
-.table thead th {
-    text-align: center;
-    vertical-align: middle;
-    font-weight: 600;
-    letter-spacing: 0.5px;
+.table-responsive .table {
+  margin-bottom: 0;
 }
 
-/* Celdas */
-.table td {
-    vertical-align: middle;
+.table-responsive td {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
 }
 
-/* Total */
-.table td.text-success {
-    font-size: 1rem;
-    font-weight: bold;
+/* Número de pedido */
+.table-responsive td:first-child {
+  font-weight: 700;
 }
 
-/* Hover de filas */
-.table tbody tr:hover {
-    background-color: #f8f9fa;
-    transition: background-color 0.2s ease-in-out;
-}
-
-/* Botón */
-.table .btn {
-    min-width: 110px;
-}
-
-/* Título */
-h2 {
-    font-weight: 700;
-    color: #343a40;
-}
-
-/* Mensaje sin pedidos */
-.alert-info {
-    border-radius: 10px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .table {
-        font-size:0.9rem;
-    }
-    .table .btn {
-        width: 100%;
-    }
+/* Botones de acción del pie */
+.pedidos-container .btn {
+  margin: 0.35rem;
 }

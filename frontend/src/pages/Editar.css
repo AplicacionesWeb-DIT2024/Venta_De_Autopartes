@@ -1,139 +1,110 @@
-/*Contenedor del formulario*/
+/* ==========================================================================
+   Editar autoparte — ficha de modificación de repuesto
+   ========================================================================== */
+
 .editar-container {
-    background-color: #f4f7fa;
-    padding: 40px 20px;
-    border-radius: 12px;
-    border-top: 5px solid #007bff;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-    max-width: 600px;
-    margin: 40px auto;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 4rem;
+  min-height: 100svh;
 }
 
-/*Título*/
 .editar-container h2 {
-    font-weight: 700;
-    font-size: 2rem;
-    text-align: center;
-    color: #212529;
-    margin-bottom: 30px;
-    position: relative;
+  margin-bottom: 1.8rem;
 }
 
-/* Decoración debajo del título */
-.editar-container h2:after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 4px;
-    background-color: #007bff;
-    margin: 10px auto 0;
-    border-radius: 2px;
-}
-
-/* Formulario*/
 .editar-form {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+  position: relative;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2.2rem 2.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/*Estilos para el contenedor del formulario*/
+.editar-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--hazard);
+}
+
 .editar-form label {
-    font-weight: 600;
-    color: #212529;
-    margin-bottom: -10px;
+  margin-top: 1rem;
 }
 
-/*Estilos para los campos del formulario*/
 .editar-form input,
 .editar-form select {
-    background-color: #eef6ff;
-    color: #212529;
-    padding: 12px 15px;
-    border: 1px solid #b6d4fe;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
+  width: 100%;
 }
 
-/* Estilos para los campos de entrada y el selector */
-.crear-form input::placeholder {
-    color: #6c757d;
+/* Los inputs de Editar usan .form-control + mb-3 de Bootstrap */
+.editar-form .form-control {
+  margin-bottom: 0 !important;
 }
 
-/* Estilos para los campos de entrada y el selector */
-.editar-form input:focus,
-.editar-form select:focus {
-    background-color: #ffffff;
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15);
-    outline: none;
+.editar-form .text-danger {
+  margin-top: 0.35rem;
 }
 
-/* Estilos para los campos de entrada y el selector */
-.crear-form select {
-    cursor: pointer;
+/* --- Botones -------------------------------------------------------------- */
+
+.editar-form button[type='submit'] {
+  margin-top: 1.8rem;
+  background: var(--signal);
+  border: 2px solid var(--signal);
+  border-radius: var(--radius);
+  color: var(--oil);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 1.05rem;
+  padding: 0.8rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+  width: 100%;
 }
 
-/* Estilos para el botón de envío*/
-.editar-form button {
-    margin-top: 10px;
-    padding: 12px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
+.editar-form button[type='submit']:hover {
+  background: var(--signal-dark);
+  border-color: var(--signal-dark);
 }
 
-/* Efectos para el botón de envío al pasar el mouse */
-.editar-form button:hover {
-    background-color: #0056b3;
-    transform: translateY(-1px);
+.editar-form button[type='submit']:active {
+  transform: translateY(1px);
 }
 
-/* Efectos para el botón de envío al hacer clic */
-.crear-form button:active {
-    background-color: #004085;
-    transform: translateY(0);
-}
-
-/* Estilos para el botón de envío cuando está deshabilitado */
-.crear-form button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
+.editar-form button[type='submit']:disabled,
+.editar-form .btn-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .editar-form .volver-button {
-    margin-top: 10px;
-    padding: 12px 20px;
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  margin-top: 1rem;
+  background: transparent;
+  border: 2px solid var(--oil);
+  border-radius: var(--radius);
+  color: var(--oil);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 1rem;
+  padding: 0.7rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  width: 100%;
 }
 
-/* Efectos para el botón de volver al pasar el mouse */
 .editar-form .volver-button:hover {
-    background-color: #a52834;
-    transform: translateY(-1px);
-}
-
-/* Efectos para el botón de volver al hacer clic */
-.editar-form .volver-button:active {
-    background-color: #a52834;
-    transform: translateY(0);
-}
-
-.btn-disabled {
-    opacity: 0.6;
-    cursor: not not-allowed;
-    pointer-events: none;
+  background: var(--oil);
+  color: var(--paper);
 }

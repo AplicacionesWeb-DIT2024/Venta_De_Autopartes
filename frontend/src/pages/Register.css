@@ -1,226 +1,232 @@
-/* Contenedro principal del formulario de registro */
+/* ==========================================================================
+   Register — registro en el taller
+   ========================================================================== */
+
 .register-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f3f4f6;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1.25rem;
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(255, 90, 31, 0.12), transparent 60%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(20, 24, 28, 0.03) 0 1px,
+      transparent 1px 42px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(20, 24, 28, 0.03) 0 1px,
+      transparent 1px 42px
+    ),
+    var(--canv);
 }
 
-/* Tarjeta del formulario de registro */
 .register-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 460px;
+  background: var(--carbon);
+  color: var(--paper);
+  padding: 2.4rem 2.2rem 2.6rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-/* Título del formulario de registro */
+.register-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--hazard);
+}
+
+/* Marca (comparte estilos con Login.css) */
+.register-card .auth-brand .brand-name {
+  color: var(--paper);
+}
+
 .register-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: #212529;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 1.7rem;
+  color: var(--paper);
+  text-align: center;
+  margin-bottom: 1.6rem;
 }
 
-/* Grupo de entrada del formulario de registro */
-.register-input-group {
-    margin-bottom: 1rem;
+.register-error {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #ff8a5c;
+  background: rgba(255, 90, 31, 0.12);
+  border: 1px solid rgba(255, 90, 31, 0.4);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1.1rem;
+  text-align: center;
 }
 
-/* Labels de los campos del formulario de registro */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.05rem;
+}
+
 .register-input-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--steel);
+  margin-bottom: 0.4rem;
 }
 
-/* Inputs y selects del formulario de registro */
 .register-input-group input,
-.register-select {
-    width: 100%;
-    padding: 12px 15px;
-
-    background-color: #eef6ff;
-    color: #212529;
-
-    border: 1px solid #b6d4fe;
-    border-radius: 8px;
-
-    font-size: 1rem;
-
-    transition:
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-
-    box-sizing: border-box;
-
+.register-input-group select {
+  width: 100%;
+  background: var(--carbon-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  color: var(--paper);
+  padding: 0.65rem 0.85rem;
+  font-family: var(--font-body);
 }
 
-/* Focus en los inputs y selects del formulario de registro */
+.register-input-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23faf7f0' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  padding-right: 2.2rem;
+}
+
+.register-input-group select option {
+  color: var(--oil);
+  background: var(--paper);
+}
+
 .register-input-group input:focus,
-.register-select:focus {
-
-    outline: none;
-
-    border-color: #3b82f6;
-
-    box-shadow:
-        0 0 0 1px #3b82f6;
+.register-input-group select:focus {
+  outline: none;
+  border-color: var(--signal);
+  box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.2);
 }
 
-/* Password container para el formulario de registro */
+.register-input-group input::placeholder {
+  color: #8a949c;
+}
+
+/* Contraseña */
 .register-password-container {
-    position: relative;
-    display: flex;
-    align-items: center;
+  position: relative;
 }
 
 .register-password-container input {
-
-    padding-right: 40px; /* Espacio para el icono */
-
+  padding-right: 3rem;
 }
 
-/* Botón para mostrar contraseña en el formulario de registro */
-.show-password-btn {
-    
-    position: absolute;
-
-    right:10px;
-
-    background: none;
-    border: none;
-
-    cursor: pointer;
-
-    font-size: 18px;
-
-    color: #212529;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.register-password-container .show-password-btn {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--steel);
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  line-height: 1;
 }
 
-/* Select del formulario de registro */
-.register-select {
-
-    appearance: none; /* Elimina la apariencia predeterminada del select */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el select */
-
+.register-password-container .show-password-btn:hover {
+  color: var(--warn);
 }
 
-/* Botón registro */
+/* Errores de campo */
+.text-danger {
+  font-size: 0.72rem;
+  margin-top: 0.3rem;
+  display: block;
+}
+
+/* Botón principal */
 .register-button {
-
-    width: 100%;
-
-    padding: 0.75rem;
-
-    background-color: #3b82f6;
-    
-    color: white;
-    
-    border: none;
-    
-    border-radius: 8px;
-    
-    font-size: 1rem;
-    
-    cursor: pointer;
-    
-    transition:
-        background-color 0.3s ease;
-
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        gap: 8px; /* Espacio entre el texto y el icono */
-
+  width: 100%;
+  margin-top: 0.6rem;
+  background: var(--signal);
+  border: 2px solid var(--signal);
+  border-radius: var(--radius);
+  color: var(--oil);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 1.05rem;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* Disabled */
+.register-button:hover {
+  background: var(--signal-dark);
+  border-color: var(--signal-dark);
+}
+
+.register-button:active {
+  transform: translateY(1px);
+}
+
 .register-button:disabled {
-    
-    opacity: 0.7;
-    cursor: not-allowed;
-
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
-/* Hover del botón registro */
-.register-button:hover:not(:disabled) {
-
-    background-color: #2563eb;
-
+.register-button .spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(20, 24, 28, 0.3);
+  border-top-color: var(--oil);
+  border-radius: 50%;
+  animation: register-spin 0.7s linear infinite;
 }
 
-/* Spinner para el botón de registro */
-.spinner {
-
-    width: 20px;
-    height: 20px;
-
-    border: 3px solid rgba(255, 255, 255, 0.3);
-
-    border-top: 3px solid white;
-
-    border-radius: 50%;
-
-    animation: spin 1s linear infinite;
+@keyframes register-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-@keyframes spin {
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* Error */
-.register-error {
-
-    color: #ef4444;
-
-    margin-bottom: 1rem;
-
-    text-align: center;
-
-}
-
-/* Footer del formulario de registro */
 .register-footer {
-
-    text-align: center;
-
-    margin-top: 1rem;
-
-    font-size: 0.9rem;
-
+  margin-top: 1.6rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--steel);
 }
 
 .register-footer a {
-
-    color: #3b82f6;
-
-    text-decoration: none;
-
-    transition: color 0.3s ease;
+  color: var(--warn);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .register-footer a:hover {
-
-    color: #2563eb;
+  color: var(--paper);
 }
 
-/* Disabled para el botón de navegación a Login*/
-.disableLogin {
-    pointer-events: none;
-    opacity: 0.5;
-    cursor: not-allowed;
+.register-footer a.disableLogin {
+  pointer-events: none;
+  opacity: 0.5;
 }

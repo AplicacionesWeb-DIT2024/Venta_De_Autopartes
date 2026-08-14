@@ -1,117 +1,560 @@
+/* ==========================================================================
+   AUTOPARTES AR — Sistema de diseño "taller mecánico industrial"
+   ========================================================================== */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* Paleta */
+  --oil: #14181c;
+  --carbon: #20262b;
+  --carbon-2: #2b343b;
+  --canv: #e8e4da;
+  --paper: #faf7f0;
+  --steel: #6e767c;
+  --line: #cfc9bc;
+  --signal: #ff5a1f;
+  --signal-dark: #d8450e;
+  --warn: #ffc81e;
+  --danger: #c22f2f;
+  --ok: #157a4a;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  /* Tipografía */
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* Miscelánea */
+  --radius: 2px;
+  --shadow: 0 1px 0 rgba(20, 24, 28, 0.08), 0 10px 28px -14px rgba(20, 24, 28, 0.35);
+  --hazard: repeating-linear-gradient(
+    -45deg,
+    var(--warn) 0 10px,
+    var(--oil) 10px 20px
+  );
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
-  margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+body {
+  font-family: var(--font-body);
+  background: var(--canv);
+  color: var(--oil);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+
+#root {
+  min-height: 100svh;
+  width: 100%;
 }
+
+/* --------------------------------------------------------------------------
+   Tipografía
+   -------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  color: var(--oil);
+}
+
+h1,
+.h1 {
+  font-size: clamp(2.4rem, 6vw, 4rem);
+}
+
+h2,
+.h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+
+h3,
+.h3 {
+  font-size: 1.55rem;
+}
+
+h4,
+.h4 {
+  font-size: 1.25rem;
+}
+
+h5,
+.h5 {
+  font-size: 1.05rem;
+}
+
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+small {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
 }
 
+.mono,
 code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  font-family: var(--font-mono);
 }
 
+a {
+  color: var(--signal-dark);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Botones (override de Bootstrap)
+   -------------------------------------------------------------------------- */
+
+.btn {
+  --bs-btn-border-radius: var(--radius);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 1rem;
+  line-height: 1.15;
+  padding: 0.65rem 1.25rem;
+  border-width: 2px;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease,
+    transform 0.05s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+}
+
+.btn-sm {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.85rem;
+}
+
+/* CTA principal: naranja de seguridad */
+.btn-success {
+  --bs-btn-color: var(--oil);
+  --bs-btn-bg: var(--signal);
+  --bs-btn-border-color: var(--signal);
+  --bs-btn-hover-color: var(--oil);
+  --bs-btn-hover-bg: var(--signal-dark);
+  --bs-btn-hover-border-color: var(--signal-dark);
+  --bs-btn-active-color: var(--oil);
+  --bs-btn-active-bg: var(--signal-dark);
+  --bs-btn-active-border-color: var(--signal-dark);
+  --bs-btn-disabled-color: var(--oil);
+  --bs-btn-disabled-bg: var(--signal);
+  --bs-btn-disabled-border-color: var(--signal);
+}
+
+/* Secundario: carbono oscuro */
+.btn-primary {
+  --bs-btn-color: var(--paper);
+  --bs-btn-bg: var(--carbon);
+  --bs-btn-border-color: var(--carbon);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--oil);
+  --bs-btn-hover-border-color: var(--oil);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--oil);
+  --bs-btn-active-border-color: var(--oil);
+  --bs-btn-disabled-color: var(--paper);
+  --bs-btn-disabled-bg: var(--carbon);
+  --bs-btn-disabled-border-color: var(--carbon);
+}
+
+.btn-danger {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--danger);
+  --bs-btn-border-color: var(--danger);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #a52727;
+  --bs-btn-hover-border-color: #a52727;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #a52727;
+  --bs-btn-active-border-color: #a52727;
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: var(--danger);
+  --bs-btn-disabled-border-color: var(--danger);
+}
+
+.btn-warning {
+  --bs-btn-color: var(--oil);
+  --bs-btn-bg: var(--warn);
+  --bs-btn-border-color: var(--warn);
+  --bs-btn-hover-color: var(--oil);
+  --bs-btn-hover-bg: #eab300;
+  --bs-btn-hover-border-color: #eab300;
+  --bs-btn-active-color: var(--oil);
+  --bs-btn-active-bg: #eab300;
+  --bs-btn-active-border-color: #eab300;
+  --bs-btn-disabled-color: var(--oil);
+  --bs-btn-disabled-bg: var(--warn);
+  --bs-btn-disabled-border-color: var(--warn);
+}
+
+.btn-info {
+  --bs-btn-color: var(--paper);
+  --bs-btn-bg: var(--carbon-2);
+  --bs-btn-border-color: var(--carbon-2);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--carbon);
+  --bs-btn-hover-border-color: var(--carbon);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--carbon);
+  --bs-btn-active-border-color: var(--carbon);
+  --bs-btn-disabled-color: var(--paper);
+  --bs-btn-disabled-bg: var(--carbon-2);
+  --bs-btn-disabled-border-color: var(--carbon-2);
+}
+
+.btn-secondary {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: var(--steel);
+  --bs-btn-border-color: var(--steel);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #5a6167;
+  --bs-btn-hover-border-color: #5a6167;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #5a6167;
+  --bs-btn-active-border-color: #5a6167;
+}
+
+.btn-dark {
+  --bs-btn-color: var(--paper);
+  --bs-btn-bg: var(--oil);
+  --bs-btn-border-color: var(--oil);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #000;
+  --bs-btn-hover-border-color: #000;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #000;
+  --bs-btn-active-border-color: #000;
+}
+
+.btn-light {
+  --bs-btn-color: var(--oil);
+  --bs-btn-bg: var(--paper);
+  --bs-btn-border-color: var(--paper);
+  --bs-btn-hover-color: var(--oil);
+  --bs-btn-hover-bg: var(--canv);
+  --bs-btn-hover-border-color: var(--canv);
+  --bs-btn-active-color: var(--oil);
+  --bs-btn-active-bg: var(--canv);
+  --bs-btn-active-border-color: var(--canv);
+}
+
+.btn-outline-dark {
+  --bs-btn-color: var(--oil);
+  --bs-btn-border-color: var(--oil);
+  --bs-btn-hover-color: var(--paper);
+  --bs-btn-hover-bg: var(--oil);
+  --bs-btn-hover-border-color: var(--oil);
+  --bs-btn-active-color: var(--paper);
+  --bs-btn-active-bg: var(--oil);
+  --bs-btn-active-border-color: var(--oil);
+}
+
+.btn-outline-danger {
+  --bs-btn-color: var(--danger);
+  --bs-btn-border-color: var(--danger);
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: var(--danger);
+  --bs-btn-hover-border-color: var(--danger);
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: var(--danger);
+  --bs-btn-active-border-color: var(--danger);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--oil);
+  --bs-btn-border-color: var(--oil);
+  --bs-btn-hover-color: var(--paper);
+  --bs-btn-hover-bg: var(--oil);
+  --bs-btn-hover-border-color: var(--oil);
+  --bs-btn-active-color: var(--paper);
+  --bs-btn-active-bg: var(--oil);
+  --bs-btn-active-border-color: var(--oil);
+}
+
+/* --------------------------------------------------------------------------
+   Formularios
+   -------------------------------------------------------------------------- */
+
+label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--steel);
+}
+
+input:not([type='file']):not([type='radio']):not([type='checkbox']),
+select,
+textarea,
+.form-control,
+.form-select {
+  font-family: var(--font-body);
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--oil);
+  padding: 0.6rem 0.8rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2314181c' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  padding-right: 2.2rem;
+}
+
+input:not([type='file']):not([type='radio']):not([type='checkbox']):focus,
+select:focus,
+textarea:focus,
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--signal);
+  box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.18);
+  outline: none;
+}
+
+.form-check-input {
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.form-check-input:checked {
+  background-color: var(--signal);
+  border-color: var(--signal);
+}
+
+.form-check-input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.18);
+  border-color: var(--signal);
+}
+
+/* --------------------------------------------------------------------------
+   Tablas
+   -------------------------------------------------------------------------- */
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--oil);
+  --bs-table-border-color: var(--line);
+}
+
+.table-bordered {
+  border-color: var(--line);
+}
+
+.table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border-bottom-width: 2px;
+}
+
+.table-hover tbody tr:hover {
+  --bs-table-accent-bg: rgba(255, 90, 31, 0.06);
+}
+
+.table-dark {
+  --bs-table-bg: var(--carbon);
+  --bs-table-color: var(--paper);
+  --bs-table-border-color: var(--carbon-2);
+}
+
+.table-dark th,
+.table-dark td {
+  border-color: var(--carbon-2);
+}
+
+/* --------------------------------------------------------------------------
+   Alertas
+   -------------------------------------------------------------------------- */
+
+.alert {
+  border-radius: var(--radius);
+  border: 2px solid var(--line);
+  background: var(--paper);
+  color: var(--oil);
+}
+
+.alert-info {
+  background: var(--carbon);
+  border-color: var(--carbon);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.alert-danger {
+  background: rgba(194, 47, 47, 0.08);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* --------------------------------------------------------------------------
+   Utilidades de color (override de Bootstrap)
+   -------------------------------------------------------------------------- */
+
+.text-success {
+  color: var(--signal) !important;
+}
+
+.text-primary {
+  color: var(--signal) !important;
+}
+
+.text-danger {
+  color: var(--danger) !important;
+}
+
+.text-muted {
+  color: var(--steel) !important;
+}
+
+.text-dark {
+  color: var(--oil) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Componentes del sistema
+   -------------------------------------------------------------------------- */
+
+/* Cinta de peligro: la firma del sistema */
+.hazard-stripes {
+  height: 8px;
+  background: var(--hazard);
+}
+
+/* Etiqueta técnica (eyebrow mono) */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--steel);
+}
+
+/* Contenedor general de páginas */
 .general-container {
-    background-color: #f5f5f5;
-    min-height: 100vh;
-    padding: 40px 20px;
-    border-radius: 20px;
+  min-height: 100svh;
+  padding: 3rem 1.5rem 4rem;
+  background: transparent;
+  border-radius: 0;
+}
+
+.user-info p {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--steel);
+}
+
+.user-info strong {
+  color: var(--oil);
+}
+
+/* Tarjeta genérica del taller */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+/* Spinner */
+.spinner-border {
+  --bs-spinner-color: var(--signal);
+}
+
+/* --------------------------------------------------------------------------
+   Home / placeholder
+   -------------------------------------------------------------------------- */
+
+.home-page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.4rem;
+  padding: clamp(2rem, 8vw, 6rem);
+  max-width: 900px;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 1rem;
+  color: var(--steel);
+}
+
+.home-hero h1 {
+  max-width: 16ch;
+}
+
+.home-sub {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--steel);
+  max-width: 48ch;
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   Accesibilidad
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

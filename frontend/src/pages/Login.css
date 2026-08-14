@@ -1,167 +1,232 @@
-/* Contenedor principal */
+/* ==========================================================================
+   Login — la puerta del taller
+   ========================================================================== */
+
 .login-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f3f4f6;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1.25rem;
+  background:
+    radial-gradient(1200px 500px at 85% -10%, rgba(255, 90, 31, 0.12), transparent 60%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(20, 24, 28, 0.03) 0 1px,
+      transparent 1px 42px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(20, 24, 28, 0.03) 0 1px,
+      transparent 1px 42px
+    ),
+    var(--canv);
 }
 
-/* Tarjeta de login */
 .login-card {
-    background: white;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+  background: var(--carbon);
+  color: var(--paper);
+  padding: 2.4rem 2.2rem 2.6rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-/* Título del login */
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--hazard);
+}
+
+/* --- Marca -------------------------------------------------------------- */
+
+.auth-brand {
+  margin-bottom: 1.8rem;
+  text-align: center;
+}
+
+.auth-brand .brand-name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 1.35rem;
+  color: var(--paper);
+  line-height: 1.1;
+}
+
+.auth-brand-tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--steel);
+  margin: 0.35rem 0 1rem;
+}
+
+.auth-brand .hazard-stripes {
+  height: 4px;
+  opacity: 0.9;
+}
+
+/* --- Título -------------------------------------------------------------- */
+
 .login-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    color: #212529;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 1.7rem;
+  color: var(--paper);
+  text-align: center;
+  margin-bottom: 1.8rem;
 }
 
-/* Grupo de input */
-.login-input-group {
-    margin-bottom: 1rem;
+/* --- Formulario ---------------------------------------------------------- */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
-/* Etiqueta del input */
 .login-input-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--steel);
+  margin-bottom: 0.4rem;
 }
 
-/* Input */
 .login-input-group input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  background: var(--carbon-2);
+  border: 2px solid transparent;
+  border-radius: var(--radius);
+  color: var(--paper);
+  padding: 0.7rem 0.85rem;
+  font-family: var(--font-body);
 }
 
-/* Focus */
 .login-input-group input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 1px #3b82f6;
+  outline: none;
+  border-color: var(--signal);
+  box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.2);
 }
 
-/* Botón de login */
-.login-button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
+.login-input-group input::placeholder {
+  color: #8a949c;
 }
 
-/* Disabled */
-.login-button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-/* Spinner */
-.spinner {
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid white;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* Hover */
-.login-button:hover {
-    background-color: #2563eb;
-}
-
-/* Error */
-.login-error {
-    color: #ef4444;
-    margin-bottom: 1rem;
-    text-align: center;
-}
-
-/* Footer */
-.login-footer {
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 0.9rem;
-}
-
-/* Enlaces del footer */
-.login-footer a {
-    color: #3b82f6;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-/* Hover */
-.login-footer a:hover {
-    color: #2563eb;
-}
+/* --- Contraseña ----------------------------------------------------------- */
 
 .password-container {
-    position: relative;
-    display: flex;
-    align-items: center;
+  position: relative;
 }
 
 .password-container input {
-    width: 100%;
-    padding-right: 40px;
+  padding-right: 3rem;
 }
 
 .show-password-btn {
-    position: absolute;
-    right: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    color: #212529
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--steel);
+  font-size: 1.05rem;
+  cursor: pointer;
+  padding: 0.3rem;
+  line-height: 1;
 }
 
-/* Estilos para el contenedor del formulario */
-.login-form input,
-.login-form select {
-    background-color: #eef6ff;
-    color: #212529;
-    padding: 12px 15px;
-    border: 1px solid #b6d4fe;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.2s ease;
+.show-password-btn:hover {
+  color: var(--warn);
 }
 
-/* Disabled para el botón de navegación a Register*/
-.disabled {
-    pointer-events: none;
-    opacity: 0.5;
-    cursor: not-allowed;
+/* --- Botón ---------------------------------------------------------------- */
+
+.login-button {
+  width: 100%;
+  margin-top: 0.6rem;
+  background: var(--signal);
+  border: 2px solid var(--signal);
+  border-radius: var(--radius);
+  color: var(--oil);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 1.05rem;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-button:hover {
+  background: var(--signal-dark);
+  border-color: var(--signal-dark);
+}
+
+.login-button:active {
+  transform: translateY(1px);
+}
+
+.login-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* --- Error y pie ----------------------------------------------------------- */
+
+.login-error {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #ff8a5c;
+  background: rgba(255, 90, 31, 0.12);
+  border: 1px solid rgba(255, 90, 31, 0.4);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1.1rem;
+  text-align: center;
+}
+
+.login-footer {
+  margin-top: 1.6rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--steel);
+}
+
+.login-footer a {
+  color: var(--warn);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.login-footer a:hover {
+  color: var(--paper);
+}
+
+.login-footer a.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }

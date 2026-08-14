@@ -2,7 +2,6 @@ import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook pe
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
 import { getImageUrl } from "../api";
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
-import "../index.css"; // importamos index.css para los estilos globales
 import { useState } from "react";
 import Swal from 'sweetalert2'
 import placeholderImg from "../assets/hero.png"; // Imagen por defecto cuando no hay foto
@@ -176,17 +175,23 @@ export default function Autopartes() {
                                                     />
                                                 </div>
                                                 {/* Pieza, marca y modelo */}
+                                                <span className="tag-codigo">
+                                                    CÓD. {autopart.codigo}
+                                                </span>
                                                 <h5 className="card-title">
-                                                    {autopart.autoparte} {autopart.marca} {autopart.modelo}
+                                                    {autopart.autoparte}
                                                 </h5>
-                                                <h4 className="text-success mt-auto">
+                                                <p className="card-sub">
+                                                    {autopart.marca} · {autopart.modelo} · {autopart.anioVehiculo}
+                                                </p>
+                                                <h4 className="text-success precio-tarjeta">
                                                     ${formatPrecio(autopart.precio)}
                                                 </h4>
                                                 {/* Stock */}
-                                                <div className="mt-2">
-                                                    En stock: {autopart.stock}
+                                                <div className="stock-line">
+                                                    <span>En stock</span>
+                                                    <strong>{autopart.stock}</strong>
                                                 </div>
-                                                {/* Precio */}
                                             </div>
                                             {/* Botón Agregar al Carrito */}
                                             <div className="card-footer bg-white border-0 text-center">

@@ -1,56 +1,94 @@
+/* ==========================================================================
+   Detalle de autoparte — ficha de repuesto
+   ========================================================================== */
+
 .detalle-container {
-    max-width: 800px;
-    margin: 0 auto;
+  max-width: 920px;
+  padding: 3rem 1.25rem 4rem;
+  min-height: 100svh;
 }
 
 .detalle-card {
-    border-radius: 12px; /*La redondez de las esquinas*/
-    border: none;
-    padding: 15px 15px;
+  position: relative;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-.detalle-titulo{
-    font-weight: 700;
-    font-size: 2rem;
-    text-align: center;
-    color: #212529;
-    margin-bottom: 30px;
-    position: relative;
+.detalle-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--hazard);
 }
 
-.detalle-titulo:after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 4px;
-    background-color: #007bff;
-    margin: 10px auto 0;
-    border-radius: 2px;
+.detalle-card .card-body {
+  padding: 2.4rem 2.6rem 2rem;
+}
+
+/* Título */
+.detalle-titulo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  line-height: 1.05;
+  margin-bottom: 0.6rem;
+}
+
+/* Precio */
+.detalle-card h2.text-success {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--signal) !important;
+  margin-bottom: 1.8rem;
+}
+
+/* Ficha técnica en mono */
+.detalle-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.35rem 2.5rem;
+  border-top: 1px dashed var(--line);
+  padding-top: 1.4rem;
 }
 
 .detalle-info p {
-    font-size: 18px;
-    margin-bottom: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.descripcion-box {
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    min-height: 100px;
+.detalle-info p strong {
+  font-weight: 700;
+  color: var(--oil);
+  text-align: right;
 }
 
+/* Botón carrito */
 .boton-carrito {
-    margin-top: 0px; /*Aumenta el espacio entre la descripción y el botón*/
+  border-top: 1px solid var(--line);
+  padding-top: 1.4rem;
+  margin-top: 1.8rem;
 }
-.boton-carrito button {
-    padding: 12px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+
+.boton-carrito .btn-success {
+  font-size: 1.05rem;
+  padding: 0.8rem 2rem;
+}
+
+/* Botón volver */
+.detalle-container .btn-secondary {
+  margin-top: 1.25rem;
 }

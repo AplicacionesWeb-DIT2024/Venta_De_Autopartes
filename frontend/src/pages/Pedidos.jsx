@@ -2,7 +2,6 @@ import { usePedidos } from "../hooks/usePedidos";
 import { useNavigate } from "react-router-dom";
 
 import "./Pedidos.css"
-import "../index.css"
 
 export default function Pedidos() {
 

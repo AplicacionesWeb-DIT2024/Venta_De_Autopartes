@@ -1,223 +1,189 @@
-/* Estilos para la página de autopartes */
+/* ==========================================================================
+   Autopartes — listado estilo "ficha de repuesto" / pared de taller
+   ========================================================================== */
 
-/* Estilos generales */
-.autopartes-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+/* Fila de tarjetas */
+.autopartes-container .row {
+  row-gap: 1.75rem;
+  margin-top: 1.5rem;
 }
 
-/* Estilos para el título */
-.autopartes-title {
-    text-align: center;
-    margin-bottom: 30px;
+/* --- Tarjeta de repuesto ------------------------------------------------ */
+
+.card-clickeable {
+  position: relative;
+  overflow: hidden;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Usuario info*/
-.autopartes-container .text-end {
-    text-align: right;
-    margin-bottom: 20px;
+/* Cinta de peligro en el borde superior: la firma del sistema */
+.card-clickeable::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: var(--hazard);
+  z-index: 2;
 }
 
-/*Botón cerrar sesión*/
-.btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease;
+.card-clickeable:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1px 0 rgba(20, 24, 28, 0.08), 0 18px 34px -16px rgba(20, 24, 28, 0.4);
 }
 
-/* Estilos para las tarjetas de autopartes */
-.autopartes-container .card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
-    text-align: center;
+.card-clickeable.opacity-50 {
+  pointer-events: none;
 }
 
-/* Contenedor de la imagen de la tarjeta */
+/* Cuerpo de la tarjeta */
+.card-clickeable .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem;
+  text-align: left;
+}
+
+/* Imagen */
 .card-img-wrapper {
-    width: 100%;
-    height: 160px;
-    overflow: hidden;
-    border-radius: 5px;
-    margin-bottom: 12px;
-    background-color: #e9ecef;
+  position: relative;
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+  background: var(--carbon);
+  border-radius: 0;
+  margin: -1rem -1rem 0.9rem;
+  width: calc(100% + 2rem);
 }
 
-/* Imagen de la autoparte */
 .autoparte-imagen {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s ease;
 }
 
-/* Efecto hover para las tarjetas */
-.card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.card-clickeable:hover .autoparte-imagen {
+  transform: scale(1.04);
 }
 
-/* Estilos para el título de la tarjeta */
-.autopartes-container .card-title {
-    font-size: 20px;
-    margin-bottom: 10px;
+/* Código (dato técnico) */
+.tag-codigo {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--steel);
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
 }
 
-/* Marca */
-.autopartes-container.card-body p {
-    font-size: 16px;
-    color: #777;
-    margin-bottom: 5px;
+/* Nombre de la pieza */
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  color: var(--oil);
+  margin-bottom: 0.2rem;
+}
+
+.card-sub {
+  font-size: 0.8rem;
+  color: var(--steel);
+  margin-bottom: 0.9rem;
 }
 
 /* Precio */
-.autopartes-container .text-success {
-    font-size: 18px;
-    color: #28a745;
-    font-weight: bold;
+.precio-tarjeta {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+  color: var(--signal) !important;
+  margin-top: auto;
+  margin-bottom: 0.7rem;
 }
 
-/* Estilos para el pie de la tarjeta */
-.autopartes-container .card-footer {
-    margin-top: 10px;
+/* Línea de stock */
+.stock-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed var(--line);
+  padding-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--steel);
 }
 
-/* Estilos para los botones */
-.autopartes-container .btn {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease;
+.stock-line strong {
+  color: var(--ok);
+  font-weight: 700;
 }
 
-/* Estilos para el botón de agregar al carrito */
-.autopartes-container .btn-success {
-    background-color: #28a745;
-    border-color: #28a745;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease;
+/* Pie de tarjeta (botones) */
+.card-footer {
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--line);
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/* Efecto hover para el botón de agregar al carrito */
-.autopartes-container .btn-success:hover {
-    background-color: #218838;
-    border-color: #1e7e34;
+.card-footer .btn {
+  width: 100%;
 }
 
-/* Estilos para el botón de eliminar del carrito */
-.autopartes-container .btn-danger {
-    background-color: #dc3545;
-    border-color: #dc3545;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-}
-
-/* Efecto hover para el botón de eliminar del carrito */
-.autopartes-container .btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-}
-
-/* botones de arriba*/
-.autopartes-container .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-}
-
-.autopartes-container .btn-primary:hover {
-    background-color: #0069d9;
-    border-color: #0062cc;
-}
-
-.autopartes-container .btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-}
-
-.autopartes-container .btn-secondary:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
-}
-
-/* Estilos para la fila de tarjetas */
-.autopartes-container .row {
-    row-gap: 20px;
-}
-
-/* Estilos para el texto de descripción */
-.autopartes-container .text-muted {
-    font-size: 14px;
-    color: #999;
-}
-
-.autopartes-container .row{
-    margin-top: 20px;
-}
-
-/* Estilos para las tarjetas clickeables */
-.card-clickeable {
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* Efecto hover para las tarjetas clickeables */
-.card-clickeable:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Animación de carga (Skeleton Loading) */
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.6;
-    }
-}
+/* --- Skeleton de carga ------------------------------------------------ */
 
 .skeleton-title,
 .skeleton-price {
-    animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.user-info {
-    color: black;
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
 }
 
-.autopartes-container{
-    background-color: #f5f5f5;
-    min-height: 100vh;
-    padding: 40px 20px;
-    border-radius: 20px;
+/* --- Encabezados de la página ------------------------------------------- */
+
+.autopartes-container {
+  max-width: 1240px;
+}
+
+.autopartes-container h2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Botón agregar autoparte (empleado) */
+.autopartes-container .d-flex.justify-content-start {
+  margin-top: 1.5rem;
+}
+
+/* Alertas de error */
+.autopartes-container .alert {
+  margin-top: 1.5rem;
 }
