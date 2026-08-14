@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Autopart;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rule;
 
 class AutopartController extends Controller
@@ -21,23 +22,28 @@ class AutopartController extends Controller
             $perPage = 100;
         }
 
-        // Estas son las columnas que voy a mostrar en el frontend.
-        return Autopart::select(
-            'id',
-            'autoparte',
-            'marca',
-            'modelo',
-            'precio',
-            'estado',
-            'anioVehiculo',
-            'codigo',
-            'color',
-            'stock',
-            'foto',
-            'created_at'
-        )
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage);
+        // El listado se cachea 60 segundos para evitar la latencia y el
+        // arranque en frío de la base de datos remota. Se invalida al crear,
+        // actualizar o eliminar una autoparte.
+        return Cache::remember("autoparts.page.$perPage", 60, function () use ($perPage) {
+            // Estas son las columnas que voy a mostrar en el frontend.
+            return Autopart::select(
+                'id',
+                'autoparte',
+                'marca',
+                'modelo',
+                'precio',
+                'estado',
+                'anioVehiculo',
+                'codigo',
+                'color',
+                'stock',
+                'foto',
+                'created_at'
+            )
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage);
+        });
     }
 
     // Método para mostrar una autoparte específica
@@ -71,6 +77,9 @@ class AutopartController extends Controller
 
         $autopart = Autopart::create($validated);
 
+        Cache::forget("autoparts.page.50");
+        Cache::forget("autoparts.page.100");
+
         return response()->json($autopart, 201);
     }
 
@@ -99,6 +108,9 @@ class AutopartController extends Controller
 
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
 
+        Cache::forget("autoparts.page.50");
+        Cache::forget("autoparts.page.100");
+
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON
     }
 
@@ -108,6 +120,9 @@ class AutopartController extends Controller
         $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
 
         $autopart->delete(); // Elimina la autoparte
+
+        Cache::forget("autoparts.page.50");
+        Cache::forget("autoparts.page.100");
 
         return response()->json(null, 204);// Devuelve una respuesta sin contenido con el código de estado 204
     }
