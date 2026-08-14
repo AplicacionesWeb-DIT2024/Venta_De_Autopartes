@@ -2,6 +2,11 @@ import axios from "axios";
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
 
+export const getImageUrl = (foto) => {
+    if (!foto) return null;
+    return `${API_BASE_URL}/storage/${foto}`;
+};
+
 const api = axios.create({
     baseURL: API_BASE_URL,
     withCredentials: true,

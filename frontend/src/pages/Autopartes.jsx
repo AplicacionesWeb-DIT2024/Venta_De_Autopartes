@@ -1,9 +1,11 @@
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
+import { getImageUrl } from "../api";
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
 import "../index.css"; // importamos index.css para los estilos globales
 import { useState } from "react";
 import Swal from 'sweetalert2'
+import placeholderImg from "../assets/hero.png"; // Imagen por defecto cuando no hay foto
 
 // Componente Skeleton para las tarjetas de carga
 function SkeletonCard() {
@@ -162,6 +164,17 @@ export default function Autopartes() {
                                             }}
                                         >
                                             <div className="card-body d-flex flex-column text-center">
+                                                {/* Imagen de la autoparte */}
+                                                <div className="card-img-wrapper">
+                                                    <img
+                                                        src={getImageUrl(autopart.foto) || placeholderImg}
+                                                        alt={autopart.autoparte}
+                                                        className="card-img-top autoparte-imagen"
+                                                        onError={(e) => {
+                                                            e.currentTarget.src = placeholderImg;
+                                                        }}
+                                                    />
+                                                </div>
                                                 {/* Pieza, marca y modelo */}
                                                 <h5 className="card-title">
                                                     {autopart.autoparte} {autopart.marca} {autopart.modelo}
