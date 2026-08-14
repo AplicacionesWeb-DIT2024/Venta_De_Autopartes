@@ -1,8 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom"; // Importamos useParams para obtener el ID de la autoparte desde la URL
 import { useState } from "react";
+import { getImageUrl } from "../api";
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import "./DetalleAutoparte.css"; // Importamos el archivo CSS para estilos
 import Swal from 'sweetalert2'; // Importamos SweetAlert2 para mostrar alertas bonitas
+import placeholderImg from "../assets/hero.png"; // Imagen por defecto cuando no hay foto
 
 export default function DetalleAutoparte() {
 
@@ -123,6 +125,17 @@ export default function DetalleAutoparte() {
             <div className="card detalle-card shadow">
 
                 <div className="card-body">
+
+                    {/* Foto de la autoparte */}
+                    <div className="detalle-foto">
+                        <img
+                            src={getImageUrl(autoparte.foto) || placeholderImg}
+                            alt={autoparte.autoparte}
+                            onError={(e) => {
+                                e.currentTarget.src = placeholderImg;
+                            }}
+                        />
+                    </div>
 
                     {/* Nombre de la autoparte */}
                     <h1 className="detalle-titulo">

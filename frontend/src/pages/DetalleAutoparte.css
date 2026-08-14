@@ -31,6 +31,30 @@
   padding: 2.4rem 2.6rem 2rem;
 }
 
+/* Foto de la autoparte */
+.detalle-foto {
+  width: 100%;
+  height: clamp(220px, 40vh, 380px);
+  overflow: hidden;
+  background: var(--carbon);
+  border-radius: var(--radius);
+  margin-bottom: 1.8rem;
+  border: 1px solid var(--line);
+}
+
+.detalle-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 576px) {
+  .detalle-card .card-body {
+    padding: 1.8rem 1.4rem;
+  }
+}
+
 /* Título */
 .detalle-titulo {
   font-family: var(--font-display);
