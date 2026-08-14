@@ -197,7 +197,7 @@ const Crear = () => {
         try {
             setLoading(true);
 
-            await api.get('/sanctum/csrf-cookie');
+            // api.get('/sanctum/csrf-cookie');
 
             //Crear FormData para enviar datos + foto
             const datos = new FormData();
