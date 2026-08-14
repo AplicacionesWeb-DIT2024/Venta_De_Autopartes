@@ -218,7 +218,7 @@ const Crear = () => {
                 datos.append("foto", foto);
             }
 
-            await api.post("/autoparts", datos);
+            await api.post("/api/autoparts", datos);
 
             Swal.fire({
                 icon: 'success',

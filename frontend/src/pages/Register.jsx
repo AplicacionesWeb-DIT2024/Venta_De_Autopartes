@@ -90,7 +90,7 @@ const Register = () => {
       await api.get('/sanctum/csrf-cookie');
 
       // Registrar al usuario
-      const response = await api.post('/register', { // Enviamos los datos del formulario al backend
+      const response = await api.post('/api/register', { // Enviamos los datos del formulario al backend
         name: username,
         email,
         password,
