@@ -23,6 +23,8 @@ class RegisterController extends Controller
             'email' => 'required|string|email:rfc,dns|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|string|in:Cliente,Empleado',
+        ], [
+            'email.unique' => 'El correo electrónico ya está en uso.',
         ]);
 
         // Asignar el rol al usuario primero (antes de crear)
