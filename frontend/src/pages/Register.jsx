@@ -51,7 +51,7 @@ const Register = () => {
     if (!email.trim()) {
       nuevosErrores.email =
         "El correo electrónico es obligatorio";
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+    } else if (!/^[A-Za-z0-9]+([._%+-][A-Za-z0-9]+)*@[A-Za-z0-9]+([.-][A-Za-z0-9]+)*\.[A-Za-z]{2,}$/.test(email)) {
       nuevosErrores.email =
         "El correo electrónico no es válido";
     }
