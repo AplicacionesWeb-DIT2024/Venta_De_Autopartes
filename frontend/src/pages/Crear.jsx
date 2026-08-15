@@ -188,6 +188,11 @@ const Crear = () => {
                 "Ingrese un stock entre 1 y 99";
         }
 
+        //Validar que la foto sea obligatoria
+        if (!foto) {
+            nuevosErrores.foto = "Debe agregar una foto";
+        }
+
         // Si hay errores, no enviamos el formulario
         if (Object.keys(nuevosErrores).length > 0) {
             setErrors(nuevosErrores);
@@ -211,12 +216,7 @@ const Crear = () => {
             datos.append("precio", Number(formData.precio));
             datos.append("color", formData.color);
             datos.append("stock", formData.stock);
-
-
-            // La foto es opcional
-            if (foto) {
-                datos.append("foto", foto);
-            }
+            datos.append("foto", foto); // La foto es obligatoria
 
             await api.post("/autoparts", datos);
 
