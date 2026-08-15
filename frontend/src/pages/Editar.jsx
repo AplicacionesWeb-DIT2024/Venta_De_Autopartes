@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from "../api";
+import { getImageUrl } from "../api";
+import placeholderImg from "../assets/hero.png";
 import './Editar.css'; // Importa el CSS para el formulario
 
 
@@ -24,6 +26,9 @@ export default function Editar() {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setErrors] = useState({});
+    const [foto, setFoto] = useState(null); // Foto nueva seleccionada (si la hay)
+    const [fotoActual, setFotoActual] = useState(null); // Ruta de la foto actual en el servidor
+    const [previewFoto, setPreviewFoto] = useState(null); // URL de la preview (actual o nueva)
 
 
     const editedRef = useRef(false); // Marca si el usuario ya comenzó a editar el formulario
@@ -116,6 +121,8 @@ export default function Editar() {
                         color: autoparte.color || "",
                         stock: autoparte.stock || ""
                     });
+                    setFotoActual(autoparte.foto || null);
+                    setPreviewFoto(getImageUrl(autoparte.foto) || null);
                 }
             } catch (error) {
                 console.error("Error al cargar la autoparte:", error);
@@ -129,6 +136,53 @@ export default function Editar() {
 
         cargarAutoparte();
     }, [id]);
+
+    // Limpiar la URL temporal de la preview cuando se desmonta el componente
+    useEffect(() => {
+        return () => {
+            if (previewFoto && previewFoto.startsWith("blob:")) {
+                URL.revokeObjectURL(previewFoto);
+            }
+        };
+    }, [previewFoto]);
+
+    // Manejar la selección de una foto nueva
+    const handleFotoChange = (e) => {
+        const archivo = e.target.files[0];
+
+        if (!archivo) return;
+
+        const tiposPermitidos = ["image/jpeg", "image/png", "image/jpg", "image/webp"];
+
+        if (!tiposPermitidos.includes(archivo.type)) {
+            setErrors(prev => ({
+                ...prev,
+                foto: "La imagen debe ser en formato JPG, JPEG, PNG o WEBP."
+            }));
+            e.target.value = "";
+            setFoto(null);
+            setPreviewFoto(getImageUrl(fotoActual) || null);
+            return;
+        }
+
+        if (archivo.size > 5 * 1024 * 1024) {
+            setErrors(prev => ({
+                ...prev,
+                foto: "La imagen no debe superar los 5 MB."
+            }));
+            e.target.value = "";
+            setFoto(null);
+            setPreviewFoto(getImageUrl(fotoActual) || null);
+            return;
+        }
+
+        setFoto(archivo);
+        setPreviewFoto(URL.createObjectURL(archivo));
+        setErrors(prev => ({
+            ...prev,
+            foto: ""
+        }));
+    };
 
     const handleSubmit = async (e) => {
 
@@ -187,19 +241,28 @@ export default function Editar() {
         try {
             setSaving(true);
 
-            await api.put(`/api/autoparts/${id}`, {
+            const datos = new FormData();
 
-                autoparte: formData.nombre,
-                marca: formData.marca,
-                modelo: formData.modelo,
-                anioVehiculo: Number(formData.anio),
-                codigo: formData.codigo,
-                estado: formData.estado,
-                precio: Number(formData.precio),
-                color: formData.color,
-                stock: formData.stock
+            // Se envía por POST con _method=PUT porque PHP no rellena $_FILES
+            // en peticiones PUT, por lo que no llegaría la foto
+            datos.append('_method', 'PUT');
 
-            });
+            datos.append('autoparte', formData.nombre);
+            datos.append('marca', formData.marca);
+            datos.append('modelo', formData.modelo);
+            datos.append('anioVehiculo', Number(formData.anio));
+            datos.append('codigo', formData.codigo);
+            datos.append('estado', formData.estado);
+            datos.append('precio', Number(formData.precio));
+            datos.append('color', formData.color);
+            datos.append('stock', formData.stock);
+
+            // Si se eligió una foto nueva, se envía; si no, se conserva la actual
+            if (foto) {
+                datos.append('foto', foto);
+            }
+
+            await api.post(`/api/autoparts/${id}`, datos);
 
             navigate("/autoparts");
         } catch (error) {
@@ -220,6 +283,15 @@ export default function Editar() {
                 setErrors(prev => ({
                     ...prev,
                     precio: backendErrors.precio[0]
+                }));
+
+            }
+
+            if (backendErrors?.foto) {
+
+                setErrors(prev => ({
+                    ...prev,
+                    foto: backendErrors.foto[0]
                 }));
 
             }
@@ -411,6 +483,57 @@ export default function Editar() {
                 {error.stock && (
                     <small className="text-danger">
                         {error.stock}
+                    </small>
+                )}
+
+                <label>Foto de la autoparte</label>
+                <div className="foto-container">
+                    {previewFoto ? (
+                        <div className="foto-preview">
+                            <img
+                                src={previewFoto}
+                                alt="Vista previa de la autoparte"
+                                onError={(e) => {
+                                    e.currentTarget.src = placeholderImg;
+                                }}
+                            />
+                            {foto && (
+                                <button
+                                    type="button"
+                                    className="foto-remove"
+                                    onClick={() => {
+                                        setFoto(null);
+                                        setPreviewFoto(getImageUrl(fotoActual) || null);
+                                        const inputFoto = document.getElementById("foto-editar");
+                                        if (inputFoto) inputFoto.value = "";
+                                    }}
+                                >
+                                    Quitar foto nueva
+                                </button>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="foto-placeholder">
+                            <img src={placeholderImg} alt="Sin foto" />
+                            <p>Este repuesto no tiene foto. Elegí una abajo.</p>
+                        </div>
+                    )}
+
+                    <input
+                        id="foto-editar"
+                        type="file"
+                        name="foto"
+                        accept="image/jpeg,image/png,image/jpg,image/webp"
+                        onChange={handleFotoChange}
+                        className="form-control"
+                    />
+                    <small className="foto-ayuda">
+                        JPG, JPEG, PNG o WEBP. Máximo 5 MB. Si no elegís una, se conserva la foto actual.
+                    </small>
+                </div>
+                {error.foto && (
+                    <small className="text-danger">
+                        {error.foto}
                     </small>
                 )}
 
