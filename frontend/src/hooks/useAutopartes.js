@@ -9,7 +9,7 @@ export const useAutopartes = () => {
   // Cargar las autopartes al montar el componente
   useEffect(() => {
 
-    api.get('/api/autoparts?per_page=100')
+    api.get('/autoparts?per_page=100')
       .then(res => {
 
         console.log("Respuesta de autopartes:", res.data);
