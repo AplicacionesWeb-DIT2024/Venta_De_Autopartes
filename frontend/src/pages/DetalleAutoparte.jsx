@@ -128,7 +128,7 @@ export default function DetalleAutoparte() {
                     {autoparte.foto ? (
                         <img
                             src={`http://127.0.0.1:8000/storage/${autoparte.foto}`}
-                            alt={`$(autoparte.autoparte) ${autoparte.marca} ${autoparte.modelo}`}
+                            alt={`${autoparte.autoparte} ${autoparte.marca} ${autoparte.modelo}`}
                             className="img-fluid rounded mb-3"
                             style={{ width: '100%' }}
                         />
