@@ -20,7 +20,7 @@ const Login = () => {
     setLoading(true); // Iniciar el estado de carga
 
     try {
-      const response = await api.post('/api/login', {
+      const response = await api.post('/login', {
         email: username,
         password
       });
