@@ -168,7 +168,7 @@ export default function Autopartes() {
                                                         src={`http://127.0.0.1:8000/storage/${autopart.foto}`}
                                                         alt={`${autopart.autoparte} $(autopart.marca} ${autopart.modelo}`}
                                                         className="card-img-top"
-                                                        style={{ height: '180px', objectFit: 'cover' }}
+                                                        style={{ width: '100%' }}
                                                     />
                                                 ) : (
                                                     <div className="text-center py-4 text-muted">Sin foto</div>

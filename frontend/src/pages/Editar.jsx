@@ -468,7 +468,7 @@ export default function Editar() {
                 <div className="foto-container">
                     {previewFoto && (
                         <div className="foto-preview">
-                            <img src={previewFoto} alt="Vista previa" />
+                            <img src={previewFoto} alt="Vista previa" style={{ width: '100%' }} />
                         </div>
                     )}
                     {!previewFoto && (
