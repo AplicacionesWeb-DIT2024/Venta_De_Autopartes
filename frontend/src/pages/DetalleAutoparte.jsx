@@ -124,6 +124,18 @@ export default function DetalleAutoparte() {
 
                 <div className="card-body">
 
+                    {/* FOTO  */}
+                    {autoparte.foto ? (
+                        <img
+                            src={`http://127.0.0.1:8000/storage/${autoparte.foto}`}
+                            alt={`$(autoparte.autoparte) ${autoparte.marca} ${autoparte.modelo}`}
+                            className="img-fluid rounded mb-3"
+                            style={{ width: '100%' }}
+                        />
+                    ) : (
+                        <div className="text-center py-4 text-muted">Sin foto</div>
+                    )}
+
                     {/* Nombre de la autoparte */}
                     <h1 className="detalle-titulo">
                         {autoparte.autoparte}
