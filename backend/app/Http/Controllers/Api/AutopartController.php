@@ -94,11 +94,20 @@ class AutopartController extends Controller
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'sometimes|required|string|max:255',
-            'stock' => 'required|integer|min:1|max:99'
+            'stock' => 'required|integer|min:1|max:99',
+            'foto' => 'sometimes|image|mimes:jpeg,png,jpg,webp|max:5120'
         ]);
 
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
 
+        if ($request->hasFile('foto')) {
+            // Eliminar foto anterior si existe
+            if ($autopart->foto) {
+                \Storage::disk('public')->delete($autopart->foto);
+            }
+            $autopart->foto = $request->file('foto')->store('autoparts', 'public');
+            $autopart->save();
+        }
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON
     }
 
