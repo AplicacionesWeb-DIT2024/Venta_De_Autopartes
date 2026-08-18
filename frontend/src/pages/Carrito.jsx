@@ -25,7 +25,7 @@ export default function Carrito() {
 
             setLoading(true);
 
-            const response = await api.get("/api/carrito", {
+            const response = await api.get("/carrito", {
                 headers: {
                     Accept: "application/json",
                 },
@@ -62,7 +62,7 @@ export default function Carrito() {
             setDeleting(true);
             setDeletingId(itemId);
 
-            await api.delete(`/api/carrito/${itemId}`, {
+            await api.delete(`/carrito/${itemId}`, {
                 headers: {
                     Accept: "application/json",
                 }
@@ -94,7 +94,7 @@ export default function Carrito() {
         setItems(prevItems => prevItems.map(it => it.id === id ? { ...it, stock: nuevoStock } : it));
 
         try {
-            await api.put(`/api/carrito/${id}`, { stock: nuevoStock }, {
+            await api.put(`/carrito/${id}`, { stock: nuevoStock }, {
                 headers: {
                     Accept: "application/json",
                 },
@@ -111,7 +111,7 @@ export default function Carrito() {
         if (!window.confirm("¿Estás seguro de vaciar el carrito?")) return;
 
         try {
-            await api.delete("/api/carrito", {
+            await api.delete("/carrito", {
                 headers: {
                     Accept: "application/json",
                 },

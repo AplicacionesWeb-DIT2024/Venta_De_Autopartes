@@ -20,7 +20,7 @@ export default function ConfirmarCompra() {
 
     const cargarCarrito = async () => {
         try {
-            const response = await api.get("/api/carrito");
+            const response = await api.get("/carrito");
             setItems(response.data);
         } catch (err) {
             console.error("Error cargando carrito:", err);
@@ -45,7 +45,7 @@ export default function ConfirmarCompra() {
             console.log(items);
             console.log(total);
 
-            await api.post("/api/comprar", { /*Tengo que poner la ruta que tiene el POST en el backend (api/comprar)*/
+            await api.post("/comprar", { /*Tengo que poner la ruta que tiene el POST en el backend (api/comprar)*/
                 forma_pago: formaPago,
             });
 
