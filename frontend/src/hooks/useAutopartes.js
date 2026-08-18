@@ -53,12 +53,12 @@ export const useAutopartes = () => {
 
   const deleteAutoparte = async (id) => {
     try {
-      await api.delete(`/api/autoparts/${id}`);
-      
-      setAutopartes( prev =>
+      await api.delete(`/autoparts/${id}`);
+
+      setAutopartes(prev =>
         prev.filter(autopart => autopart.id !== id)
       );
-    
+
     } catch (err) {
       console.error('Error al eliminar autoparte:', err);
       setError(err);
