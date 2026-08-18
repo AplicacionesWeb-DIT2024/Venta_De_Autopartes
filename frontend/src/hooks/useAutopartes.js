@@ -9,7 +9,7 @@ export const useAutopartes = () => {
   // Cargar las autopartes al montar el componente
   useEffect(() => {
 
-    api.get('/api/autoparts?per_page=100')
+    api.get('/autoparts?per_page=100')
       .then(res => {
 
         console.log("Respuesta de autopartes:", res.data);
@@ -53,12 +53,12 @@ export const useAutopartes = () => {
 
   const deleteAutoparte = async (id) => {
     try {
-      await api.delete(`/api/autoparts/${id}`);
-      
-      setAutopartes( prev =>
+      await api.delete(`/autoparts/${id}`);
+
+      setAutopartes(prev =>
         prev.filter(autopart => autopart.id !== id)
       );
-    
+
     } catch (err) {
       console.error('Error al eliminar autoparte:', err);
       setError(err);

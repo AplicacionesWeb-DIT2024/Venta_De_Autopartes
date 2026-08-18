@@ -132,10 +132,11 @@ const Register = () => {
       const backendErrors = error.response?.data.errors;
 
       if (backendErrors) {
-        setNewErrors({
+        setErrors({
           username: backendErrors.name?.[0],
           email: backendErrors.email?.[0],
           password: backendErrors.password?.[0],
+          confirmPassword: backendErrors.password_confirmation?.[0],
           role: backendErrors.role?.[0]
         });
       } else {

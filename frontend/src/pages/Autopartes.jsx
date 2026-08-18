@@ -162,6 +162,18 @@ export default function Autopartes() {
                                             }}
                                         >
                                             <div className="card-body d-flex flex-column text-center">
+                                                {/* FOTO */}
+                                                {autopart.foto ? (
+                                                    <img
+                                                        src={`http://127.0.0.1:8000/storage/${autopart.foto}`}
+                                                        alt={`${autopart.autoparte} $(autopart.marca} ${autopart.modelo}`}
+                                                        className="card-img-top"
+                                                        style={{ width: '100%' }}
+                                                    />
+                                                ) : (
+                                                    <div className="text-center py-4 text-muted">Sin foto</div>
+                                                )}
+
                                                 {/* Pieza, marca y modelo */}
                                                 <h5 className="card-title">
                                                     {autopart.autoparte} {autopart.marca} {autopart.modelo}

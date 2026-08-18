@@ -23,18 +23,19 @@ class AutopartController extends Controller
 
         // Estas son las columnas que voy a mostrar en el frontend.
         return Autopart::select(
-            'id', 
-            'autoparte', 
-            'marca', 
-            'modelo', 
-            'precio', 
-            'estado', 
-            'anioVehiculo', 
+            'id',
+            'autoparte',
+            'marca',
+            'modelo',
+            'precio',
+            'estado',
+            'anioVehiculo',
             'codigo',
             'color',
             'stock',
+            'foto',
             'created_at'
-            )
+        )
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
@@ -57,9 +58,19 @@ class AutopartController extends Controller
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
-            'stock' => 'required|integer|min:1|max:99' // Valida que el stock sea un número entero entre 1 y 99
+            'stock' => 'required|integer|min:1|max:99', // Valida que el stock sea un número entero entre 1 y 99
+            'foto' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120' // Valida que la foto sea una imagen obligatoria con un tamaño máximo de 2MB
         ]);
+
+        // Si se proporciona una foto, se almacena en el disco público y se guarda la ruta en la base de datos
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request
+                ->file('foto')
+                ->store('autoparts', 'public'); // Almacena la foto en el disco público y guarda la ruta en la base de datos
+        }
+
         $autopart = Autopart::create($validated);
+
         return response()->json($autopart, 201);
     }
 
@@ -67,6 +78,7 @@ class AutopartController extends Controller
     public function update(Request $request, $id)
     {
         $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
+
         $validated = $request->validate([ // Valida los datos de entrada para la actualización de la autoparte
             'autoparte' => 'sometimes|required|string|max:255',
             'marca' => 'sometimes|required|string|max:255',
@@ -82,9 +94,20 @@ class AutopartController extends Controller
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'sometimes|required|string|max:255',
-            'stock' => 'required|integer|min:1|max:99'
+            'stock' => 'required|integer|min:1|max:99',
+            'foto' => 'sometimes|image|mimes:jpeg,png,jpg,webp|max:5120'
         ]);
+
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
+
+        if ($request->hasFile('foto')) {
+            // Eliminar foto anterior si existe
+            if ($autopart->foto) {
+                \Storage::disk('public')->delete($autopart->foto);
+            }
+            $autopart->foto = $request->file('foto')->store('autoparts', 'public');
+            $autopart->save();
+        }
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON
     }
 
@@ -92,7 +115,9 @@ class AutopartController extends Controller
     public function destroy($id)
     {
         $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
+
         $autopart->delete(); // Elimina la autoparte
+
         return response()->json(null, 204);// Devuelve una respuesta sin contenido con el código de estado 204
     }
 }

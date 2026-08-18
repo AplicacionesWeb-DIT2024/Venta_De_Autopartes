@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css'; // Archivo para estilos personalizados
 import api from "../api"
-import Cookies from 'js-cookie';
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
@@ -21,15 +20,9 @@ const Login = () => {
     setLoading(true); // Iniciar el estado de carga
 
     try {
-      await api.get('/sanctum/csrf-cookie');
-
-      const response = await api.post('/api/login', {
+      const response = await api.post('/login', {
         email: username,
         password
-      }, {
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(Cookies.get('XSRF-TOKEN'))
-        }
       });
 
       // Guardar el usuario y token en localStorage

@@ -201,3 +201,80 @@ input[type="number"] {
     background-color: #004085;
     transform: translateY(0);
 }
+
+.foto-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    padding: 20px;
+    border: 1px solid #c9dce5;
+    border-radius: 12px;
+    background-color: #f8fcfe;
+}
+
+.foto-placeholder {
+    width: 100%;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #6c757d
+}
+
+.foto-placeholder span {
+    font-size: 45px;
+    margin-bottom: 8px;
+}
+
+.foto-placeholder p {
+    width: 100%;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #6c757d
+}
+
+.foto-placeholder p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.foto-container input[type="file"] {
+    width: 100%;
+    cursor: pointer;
+}
+
+.foto-preview img {
+    width: 220px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12)
+}
+
+.foto-remove {
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.foto-remove:hover {
+    background-color: #bb2d3b;
+}
+
+.foto-ayuda {
+    color: #6c757d;
+    font-size: 12px;
+    text-align: center;
+}

@@ -9,6 +9,8 @@ export default function Editar() {
     const { id } = useParams();
     const navigate = useNavigate();
 
+    const [foto, setFoto] = useState(null);
+
     const [formData, setFormData] = useState({
         nombre: "",
         marca: "",
@@ -21,6 +23,7 @@ export default function Editar() {
         stock: ""
     });
 
+    const [previewFoto, setPreviewFoto] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setErrors] = useState({});
@@ -98,7 +101,7 @@ export default function Editar() {
         // Cargo las caracteristicas de la autopif () {arte a modificar
         const cargarAutoparte = async () => {
             try {
-                const response = await api.get(`/api/autoparts/${id}`);
+                const response = await api.get(`/autoparts/${id}`);
 
                 console.log(response.data)
 
@@ -116,6 +119,10 @@ export default function Editar() {
                         color: autoparte.color || "",
                         stock: autoparte.stock || ""
                     });
+                    setPreviewFoto(autoparte.foto
+                        ? `http://127.0.0.1:8000/storage/${autoparte.foto}`
+                        : null
+                    );
                 }
             } catch (error) {
                 console.error("Error al cargar la autoparte:", error);
@@ -129,6 +136,42 @@ export default function Editar() {
 
         cargarAutoparte();
     }, [id]);
+
+    const handleFotoChange = (e) => {
+        const archivo = e.target.files[0];
+        if (!archivo) return;
+
+        const tiposPermitidos = [
+            "image/jpeg", "image/png", "image/jpg", "image/webp"
+        ];
+
+        if (!tiposPermitidos.includes(archivo.type)) {
+            setErrors(prev => ({
+                ...prev,
+                foto: "La imagen debe ser JPG, JPEG, PNG o WEBP."
+            }));
+            e.target.value = "";
+            setFoto(null);
+            setPreviewFoto(null);
+            return;
+        }
+
+        if (archivo.size > 5 * 1024 * 1024) {
+            setErrors(prev => ({
+                ...prev,
+                foto: "La imagen no debe superar los 5 MB."
+            }));
+            e.target.value = "";
+            setFoto(null);
+            setPreviewFoto(null);
+            return;
+        }
+
+        setFoto(archivo);
+        setPreviewFoto(URL.createObjectURL(archivo));
+        setErrors(prev => ({ ...prev, foto: "" }));
+    };
+
 
     const handleSubmit = async (e) => {
 
@@ -187,18 +230,25 @@ export default function Editar() {
         try {
             setSaving(true);
 
-            await api.put(`/api/autoparts/${id}`, {
+            //Crear FormData para enviar datos + foto
+            const datos = new FormData();
+            datos.append("_method", "PUT")
+            datos.append("autoparte", formData.nombre);
+            datos.append("marca", formData.marca);
+            datos.append("modelo", formData.modelo);
+            datos.append("anioVehiculo", formData.anio);
+            datos.append("codigo", formData.codigo);
+            datos.append("estado", formData.estado);
+            datos.append("precio", Number(formData.precio));
+            datos.append("color", formData.color);
+            datos.append("stock", formData.stock);
 
-                autoparte: formData.nombre,
-                marca: formData.marca,
-                modelo: formData.modelo,
-                anioVehiculo: Number(formData.anio),
-                codigo: formData.codigo,
-                estado: formData.estado,
-                precio: Number(formData.precio),
-                color: formData.color,
-                stock: formData.stock
+            if (foto) {
+                datos.append("foto", foto);
+            }
 
+            await api.post(`/autoparts/${id}`, datos, {
+                headers: { "Content-Type": "multipart/form-data" }
             });
 
             navigate("/autoparts");
@@ -414,6 +464,31 @@ export default function Editar() {
                     </small>
                 )}
 
+                <label>Foto de la autoparte</label>
+                <div className="foto-container">
+                    {previewFoto && (
+                        <div className="foto-preview">
+                            <img src={previewFoto} alt="Vista previa" style={{ width: '100%' }} />
+                        </div>
+                    )}
+                    {!previewFoto && (
+                        <div className='foto-placeholder'>
+                            <p>Selecciona una foto de la autoparte</p>
+                        </div>
+                    )}
+                    < input
+                        id="foto-edit"
+                        type="file"
+                        accept="image/jpeg, image/png, image/jpg, image/webp"
+                        onChange={handleFotoChange}
+                    />
+                    <small className="foto-ayuda">
+                        JPG, JPEG, PNG O WEBP. MÁXIMO 5MB.
+                    </small>
+                </div>
+                {error.foto && (
+                    <small className="text-danger">{error.foto}</small>
+                )}
                 <button
                     type="submit"
                     disabled={saving}
