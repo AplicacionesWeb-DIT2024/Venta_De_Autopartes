@@ -7,7 +7,7 @@ export const usePedidos = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        api.get("/api/pedidos")
+        api.get("/pedidos")
             .then(res => {
                 console.log("Respuesta de pedidos:", res.data);
 

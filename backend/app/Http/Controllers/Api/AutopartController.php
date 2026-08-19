@@ -98,6 +98,8 @@ class AutopartController extends Controller
             'foto' => 'sometimes|image|mimes:jpeg,png,jpg,webp|max:5120'
         ]);
 
+        unset($validated['foto']);
+
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
 
         if ($request->hasFile('foto')) {

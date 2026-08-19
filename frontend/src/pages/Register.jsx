@@ -86,9 +86,6 @@ const Register = () => {
 
     // Enviar datos al backend para registrar al usuario
     try {
-      // Obtener el token CSRF antes de hacer la solicitud de registro
-      await api.get('/sanctum/csrf-cookie');
-
       // Registrar al usuario
       const response = await api.post('/register', { // Enviamos los datos del formulario al backend
         name: username,
@@ -96,12 +93,6 @@ const Register = () => {
         password,
         password_confirmation: confirmPassword,
         role
-      }, {
-        headers: {
-          'X-XSRF-TOKEN': decodeURIComponent(
-            Cookies.get('XSRF-TOKEN')
-          )
-        }
       });
 
       // Guardar el usuario y token en localStorage

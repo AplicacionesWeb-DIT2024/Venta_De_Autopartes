@@ -9,7 +9,7 @@ export const useDetallePedido = (id) => {
 
     useEffect(() => {
 
-        api.get(`/api/pedidos/${id}`)
+        api.get(`/pedidos/${id}`)
             .then(res => {
                 setPedido(res.data);
                 setLoading(false);

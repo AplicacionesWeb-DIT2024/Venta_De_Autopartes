@@ -37,7 +37,7 @@ export const useAutopartes = () => {
   const addToCart = async (id, stock = 1) => {
 
     try {
-      const response = await api.post(`/api/carrito`, {
+      const response = await api.post(`/carrito`, {
         autopart_id: id,
         stock
       });
