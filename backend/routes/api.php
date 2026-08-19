@@ -16,7 +16,6 @@ Route::middleware('auth:sanctum')->prefix('autoparts')->group(function () {
     Route::post('/', [AutopartController::class, 'store']);
     Route::get('/{id}', [AutopartController::class, 'show']);
     Route::put('/{id}', [AutopartController::class, 'update']);
-    Route::patch('/{id}', [AutopartController::class, 'updatePartial']);
     Route::delete('/{id}', [AutopartController::class, 'destroy']);
 });
 

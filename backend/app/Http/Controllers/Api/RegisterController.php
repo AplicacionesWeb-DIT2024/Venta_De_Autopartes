@@ -55,7 +55,8 @@ class RegisterController extends Controller
                 'email' => $user->email,
                 'roles' => $user->getRoleNames()->first(), // Obtener el nombre del rol asignado
             ],
-            'message' => 'Usuario registrado exitosamente.'
+            'message' => 'Usuario registrado exitosamente.',
+            'token' => $user->createToken('auth_token')->plainTextToken
         ], 201);
     }
 }
