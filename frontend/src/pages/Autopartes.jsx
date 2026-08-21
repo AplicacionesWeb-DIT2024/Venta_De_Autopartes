@@ -165,7 +165,7 @@ export default function Autopartes() {
                                                 {/* FOTO */}
                                                 {autopart.foto ? (
                                                     <img
-                                                        src={`http://127.0.0.1:8000/storage/${autopart.foto}`}
+                                                        src={`http://127.0.0.1:8000/storage/${Array.isArray(autopart.foto) ? autopart.foto[0] : autopart.foto}`}
                                                         alt={`${autopart.autoparte} ${autopart.marca} ${autopart.modelo}`}
                                                         className="card-img-top"
                                                         style={{ width: '100%' }}

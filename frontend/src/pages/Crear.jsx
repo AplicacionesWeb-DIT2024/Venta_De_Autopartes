@@ -19,8 +19,8 @@ const Crear = () => {
 
     const [loading, setLoading] = useState(false);
     const [error, setErrors] = useState({});
-    const [foto, setFoto] = useState(null);
-    const [previewFoto, setPreviewFoto] = useState(null);
+    const [fotos, setFotos] = useState([]);
+    const [previewFotos, setPreviewFotos] = useState([]);
 
     const navigate = useNavigate();
 
@@ -83,60 +83,52 @@ const Crear = () => {
 
     // Manejo exclusivo de la foto
     const handleFotoChange = (e) => {
-        const archivo = e.target.files[0];
+        const archivos = Array.from(e.target.files);
 
-        if (!archivo) {
+        if (fotos.length + archivos.length > 7) {
+            setErrors(prev => ({
+                ...prev,
+                foto: "Máximo 7 fotos permitidas"
+            }));
             return;
         }
 
-        // Tipos de imagen permitidos
         const tiposPermitidos = [
-            "image/jpeg",
-            "image/png",
-            "image/jpg",
-            "image/webp",
+            "image/jpeg", "image/png", "image/jpg", "image/webp"
         ];
 
-        if (!tiposPermitidos.includes(archivo.type)) {
-            setErrors(prev => ({
-                ...prev,
-                foto: "La imagen debe ser en formato JPG, JPEG. PNG o WEBP. "
-            }));
-
-            e.target.value = "";
-            setFoto(null);
-            setPreviewFoto(null);
-
-            return;
+        for (const archivo of archivos) {
+            if (!tiposPermitidos.includes(archivo.type)) {
+                setErrors(prev => ({
+                    ...prev,
+                    foto: "La imagen debe ser JPG, JPEG, PNG O WEBP."
+                }));
+                return;
+            }
+            if (archivo.size > 5 * 1024 * 1024) {
+                setErrors(prev => ({
+                    ...prev,
+                    foto: "La imagen no debe superar los 5 MB."
+                }));
+                return;
+            }
         }
 
-        //Tamaño máximo: 5 MB
-        if (archivo.size > 5 * 1024 * 1024) {
-            setErrors(prev => ({
-                ...prev,
-                foto: "La imagen no debe superar los 5 MB."
-            }));
+        const nuevasFotos = [...fotos, ...archivos];
+        const nuevasPreviews = [...previewFotos, ...archivos.map(a => URL.createObjectURL(a))];
 
-            e.target.value = "";
-            setFoto(null);
-            setPreviewFoto(null);
+        setFotos(nuevasFotos);
+        setPreviewFotos(nuevasPreviews);
+        setErrors(prev => ({ ...prev, foto: "" }));
+    };
 
-            return;
-        }
-
-        // Guardar archivo
-        setFoto(archivo);
-
-        //Crear vista previa
-        const url = URL.createObjectURL(archivo);
-        setPreviewFoto(url);
-
-        // Limpiar error de foto
-        setErrors(prev => ({
-            ...prev,
-            foto: ""
-        }));
-    }
+    const removeFoto = (index) => {
+        const nuevasFotos = fotos.filter((_, i) => i !== index);
+        const nuevasPreviews = previewFotos.filter((_, i) => i !== index);
+        URL.revokeObjectURL(previewFotos[index]);
+        setFotos(nuevasFotos);
+        setPreviewFotos(nuevasFotos);
+    };
 
 
     // Función para manejar el envío del formulario
@@ -189,8 +181,8 @@ const Crear = () => {
         }
 
         //Validar que la foto sea obligatoria
-        if (!foto) {
-            nuevosErrores.foto = "Debe agregar una foto";
+        if (fotos.length === 0) {
+            nuevosErrores.foto = "Debe agregar una foto al menos";
         }
 
         // Si hay errores, no enviamos el formulario
@@ -216,7 +208,7 @@ const Crear = () => {
             datos.append("precio", Number(formData.precio));
             datos.append("color", formData.color);
             datos.append("stock", formData.stock);
-            datos.append("foto", foto); // La foto es obligatoria
+            fotos.forEach(f => datos.append("foto[]", f)); // La foto es obligatoria
 
             await api.post("/autoparts", datos);
 
@@ -287,11 +279,9 @@ const Crear = () => {
 
     useEffect(() => {
         return () => {
-            if (previewFoto) {
-                URL.revokeObjectURL(previewFoto);
-            }
+            previewFotos.forEach(url => URL.revokeObjectURL(url));
         };
-    }, [previewFoto]);
+    }, [previewFotos]);
 
     return (
         <div className="crear-container">
@@ -450,47 +440,34 @@ const Crear = () => {
 
                 <label>Foto de la autoparte</label>
                 <div className="foto-container">
-                    {previewFoto && (
-                        <div className="foto-preview">
-                            <img src={previewFoto}
-                                alt="Vista previa de la autoparte"
-                            />
-
-                            <button
-                                type="button"
-                                className="foto-remove"
-                                onClick={() => {
-                                    setFoto(null);
-                                    setPreviewFoto(null);
-
-                                    const inputFoto = document.getElementById("foto");
-
-                                    if (inputFoto) {
-                                        inputFoto.value = "";
-                                    }
-
-                                    setErrors(prev => ({
-                                        ...prev,
-                                        foto: ""
-                                    }));
-                                }}
-                            >
-                                x Quitar foto
-                            </button>
+                    {previewFotos.length > 0 && (
+                        <div className="fotos-grid">
+                            {previewFotos.map((src, index) => (
+                                <div key={index} className="foto-preview">
+                                    <img src={src} alt={`Foto ${index + 1}`} />
+                                    <button
+                                        type="button"
+                                        className="foto-remove"
+                                        onClick={() => removeFoto(index)}
+                                    >
+                                        x
+                                    </button>
+                                </div>
+                            ))}
                         </div>
                     )}
-
-                    {!previewFoto && (
+                    {previewFotos.length === 0 && (
                         <div className="foto-placeholder">
-                            <p>📷 Selecciona una foto de la autoparte</p>
+                            <p> Selecciona las fotos de la autoparte (máximo 7)</p>
                         </div>
                     )}
 
-                    <input
+                    < input
                         id="foto"
                         type="file"
                         name="foto"
                         accept="image/jpeg,image/png,image/jpg,image/webp"
+                        multiple
                         onChange={handleFotoChange}
                     />
 

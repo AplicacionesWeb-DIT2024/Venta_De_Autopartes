@@ -9,6 +9,10 @@ class Autopart extends Model
 {
     use HasFactory;
     protected $table = "autoparts";
+    protected $casts = [
+        'foto' => 'array',
+    ];
+
     protected $fillable = [
         'autoparte',
         'marca',

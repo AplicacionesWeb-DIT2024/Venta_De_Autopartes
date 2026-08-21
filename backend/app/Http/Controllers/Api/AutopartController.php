@@ -59,14 +59,17 @@ class AutopartController extends Controller
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
             'stock' => 'required|integer|min:1|max:99', // Valida que el stock sea un número entero entre 1 y 99
-            'foto' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120' // Valida que la foto sea una imagen obligatoria con un tamaño máximo de 2MB
+            'foto' => 'required|array|max:7',
+            'foto.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         // Si se proporciona una foto, se almacena en el disco público y se guarda la ruta en la base de datos
         if ($request->hasFile('foto')) {
-            $validated['foto'] = $request
-                ->file('foto')
-                ->store('autoparts', 'public'); // Almacena la foto en el disco público y guarda la ruta en la base de datos
+            $fotos = [];
+            foreach ($request->file('foto') as $archivo) {
+                $fotos[] = $archivo->store('autoparts', 'public');
+            }
+            $validated['foto'] = json_encode($fotos);
         }
 
         $autopart = Autopart::create($validated);
@@ -95,7 +98,8 @@ class AutopartController extends Controller
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'sometimes|required|string|max:255',
             'stock' => 'required|integer|min:1|max:99',
-            'foto' => 'sometimes|image|mimes:jpeg,png,jpg,webp|max:5120'
+            'foto' => 'required|array|max:7',
+            'foto.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         unset($validated['foto']);
@@ -103,11 +107,18 @@ class AutopartController extends Controller
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
 
         if ($request->hasFile('foto')) {
-            // Eliminar foto anterior si existe
+            // Eliminar fotos anteriores
             if ($autopart->foto) {
-                \Storage::disk('public')->delete($autopart->foto);
+                $fotosAnteriores = json_decode($autopart->foto, true) ?? [];
+                foreach ($fotosAnteriores as $fotoAnterior) {
+                    \Storage::disk('public')->delete($fotoAnterior);
+                }
             }
-            $autopart->foto = $request->file('foto')->store('autoparts', 'public');
+            $fotos = [];
+            foreach ($request->file('foto') as $archivo) {
+                $fotos[] = $archivo->store('autoparts', 'public');
+            }
+            $autopart->foto = json_encode($fotos);
             $autopart->save();
         }
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON
