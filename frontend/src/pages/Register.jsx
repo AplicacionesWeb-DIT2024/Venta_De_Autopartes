@@ -48,12 +48,37 @@ const Register = () => {
         "El nombre de usuario es obligatorio";
     }
 
+    const dominiosPermitidos = [
+      'gmail.com',
+      'outlook.com',
+      'hotmail.com',
+      'yahoo.com',
+      'yahoo.com.ar',
+      'icloud.com',
+      'proton.me',
+      'protonmail.com',
+      'tuta.com',
+      'zoho.com',
+      'aol.com',
+      'live.com',
+      'gmx.com',
+      'gmx.de',
+      'mail.ru',
+      'yandex.ru'
+    ];
+
     if (!email.trim()) {
       nuevosErrores.email =
         "El correo electrónico es obligatorio";
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       nuevosErrores.email =
         "El correo electrónico no es válido";
+    } else {
+      const dominio = email.split("@")[1]?.toLowerCase();
+      if (!dominiosPermitidos.includes(dominio)) {
+        nuevosErrores.email =
+          "El correo debe ser de un proveedor de email válido (Gmail, Outlook, Yahoo, etc.)."
+      }
     }
 
     if (!password) {

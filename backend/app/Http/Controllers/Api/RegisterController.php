@@ -20,7 +20,37 @@ class RegisterController extends Controller
         // Validar los datos de entrada
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    $dominiosPermitidos = [
+                        'gmail.com',
+                        'outlook.com',
+                        'hotmail.com',
+                        'yahoo.com',
+                        'yahoo.com.ar',
+                        'icloud.com',
+                        'proton.me',
+                        'protonmail.com',
+                        'tuta.com',
+                        'zoho.com',
+                        'aol.com',
+                        'live.com',
+                        'gmx.com',
+                        'gmx.de',
+                        'mail.ru',
+                        'yandex.ru'
+                    ];
+                    $dominio = strtolower(explode('@', $value)[1] ?? '');
+                    if (!in_array($dominio, $dominiosPermitidos)) {
+                        $fail('El correo debe ser de un proveedor de email válido (Gmail, Outlook, Yahoo, etc.).');
+                    }
+                }
+            ],
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|string|in:Cliente,Empleado',
         ], [
