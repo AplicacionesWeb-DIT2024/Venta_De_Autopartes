@@ -9,7 +9,8 @@ export default function Editar() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [foto, setFoto] = useState(null);
+    const [fotos, setFotos] = useState([]);
+    const [previewFotos, setPreviewFotos] = useState([]);
 
     const [formData, setFormData] = useState({
         nombre: "",
@@ -23,7 +24,6 @@ export default function Editar() {
         stock: ""
     });
 
-    const [previewFoto, setPreviewFoto] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setErrors] = useState({});
@@ -119,10 +119,10 @@ export default function Editar() {
                         color: autoparte.color || "",
                         stock: autoparte.stock || ""
                     });
-                    setPreviewFoto(autoparte.foto
-                        ? `http://127.0.0.1:8000/storage/${autoparte.foto}`
-                        : null
-                    );
+                    if (autoparte.foto) {
+                        const fotosArray = Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto];
+                        setPreviewFotos(fotosArray.map(f => `http://127.0.0.1:8000/storage/${f}`));
+                    }
                 }
             } catch (error) {
                 console.error("Error al cargar la autoparte:", error);
@@ -137,39 +137,53 @@ export default function Editar() {
         cargarAutoparte();
     }, [id]);
 
+    // Manejo exclusivo de la foto
     const handleFotoChange = (e) => {
-        const archivo = e.target.files[0];
-        if (!archivo) return;
+        const archivos = Array.from(e.target.files);
+
+        if (fotos.length + archivos.length > 7) {
+            setErrors(prev => ({
+                ...prev,
+                foto: "Máximo 7 fotos permitidas"
+            }));
+            return;
+        }
 
         const tiposPermitidos = [
             "image/jpeg", "image/png", "image/jpg", "image/webp"
         ];
 
-        if (!tiposPermitidos.includes(archivo.type)) {
-            setErrors(prev => ({
-                ...prev,
-                foto: "La imagen debe ser JPG, JPEG, PNG o WEBP."
-            }));
-            e.target.value = "";
-            setFoto(null);
-            setPreviewFoto(null);
-            return;
+        for (const archivo of archivos) {
+            if (!tiposPermitidos.includes(archivo.type)) {
+                setErrors(prev => ({
+                    ...prev,
+                    foto: "La imagen debe ser JPG, JPEG, PNG O WEBP."
+                }));
+                return;
+            }
+            if (archivo.size > 5 * 1024 * 1024) {
+                setErrors(prev => ({
+                    ...prev,
+                    foto: "La imagen no debe superar los 5 MB."
+                }));
+                return;
+            }
         }
 
-        if (archivo.size > 5 * 1024 * 1024) {
-            setErrors(prev => ({
-                ...prev,
-                foto: "La imagen no debe superar los 5 MB."
-            }));
-            e.target.value = "";
-            setFoto(null);
-            setPreviewFoto(null);
-            return;
-        }
+        const nuevasFotos = [...fotos, ...archivos];
+        const nuevasPreviews = [...previewFotos, ...archivos.map(a => URL.createObjectURL(a))];
 
-        setFoto(archivo);
-        setPreviewFoto(URL.createObjectURL(archivo));
+        setFotos(nuevasFotos);
+        setPreviewFotos(nuevasPreviews);
         setErrors(prev => ({ ...prev, foto: "" }));
+    };
+
+    const removeFoto = (index) => {
+        const nuevasFotos = fotos.filter((_, i) => i !== index);
+        const nuevasPreviews = previewFotos.filter((_, i) => i !== index);
+        URL.revokeObjectURL(previewFotos[index]);
+        setFotos(nuevasFotos);
+        setPreviewFotos(nuevasPreviews);
     };
 
 
@@ -227,6 +241,11 @@ export default function Editar() {
 
         }
 
+        if (fotos.length === 0 && previewFotos.length === 0) {
+            setErrors({ foto: "Debe tener al menos una foto" });
+            return;
+        }
+
         try {
             setSaving(true);
 
@@ -242,10 +261,7 @@ export default function Editar() {
             datos.append("precio", Number(formData.precio));
             datos.append("color", formData.color);
             datos.append("stock", formData.stock);
-
-            if (foto) {
-                datos.append("foto", foto);
-            }
+            fotos.forEach(f => datos.append("foto[]", f)); // La foto es obligatoria
 
             await api.post(`/autoparts/${id}`, datos, {
                 headers: { "Content-Type": "multipart/form-data" }
@@ -466,29 +482,46 @@ export default function Editar() {
 
                 <label>Foto de la autoparte</label>
                 <div className="foto-container">
-                    {previewFoto && (
-                        <div className="foto-preview">
-                            <img src={previewFoto} alt="Vista previa" style={{ width: '100%' }} />
+                    {previewFotos.length > 0 && (
+                        <div className="fotos-grid">
+                            {previewFotos.map((src, index) => (
+                                <div key={index} className="foto-preview">
+                                    <img src={src} alt={`Foto ${index + 1}`} />
+                                    <button
+                                        type="button"
+                                        className="foto-remove"
+                                        onClick={() => removeFoto(index)}
+                                    >
+                                        x
+                                    </button>
+                                </div>
+                            ))}
                         </div>
                     )}
-                    {!previewFoto && (
-                        <div className='foto-placeholder'>
-                            <p>Selecciona una foto de la autoparte</p>
+                    {previewFotos.length === 0 && (
+                        <div className="foto-placeholder">
+                            <p> Selecciona las fotos de la autoparte (máximo 7)</p>
                         </div>
                     )}
+
                     < input
-                        id="foto-edit"
+                        id="foto"
                         type="file"
-                        accept="image/jpeg, image/png, image/jpg, image/webp"
+                        name="foto"
+                        accept="image/jpeg,image/png,image/jpg,image/webp"
+                        multiple
                         onChange={handleFotoChange}
                     />
+
                     <small className="foto-ayuda">
-                        JPG, JPEG, PNG O WEBP. MÁXIMO 5MB.
+                        JPG, JPEG, PNG O WEBP. Máximo 5MB.
                     </small>
+
                 </div>
                 {error.foto && (
                     <small className="text-danger">{error.foto}</small>
                 )}
+
                 <button
                     type="submit"
                     disabled={saving}
