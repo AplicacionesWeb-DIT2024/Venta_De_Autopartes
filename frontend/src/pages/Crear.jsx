@@ -127,7 +127,7 @@ const Crear = () => {
         const nuevasPreviews = previewFotos.filter((_, i) => i !== index);
         URL.revokeObjectURL(previewFotos[index]);
         setFotos(nuevasFotos);
-        setPreviewFotos(nuevasFotos);
+        setPreviewFotos(nuevasPreviews);
     };
 
 
