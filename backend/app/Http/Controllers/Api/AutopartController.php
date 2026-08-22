@@ -69,7 +69,7 @@ class AutopartController extends Controller
             foreach ($request->file('foto') as $archivo) {
                 $fotos[] = $archivo->store('autoparts', 'public');
             }
-            $validated['foto'] = json_encode($fotos);
+            $validated['foto'] = $fotos;
         }
 
         $autopart = Autopart::create($validated);
@@ -109,7 +109,7 @@ class AutopartController extends Controller
         if ($request->hasFile('foto')) {
             // Eliminar fotos anteriores
             if ($autopart->foto) {
-                $fotosAnteriores = json_decode($autopart->foto, true) ?? [];
+                $fotosAnteriores = is_array($autopart->foto) ? $autopart->foto : [];
                 foreach ($fotosAnteriores as $fotoAnterior) {
                     \Storage::disk('public')->delete($fotoAnterior);
                 }
@@ -118,7 +118,7 @@ class AutopartController extends Controller
             foreach ($request->file('foto') as $archivo) {
                 $fotos[] = $archivo->store('autoparts', 'public');
             }
-            $autopart->foto = json_encode($fotos);
+            $autopart->foto = $fotos;
             $autopart->save();
         }
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON

@@ -127,7 +127,7 @@ export default function DetalleAutoparte() {
                     {/* FOTO  */}
                     {autoparte.foto ? (
                         <div className="fotos-grid">
-                            {(Array.isArray(autopart.foto) ? autoparte.foto : [autoparte.foto]).map((f, index) => (
+                            {(Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto]).map((f, index) => (
                                 <img
                                     key={index}
                                     src={`http://127.0.0.1:8000/storage/${f}`}
