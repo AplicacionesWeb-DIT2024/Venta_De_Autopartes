@@ -10,9 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('autoparts', function (Blueprint $table) {
-            $table->json('foto')->nullable()->change();
-        });
+        DB::statement('ALTER TABLE autoparts ALTER COLUMN foto TYPE json USING foto::json');
     }
 
     /**
@@ -20,8 +18,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::table('autoparts', function (Blueprint $table) {
-            $table->string('foto')->nullable()->change();
-        });
+        DB::statement('ALTER TABLE autoparts ALTER COLUMN foto TYPE varchar(255)');
     }
 };
