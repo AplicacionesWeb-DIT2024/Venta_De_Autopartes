@@ -11,6 +11,7 @@ export default function Editar() {
 
     const [fotos, setFotos] = useState([]);
     const [previewFotos, setPreviewFotos] = useState([]);
+    const [loadedFotos, setLoadedFotos] = useState(new Set());
 
     const [formData, setFormData] = useState({
         nombre: "",
@@ -485,8 +486,16 @@ export default function Editar() {
                     {previewFotos.length > 0 && (
                         <div className="fotos-grid">
                             {previewFotos.map((src, index) => (
-                                <div key={index} className="foto-preview">
-                                    <img src={src} alt={`Foto ${index + 1}`} />
+                                <div key={index} className="foto-preview imagen-wrapper">
+                                    {!loadedFotos.has(index) && (
+                                        <div className="spinner-border" role="status"></div>
+                                    )}
+                                    <img
+                                        src={src}
+                                        alt={`Foto ${index + 1}`}
+                                        style={{ display: loadedFotos.has(index) ? 'block' : 'none' }}
+                                        onLoad={() => setLoadedFotos(prev => new Set(prev).add(index))}
+                                    />
                                     <button
                                         type="button"
                                         className="foto-remove"

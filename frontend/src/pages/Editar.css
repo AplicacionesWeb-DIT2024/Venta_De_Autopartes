@@ -179,3 +179,15 @@
 .foto-remove:hover {
     background: #dc3545;
 }
+
+.imagen-wrapper {
+    position: relative;
+    min-height: 150px;
+}
+
+.imagen-wrapper .spinner.-border {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

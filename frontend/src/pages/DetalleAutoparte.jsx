@@ -11,7 +11,7 @@ export default function DetalleAutoparte() {
 
     const [deleting, setDeleting] = useState(false); // Estado para controlar si se está eliminando la autoparte
     const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar si se está agregando al carrito
-
+    const [loadedFotos, setLoadedFotos] = useState(new Set());
     const {
         autopartes,
         loading,
@@ -128,13 +128,18 @@ export default function DetalleAutoparte() {
                     {autoparte.foto ? (
                         <div className="fotos-grid">
                             {(Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto]).map((f, index) => (
-                                <img
-                                    key={index}
-                                    src={`http://127.0.0.1:8000/storage/${f}`}
-                                    alt={`${autoparte.autoparte} ${index + 1}`}
-                                    className="img-fluid rounded mb-2"
-                                    style={{ width: '100%' }}
-                                />
+                                <div key={index} className="image-wrapper">
+                                    {!loadedFotos.has(index) && (
+                                        <div className="spinner-border" role="status"></div>
+                                    )}
+                                    <img
+                                        src={`http://127.0.0.1:8000/storage/${f}`}
+                                        alt={`${autoparte.autoparte} ${index + 1}`}
+                                        className="img-fluid rounded mb-2"
+                                        style={{ width: '100%', display: loadedFotos.has(index) ? 'block' : 'none' }}
+                                        onLoad={() => setLoadedFotos(prev => new Set(prev).add(index))}
+                                    />
+                                </div>
                             ))}
                         </div>
                     ) : (
