@@ -167,16 +167,16 @@ export default function Autopartes() {
                                                 {/* FOTO */}
                                                 {autopart.foto ? (
                                                     <div className="image-wrapper">
-                                                        {!loadedImages.has(autopart.id) && (
-                                                            <div className="spinner-border" role="status"></div>
-                                                        )}
                                                         <img
-                                                            src={`http:://127.0.0.1:8000/storage/${Array.isArray(autopart.foto) ? autopart.foto[0] : autopart.foto}`}
+                                                            src={`http://127.0.0.1:8000/storage/${Array.isArray(autopart.foto) ? autopart.foto[0] : autopart.foto}`}
                                                             alt={`${autopart.autoparte} ${autopart.marca} ${autopart.modelo}`}
                                                             className="card-img-top"
-                                                            style={{ width: '100%', display: loadedImages.has(autopart.id) ? 'block' : 'none' }}
+                                                            style={{ width: '100%' }}
                                                             onLoad={() => setLoadedImages(prev => new Set(prev).add(autopart.id))}
                                                         />
+                                                        {!loadedImages.has(autopart.id) && (
+                                                            <div className="text-muted py-3">Cargando imagen...</div>
+                                                        )}
                                                     </div>
                                                 ) : (
                                                     <div className="text-center py-4 text-muted">Sin foto</div>

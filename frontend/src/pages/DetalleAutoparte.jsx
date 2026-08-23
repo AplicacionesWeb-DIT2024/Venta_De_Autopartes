@@ -130,7 +130,7 @@ export default function DetalleAutoparte() {
                             {(Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto]).map((f, index) => (
                                 <div key={index} className="image-wrapper">
                                     {!loadedFotos.has(index) && (
-                                        <div className="spinner-border" role="status"></div>
+                                        <div className="text-muted py-3">Cargando imagen...</div>
                                     )}
                                     <img
                                         src={`http://127.0.0.1:8000/storage/${f}`}

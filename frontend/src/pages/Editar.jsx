@@ -487,15 +487,14 @@ export default function Editar() {
                         <div className="fotos-grid">
                             {previewFotos.map((src, index) => (
                                 <div key={index} className="foto-preview imagen-wrapper">
-                                    {!loadedFotos.has(index) && (
-                                        <div className="spinner-border" role="status"></div>
-                                    )}
                                     <img
                                         src={src}
                                         alt={`Foto ${index + 1}`}
-                                        style={{ display: loadedFotos.has(index) ? 'block' : 'none' }}
                                         onLoad={() => setLoadedFotos(prev => new Set(prev).add(index))}
                                     />
+                                    {!loadedFotos.has(index) && (
+                                        <div className="text-muted py-3">Cargando imagen...</div>
+                                    )}
                                     <button
                                         type="button"
                                         className="foto-remove"
