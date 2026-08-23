@@ -1,28 +1,28 @@
-import { useParams, useNavigate } from "react-router-dom"; // Importamos useParams para obtener el ID de la autoparte desde la URL
-import { useState } from "react";
-import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
-import "./DetalleAutoparte.css"; // Importamos el archivo CSS para estilos
-import Swal from 'sweetalert2'; // Importamos SweetAlert2 para mostrar alertas bonitas
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import api from "../api";
+import { useAutopartes } from "../hooks/useAutopartes";
+import "./DetalleAutoparte.css";
+import Swal from 'sweetalert2';
 
 export default function DetalleAutoparte() {
 
-    const { id } = useParams(); // Obtenemos el ID de la autoparte desde los parámetros de la URL
-    const navigate = useNavigate(); // Hook para navegar programáticamente
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-    const [deleting, setDeleting] = useState(false); // Estado para controlar si se está eliminando la autoparte
-    const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar si se está agregando al carrito
+    const [autoparte, setAutoparte] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [deleting, setDeleting] = useState(false);
+    const [loadingCart, setLoadingCart] = useState(false);
     const [loadedFotos, setLoadedFotos] = useState(new Set());
-    const {
-        autopartes,
-        loading,
-        addToCart,
-        deleteAutoparte
-    } = useAutopartes(); // Obtenemos las autopartes y la función para agregar al carrito desde el hook personalizado
+    const { addToCart, deleteAutoparte } = useAutopartes();
 
-    // Buscar la autoparte por id
-    const autoparte = autopartes?.find(
-        (a) => String(a.id) === String(id) // Comparamos como strings para evitar problemas de tipo
-    );
+    useEffect(() => {
+        api.get(`/autoparts/${id}`)
+            .then(res => setAutoparte(res.data))
+            .catch(err => console.error("Error al cargar autoparte:", err))
+            .finally(() => setLoading(false));
+    }, [id]);
 
     //usuario logueado
     const user = JSON.parse(localStorage.getItem("user") || "null"); // Obtenemos el usuario logueado desde el localStorage
@@ -37,15 +37,7 @@ export default function DetalleAutoparte() {
     // Verificamos si el usuario es un empleado
     const esEmpleado = user?.role === "Empleado"; // Verificamos si el usuario es un empleado
 
-    // Debug
-    console.log(
-        "ID de URL:",
-        id,
-        "Autopartes:",
-        autopartes,
-        "Encontrado:",
-        autoparte
-    );
+    
 
     const handleDelete = async () => {
 
@@ -95,15 +87,15 @@ export default function DetalleAutoparte() {
         );
     }
 
-    // Si no hay autopartes cargadas
-    if (!autopartes || autopartes.length === 0) {
+    // Si no se encontró la autoparte
+    if (!loading && !autoparte) {
         return (
             <div className="container mt-5 text-center">
 
-                <h2>No hay autopartes disponibles</h2>
+                <h2>Autoparte no encontrada</h2>
 
                 <p>
-                    No se pudieron cargar las autopartes.
+                    No se pudo cargar la autoparte solicitada.
                 </p>
 
                 <button
