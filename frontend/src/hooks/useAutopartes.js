@@ -1,35 +1,31 @@
 import { useEffect, useState } from "react";
 import api from "../api";
 
+let cachedAutopartes = null;
+
 export const useAutopartes = () => {
-  const [autopartes, setAutopartes] = useState([]); // Estado para almacenar las autopartes
-  const [loading, setLoading] = useState(true);
+  const [autopartes, setAutopartes] = useState(cachedAutopartes || []);
+  const [loading, setLoading] = useState(!cachedAutopartes);
   const [error, setError] = useState(null);
 
-  // Cargar las autopartes al montar el componente
   useEffect(() => {
+    if (cachedAutopartes) {
+      setLoading(false);
+      return;
+    }
 
     api.get('/autoparts?per_page=100')
       .then(res => {
-
-        console.log("Respuesta de autopartes:", res.data);
-
-        // Obtener datos de paginación de Laravel
         const data = res.data.data || res.data || [];
-
+        cachedAutopartes = data;
         setAutopartes(data);
-
         setLoading(false);
       })
       .catch(err => {
-
         console.error('Error al cargar autopartes:', err);
-
         setError(err);
-
         setLoading(false);
-      }
-      )
+      })
   }, []);
 
 
