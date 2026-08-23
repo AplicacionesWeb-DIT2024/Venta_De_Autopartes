@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Autopart;
-use Hamcrest\Arrays\IsArray;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
@@ -111,18 +110,18 @@ class AutopartController extends Controller
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
 
         // Manejo de fotos
-        $fotoskeep = $request->input('existing_foto', []) ?? [];
+        $fotosKeep = $request->input('existing_foto', []) ?? [];
         $fotosAnteriores = is_array($autopart->foto) ? $autopart->foto : [];
 
         // Eliminar las fotos que ya no se quieran
         foreach ($fotosAnteriores as $fotoAnterior) {
-            if (!in_array($fotoAnterior, $fotoskeep)) {
+            if (!in_array($fotoAnterior, $fotosKeep)) {
                 \Storage::disk('public')->delete($fotoAnterior);
             }
         }
 
         // Agregar fotos nuevas
-        $fotosFinales = $fotoskeep;
+        $fotosFinales = $fotosKeep;
         if ($request->hasFile('foto')) {
             foreach ($request->file('foto') as $archivo) {
                 $fotosFinales[] = $archivo->store('autoparts', 'public');

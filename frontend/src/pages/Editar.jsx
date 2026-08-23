@@ -100,7 +100,7 @@ export default function Editar() {
 
 
     useEffect(() => {
-        // Cargo las caracteristicas de la autopif () {arte a modificar
+        // Cargo las caracteristicas de la auto a modificar
         const cargarAutoparte = async () => {
             try {
                 const response = await api.get(`/autoparts/${id}`);
@@ -142,9 +142,10 @@ export default function Editar() {
 
     // Manejo exclusivo de la foto
     const handleFotoChange = (e) => {
+        editedRef.current = true;
         const archivos = Array.from(e.target.files);
 
-        if (fotos.length + archivos.length > 7) {
+        if (existingFotos.length + fotos.length + archivos.length > 7) {
             setErrors(prev => ({
                 ...prev,
                 foto: "Máximo 7 fotos permitidas"
@@ -182,6 +183,7 @@ export default function Editar() {
     };
 
     const removeFoto = (index) => {
+        editedRef.current = true;
         const total = existingFotos.length + fotos.length;
         if (index < existingFotos.length) {
             setExistingFotos(prev => prev.filter((_, i) => i !== index));
