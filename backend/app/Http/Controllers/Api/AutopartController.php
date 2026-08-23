@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Autopart;
+use Hamcrest\Arrays\IsArray;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
@@ -98,29 +99,39 @@ class AutopartController extends Controller
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'sometimes|required|string|max:255',
             'stock' => 'required|integer|min:1|max:99',
-            'foto' => 'required|array|max:7',
+            'existing_foto' => 'nullable|array',
+            'existing_foto.*' => 'string',
+            'foto' => 'nullable|array|max:7',
             'foto.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         unset($validated['foto']);
+        unset($validated['existing_foto']);
 
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
 
-        if ($request->hasFile('foto')) {
-            // Eliminar fotos anteriores
-            if ($autopart->foto) {
-                $fotosAnteriores = is_array($autopart->foto) ? $autopart->foto : [];
-                foreach ($fotosAnteriores as $fotoAnterior) {
-                    \Storage::disk('public')->delete($fotoAnterior);
-                }
+        // Manejo de fotos
+        $fotoskeep = $request->input('existing_foto', []) ?? [];
+        $fotosAnteriores = is_array($autopart->foto) ? $autopart->foto : [];
+
+        // Eliminar las fotos que ya no se quieran
+        foreach ($fotosAnteriores as $fotoAnterior) {
+            if (!in_array($fotoAnterior, $fotoskeep)) {
+                \Storage::disk('public')->delete($fotoAnterior);
             }
-            $fotos = [];
-            foreach ($request->file('foto') as $archivo) {
-                $fotos[] = $archivo->store('autoparts', 'public');
-            }
-            $autopart->foto = $fotos;
-            $autopart->save();
         }
+
+        // Agregar fotos nuevas
+        $fotosFinales = $fotoskeep;
+        if ($request->hasFile('foto')) {
+            foreach ($request->file('foto') as $archivo) {
+                $fotosFinales[] = $archivo->store('autoparts', 'public');
+            }
+        }
+
+        $autopart->foto = $fotosFinales;
+        $autopart->save();
+
         return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON
     }
 

@@ -11,6 +11,7 @@ export default function Editar() {
 
     const [fotos, setFotos] = useState([]);
     const [previewFotos, setPreviewFotos] = useState([]);
+    const [existingFotos, setExistingFotos] = useState([]);
     const [loadedFotos, setLoadedFotos] = useState(new Set());
 
     const [formData, setFormData] = useState({
@@ -123,6 +124,7 @@ export default function Editar() {
                     if (autoparte.foto) {
                         const fotosArray = Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto];
                         setPreviewFotos(fotosArray.map(f => `http://127.0.0.1:8000/storage/${f}`));
+                        setExistingFotos(fotosArray);
                     }
                 }
             } catch (error) {
@@ -180,11 +182,15 @@ export default function Editar() {
     };
 
     const removeFoto = (index) => {
-        const nuevasFotos = fotos.filter((_, i) => i !== index);
-        const nuevasPreviews = previewFotos.filter((_, i) => i !== index);
-        URL.revokeObjectURL(previewFotos[index]);
-        setFotos(nuevasFotos);
-        setPreviewFotos(nuevasPreviews);
+        const total = existingFotos.length + fotos.length;
+        if (index < existingFotos.length) {
+            setExistingFotos(prev => prev.filter((_, i) => i !== index));
+        } else {
+            const newIndex = index - existingFotos.length;
+            URL.revokeObjectURL(previewFotos[index]);
+            setFotos(prev => prev.filter((_, i) => i !== newIndex));
+        }
+        setPreviewFotos(prev => prev.filter((_, i) => i !== index));
     };
 
 
@@ -242,7 +248,7 @@ export default function Editar() {
 
         }
 
-        if (fotos.length === 0 && previewFotos.length === 0) {
+        if (fotos.length === 0 && existingFotos.length === 0) {
             setErrors({ foto: "Debe tener al menos una foto" });
             return;
         }
@@ -263,6 +269,7 @@ export default function Editar() {
             datos.append("color", formData.color);
             datos.append("stock", formData.stock);
             fotos.forEach(f => datos.append("foto[]", f)); // La foto es obligatoria
+            existingFotos.forEach(f => datos.append("existing_foto[]", f));
 
             await api.post(`/autoparts/${id}`, datos, {
                 headers: { "Content-Type": "multipart/form-data" }
