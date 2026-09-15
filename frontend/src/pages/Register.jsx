@@ -12,7 +12,6 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -98,11 +97,6 @@ const Register = () => {
         "Las contraseñas no coinciden";
     }
 
-    if (!role) {
-      nuevosErrores.role =
-        "Debe seleccionar un rol";
-    }
-
     if (Object.keys(nuevosErrores).length > 0) {
       setErrors(nuevosErrores);
       setLoading(false);
@@ -117,7 +111,7 @@ const Register = () => {
         email,
         password,
         password_confirmation: confirmPassword,
-        role
+        role: 'Cliente' // Por defecto, el rol es "Cliente". El rol "Empleado" solo puede ser asignado por un administrador.
       });
 
       // Guardar el usuario y token en localStorage
@@ -192,10 +186,6 @@ const Register = () => {
 
       case 'confirmPassword':
         setConfirmPassword(value);
-        break;
-
-      case 'role':
-        setRole(value);
         break;
 
       default:
@@ -311,38 +301,6 @@ const Register = () => {
             {errors.confirmPassword && (
               <small className="text-danger">
                 {errors.confirmPassword}
-              </small>
-            )}
-
-
-
-          </div>
-
-          {/* Selección de rol */}
-          <div className="register-input-group">
-            <label>Rol</label>
-
-            <select
-              name="role"
-              className="register-select"
-              value={role}
-              onChange={handleChange}
-            >
-              <option value="">
-                Seleccionar rol
-              </option>
-
-              <option value="Cliente">
-                Cliente
-              </option>
-
-              <option value="Empleado">
-                Empleado
-              </option>
-            </select>
-            {errors.role && (
-              <small className="text-danger">
-                {errors.role}
               </small>
             )}
           </div>

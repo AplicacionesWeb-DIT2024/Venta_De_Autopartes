@@ -12,12 +12,6 @@ class RegisterController extends Controller
 {
     public function register(Request $request)
     {
-        // Normalizar el rol para evitar problemas de mayúsculas/minúsculas y espacios
-        $request->merge([
-            'role' => ucfirst(strtolower(trim($request->role)))
-        ]);
-
-        // Validar los datos de entrada
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
@@ -52,33 +46,27 @@ class RegisterController extends Controller
                 }
             ],
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|string|in:Cliente,Empleado',
+            'role' => 'required|string|in:Cliente',
         ], [
             'email.unique' => 'El correo electrónico ya está registrado.'
         ]);
 
-        // Asignar el rol al usuario primero (antes de crear)
-        $role = Role::where('name', $validated['role'])
-            ->where('guard_name', 'web')
-            ->first();
-
+        // El registro público solo puede crear clientes
+        $role = Role::where('name', 'Cliente')->where('guard_name', 'web')->first();
         if (!$role) {
             return response()->json([
                 'message' => 'Rol no encontrado.'
             ], 500);
         }
 
-        // Crear el usuario con el rol en la columna role
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'role' => $validated['role'], // Asignar el rol a la columna role también
+            'role' => 'Cliente',
         ]);
 
-        // Asignar el rol del sistema de Spatie al usuario
-        $user->assignRole($role);
-
+        $user->assignRole($role); // Asignar el rol al usuario
         $user->refresh(); // Refrescar el modelo para asegurarse de que los roles se carguen correctamente
 
         return response()->json([
