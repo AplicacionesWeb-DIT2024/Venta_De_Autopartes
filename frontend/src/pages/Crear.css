@@ -278,3 +278,22 @@ input[type="number"] {
     font-size: 12px;
     text-align: center;
 }
+
+.fotos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.fotos-grid .foto-preview {
+    position: relative;
+}
+
+.fotos-grid .foto-preview img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}

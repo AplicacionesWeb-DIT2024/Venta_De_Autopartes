@@ -11,7 +11,7 @@ export default function DetalleAutoparte() {
 
     const [deleting, setDeleting] = useState(false); // Estado para controlar si se está eliminando la autoparte
     const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar si se está agregando al carrito
-
+    const [loadedFotos, setLoadedFotos] = useState(new Set());
     const {
         autopartes,
         loading,
@@ -126,12 +126,22 @@ export default function DetalleAutoparte() {
 
                     {/* FOTO  */}
                     {autoparte.foto ? (
-                        <img
-                            src={`http://127.0.0.1:8000/storage/${autoparte.foto}`}
-                            alt={`${autoparte.autoparte} ${autoparte.marca} ${autoparte.modelo}`}
-                            className="img-fluid rounded mb-3"
-                            style={{ width: '100%' }}
-                        />
+                        <div className="fotos-grid">
+                            {(Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto]).map((f, index) => (
+                                <div key={index} className="image-wrapper">
+                                    {!loadedFotos.has(index) && (
+                                        <div className="text-muted py-3">Cargando imagen...</div>
+                                    )}
+                                    <img
+                                        src={`http://127.0.0.1:8000/storage/${f}`}
+                                        alt={`${autoparte.autoparte} ${index + 1}`}
+                                        className="img-fluid rounded mb-2"
+                                        style={{ width: '100%', display: loadedFotos.has(index) ? 'block' : 'none' }}
+                                        onLoad={() => setLoadedFotos(prev => new Set(prev).add(index))}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     ) : (
                         <div className="text-center py-4 text-muted">Sin foto</div>
                     )}

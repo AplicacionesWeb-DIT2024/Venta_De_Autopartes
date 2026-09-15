@@ -50,6 +50,8 @@ export default function Autopartes() {
     const isAddingToCart = loadingCartId !== null;
     const [deletingId, setDeletingId] = useState(null); // Estado para controlar qué autoparte se está eliminando
     const isDeleting = deletingId !== null; // Estado para controlar la eliminación de autopartes
+    const [loadedImages, setLoadedImages] = useState(new Set())
+
     const formatPrecio = (precio) => {
         return Number(precio).toLocaleString("es-AR", {
             minimumFractionDigits: 0,
@@ -164,12 +166,18 @@ export default function Autopartes() {
                                             <div className="card-body d-flex flex-column text-center">
                                                 {/* FOTO */}
                                                 {autopart.foto ? (
-                                                    <img
-                                                        src={`http://127.0.0.1:8000/storage/${autopart.foto}`}
-                                                        alt={`${autopart.autoparte} ${autopart.marca} ${autopart.modelo}`}
-                                                        className="card-img-top"
-                                                        style={{ width: '100%' }}
-                                                    />
+                                                    <div className="image-wrapper">
+                                                        <img
+                                                            src={`http://127.0.0.1:8000/storage/${Array.isArray(autopart.foto) ? autopart.foto[0] : autopart.foto}`}
+                                                            alt={`${autopart.autoparte} ${autopart.marca} ${autopart.modelo}`}
+                                                            className="card-img-top"
+                                                            style={{ width: '100%' }}
+                                                            onLoad={() => setLoadedImages(prev => new Set(prev).add(autopart.id))}
+                                                        />
+                                                        {!loadedImages.has(autopart.id) && (
+                                                            <div className="text-muted py-3">Cargando imagen...</div>
+                                                        )}
+                                                    </div>
                                                 ) : (
                                                     <div className="text-center py-4 text-muted">Sin foto</div>
                                                 )}
