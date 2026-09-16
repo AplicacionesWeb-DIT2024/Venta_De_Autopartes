@@ -40,10 +40,6 @@ Route::middleware(['auth', 'role:cliente'])->group(function () {
 
     Route::get('/cliente', [HomeController::class, 'cliente'])->name('cliente');
 
-
-    Route::put('/autopartes/{id}', [AutopartController::class, 'update'])->name('autopartes.update');
-    Route::get('/autopartes/{id}/edit', [AutopartController::class, 'edit'])->name('autopartes.edit');
-    Route::delete('/autopartes/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
 });
 
 // Rutas para el rol Empleado
