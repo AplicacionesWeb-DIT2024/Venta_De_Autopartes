@@ -1,93 +1,89 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Carrito;
-use Illuminate\Http\Request;
 use App\Models\Autopart;
 use App\Models\Pedido;
 use App\Models\DetallePedido;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class CompraController extends Controller
 {
-    //Crear los detalles del pedido, eliminar la autoparte del carrito y actualizar el stock de la autoparte
-    public function procesarCompra(Request $request)
+    public function pagar()
+    {
+        $carritoIẗems = Carrito::where('user_id', Auth::id())->with('áutopart')->get();
+
+        if ($carritoIẗems->isEmpty()) {
+            return redirect()->route('carrito.index')->with('error', 'El carrito está vacío.');
+        }
+
+        return view('compra.pagar', compact('carritoIẗems'));
+    }
+
+
+    public function comprar(Request $request)
     {
         $request->validate([
-            'forma_pago' => 'required|string'
+            'forma_pago' => 'required|string',
         ]);
 
-        return DB::transaction(function () use ($request) {
+        DB::transaction(
+            function () use ($request) {
+                $carritoItems = Carrito::where('user_id', Auth::id())
+                    ->with('autopart')
+                    ->lockInShareMode()
+                    ->get();
 
-            $carritoItems = Carrito::where('user_id', Auth::id())
-                ->with('autopart')
-                ->get();
-
-            if ($carritoItems->isEmpty()) {
-                return response()->json([
-                    'message' => 'El carrito está vacío'
-                ], 400);
-            }
-
-            $total = 0;
-
-            foreach ($carritoItems as $item) {
-                $total += $item->autopart->precio * $item->stock;
-            }
-            //El nombre de las columnas del pedido
-            $pedido = Pedido::create([
-                'user_id' => Auth::id(),
-                'fecha_cierre' => now(),
-                'costo_total' => $total,
-                'tipo_pago' => $request->forma_pago,
-            ]);
-
-            foreach ($carritoItems as $item) {
-
-                DetallePedido::create([
-                    'pedido_id' => $pedido->id,
-                    'autoparte' => $item->autopart->autoparte,
-                    'marca' => $item->autopart->marca,
-                    'modelo' => $item->autopart->modelo,
-                    'codigo' => $item->autopart->codigo,
-                    'precio' => $item->autopart->precio,
-                    'cantidad' => $item->stock,
-                ]);
-
-                // Descontar stock
-                $autopart = Autopart::find($item->autopart_id);
-
-                if ($autopart) {
-
-                    if ($autopart->stock < $item->stock) {
-                        return response()->json([
-                            'message' => 'Stock insuficiente para ' . $autopart->autoparte
-                        ], 400);
-                    }
-
-                    $autopart->decrement('stock', $item->stock);
-
-                    $autopart->refresh();
-
-                    if ($autopart->stock <= 0) {
-                        $autopart->delete(); // Si el stock de autoparte llega a 0, se se elimina la autoparte de la BD.
-                    }
-
+                if ($carritoItems->isEmpty()) {
+                    throw ValidationException::withMessages(['forma_pago' => 'El carrito está vacío.']);
                 }
 
+                // Validar stock de cada autopart
+                foreach ($carritoItems as $item) {
+                    $autopart = Autopart::where('id', $item->autopart_id)->lockForUpdate()->first();
+
+                    if (!$autopart) {
+                        throw ValidationException::withMessages(['forma_pago' => 'El autopart no existe.']);
+                    }
+                    if ($autopart->stock < $item->stock) {
+                        throw ValidationException::withMessages([
+                            'forma_pago' => 'No hay suficiente stock para: ' . $autopart->autoparte,
+                        ]);
+                    }
+                }
+                // Crear el pedido
+                $total = $carritoItems->sum(fn($item) => $item->autopart->precio * $item->stock);
+
+                $pedido = Pedido::create([
+                    'user_id' => Auth::id(),
+                    'fecha_cierre' => now(),
+                    'total' => $total,
+                    'forma_pago' => $request->input('forma_pago'),
+                ]);
+
+                // Crear los detalles del pedido y actualizar el stock
+                foreach ($carritoItems as $item) {
+                    DetallePedido::create([
+                        'pedido_id' => $pedido->id,
+                        'autoparte' => $item->autopart->autoparte,
+                        'marca' => $item->autopart->marca,
+                        'modelo' => $item->autopart->modelo,
+                        'codigo' => $item->autopart->codigo,
+                        'precio' => $item->autopart->precio,
+                        'cantidad' => $item->stock,
+                    ]);
+
+                    Autopart::find($item->autopart_id)->decrement('stock', $item->stock);
+                }
+                // Vaciar el carrito del usuario
+                Carrito::where('user_id', Auth::id())->delete();
             }
+        );
 
-
-            //Vaciar carrito
-            Carrito::where('user_id', Auth::id())->delete();
-
-            return response()->json([
-                'message' => 'Compra procesada con éxito',
-                'pedido_id' => $pedido->id
-            ]);
-        });
+        return redirect()->route('pedidos.index')->with('success', 'Compra realizada con éxito.'); // Redirigir a la página de pedidos con un mensaje de éxito
     }
 }
