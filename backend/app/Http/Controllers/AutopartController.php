@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Autopart;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Autopart;
@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule; // Importa la clase Rule para validar reglas de unicidad en la actualización de autopartes
 
-class Autopartcontroller extends Controller
+class AutopartController extends Controller
 {
     public function index()
     {

@@ -15,12 +15,11 @@ Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Rutas accesibles para todos los usuarios autenticados
+// Rutas accesibles para todos los usuario autenticados
 Route::middleware('auth')->group(function () {
-    // Redirigir a los usuarios al listado de autopartes después de iniciar sesión
     Route::get('/home', [AutopartController::class, 'index'])->name('home');
     Route::get('/autoparts', [AutopartController::class, 'index'])->name('autopartes.index');
-    Route::get('/autoparts/{id}', [AutopartController::class, 'show'])->name('autopartes.show');
+    Route::get('/autoparts/{id}', [AutopartController::class, 'show'])->whereNumber('id')->name('autopartes.show');
 });
 
 // Rutas para el rol Empleado
@@ -30,19 +29,21 @@ Route::middleware(['auth', 'role:empleado'])->group(function () {
     Route::post('/autopartes', [AutopartController::class, 'store'])->name('autopartes.store');
     Route::put('/autopartes/{id}', [AutopartController::class, 'update'])->name('autopartes.update');
     Route::get('/autopartes/{id}/edit', [AutopartController::class, 'edit'])->name('autopartes.edit');
-    Route::delete('/autopartes/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
+    Route::delete('autopartes/{id}', [AutopartController::class, 'destroy'])->name('autopartes.destroy');
 });
 
-// Rutas para el rol Cliente
+//Rutas para el rol Cliente
 Route::middleware(['auth', 'role:cliente'])->group(function () {
-    Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
-    Route::post('/carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
+    Route::get('/carrito', [CarritoController::class, 'index'])->name('carriot.index');
+    Route::post('carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
     Route::delete('/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
-    Route::put('/carrito/{id}', [CarritoController::class, 'update'])->name('carrito.update');
+    route::put('/carrito/{id}', [CarritoController::class, 'update'])->name('carrito.update');
 
-    Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
+    Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedido.index');
     Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
 
-    Route::get('/cliente', [HomeController::class, 'cliente'])->name('cliente');
+    Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
+    Route::get('/comprar', [CompraController::class, 'comprar'])->name('comrpar');
 
+    Route::get('/cliente', [HomeController::class, 'cliente'])->name('cliente');
 });
