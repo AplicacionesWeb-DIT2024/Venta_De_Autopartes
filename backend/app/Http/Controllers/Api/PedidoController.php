@@ -1,21 +1,25 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Pedido;
 use Illuminate\Support\Facades\Auth; // Para obtener el usuario autenticado
 
 
 class PedidoController extends Controller
 {
-    // Mostrar todos los pedidos del usuario autenticado
+    // Lista de pedidos del usuario
     public function index()
     {
-        $pedidos = Pedido::where('user_id', Auth::id())->orderByDesc('fecha_cierre')->get();
-        return view('pedidos.pedidos', compact('pedidos'));
+        $pedidos = Pedido::where('user_id', Auth::id())
+            ->orderByDesc('fecha_cierre')
+            ->get();
+
+        return response()->json($pedidos);
     }
 
-    // Mostrar los detalles de un pedido específico del usuario autenticado
+    // Detalle de un pedido
     public function show($id)
     {
         $pedido = Pedido::where('id', $id)
@@ -23,6 +27,21 @@ class PedidoController extends Controller
             ->with('detalles')
             ->firstOrFail();
 
-        return view('pedidos.detalle', compact('pedido'));
+        return response()->json($pedido);
+    }
+
+    // Eliminar un pedido
+    public function destroy($id)
+    {
+        $pedido = Pedido::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        $pedido->detalles()->delete(); // Eliminar los detalles del pedido antes de eliminar el pedido
+        $pedido->delete(); // Eliminar el pedido
+
+        return response()->json([
+            'message' => 'Pedido eliminado'
+        ]);
     }
 }

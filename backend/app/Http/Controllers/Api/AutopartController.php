@@ -1,27 +1,52 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Autopart;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 
 class AutopartController extends Controller
 {
-    // Método para obtener todas las autopartes
+
+    // Método para mostrar todas las autopartes
     public function index(Request $request)
     {
-        $autoparts = Autopart::orderBy('created_at', 'desc')->get(); // Obtiene todas las autopartes ordenadas por fecha de creación en orden descendente
-        return view('autopartes.autopartes', compact('autoparts')); // Devuelve la vista 'autopartes.autopartes' con las autopartes obtenidas
+        // Obtener el parámetro per_page, por defecto 50
+        $perPage = $request->input('per_page', 50);
+
+        // Validar que per_page no sea mayor a 100 (seguridad)
+        if ($perPage > 100) {
+            $perPage = 100;
+        }
+
+        // Estas son las columnas que voy a mostrar en el frontend.
+        return Autopart::select(
+            'id',
+            'autoparte',
+            'marca',
+            'modelo',
+            'precio',
+            'estado',
+            'anioVehiculo',
+            'codigo',
+            'color',
+            'stock',
+            'foto',
+            'created_at'
+        )
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
     }
 
-    public function create()
+    // Método para mostrar una autoparte específica
+    public function show($id)
     {
-        return view('autopartes.create'); // Devuelve la vista 'autopartes.create' para crear una nueva autoparte
+        return response()->json(Autopart::findOrFail($id)); // Busca la autoparte por ID o lanza una excepción si no se encuentra, y devuelve la autoparte en formato JSON
     }
 
-    // Método para almacenar una nueva autoparte
+    // Método para crear una nueva autoparte
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -34,24 +59,22 @@ class AutopartController extends Controller
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
             'stock' => 'required|integer|min:1|max:99', // Valida que el stock sea un número entero entre 1 y 99
+            'foto' => 'required|array|max:7',
+            'foto.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
-        Autopart::create($validated); // Crea una nueva autoparte con los datos validados
+        // Si se proporciona una foto, se almacena en el disco público y se guarda la ruta en la base de datos
+        if ($request->hasFile('foto')) {
+            $fotos = [];
+            foreach ($request->file('foto') as $archivo) {
+                $fotos[] = $archivo->store('autoparts', 'public');
+            }
+            $validated['foto'] = $fotos;
+        }
 
-        return redirect()->route('autopartes.index')->with('success', 'Autoparte creada exitosamente.'); // Redirige a la ruta 'autopartes.index' con un mensaje de éxito
-    }
+        $autopart = Autopart::create($validated);
 
-    // Método para mostrar una autoparte específica
-    public function show($id)
-    {
-        $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
-        return view('autopartes.producto', compact('autopart')); // Devuelve la vista 'autopartes.producto' con la autoparte obtenida
-    }
-
-    public function edit($id)
-    {
-        $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
-        return view('autopartes.edit', compact('autopart')); // Devuelve la vista 'autopartes.edit' con la autoparte obtenida
+        return response()->json($autopart, 201);
     }
 
     // Método para actualizar una autoparte
@@ -64,16 +87,51 @@ class AutopartController extends Controller
             'marca' => 'sometimes|required|string|max:255',
             'modelo' => 'sometimes|required|string|max:255',
             'anioVehiculo' => 'sometimes|required|integer',
-            'codigo' => ['required', 'string', 'max:255', Rule::unique('autoparts')->ignore($id)],
+            'codigo' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('autoparts')->ignore($id),
+            ],
             'estado' => 'required|string|max:255',
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'sometimes|required|string|max:255',
             'stock' => 'required|integer|min:1|max:99',
+            'existing_foto' => 'nullable|array',
+            'existing_foto.*' => 'string',
+            'foto' => 'nullable|array|max:7',
+            'foto.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
+
+        unset($validated['foto']);
+        unset($validated['existing_foto']);
 
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
 
-        return redirect()->route('autopartes.index')->with('success', 'Autoparte actualizada exitosamente.'); // Redirige a la ruta 'autopartes.index' con un mensaje de éxito
+        // Manejo de fotos
+        $fotosKeep = $request->input('existing_foto', []) ?? [];
+        $fotosAnteriores = is_array($autopart->foto) ? $autopart->foto : [];
+
+        // Eliminar las fotos que ya no se quieran
+        foreach ($fotosAnteriores as $fotoAnterior) {
+            if (!in_array($fotoAnterior, $fotosKeep)) {
+                \Storage::disk('public')->delete($fotoAnterior);
+            }
+        }
+
+        // Agregar fotos nuevas
+        $fotosFinales = $fotosKeep;
+        if ($request->hasFile('foto')) {
+            foreach ($request->file('foto') as $archivo) {
+                $fotosFinales[] = $archivo->store('autoparts', 'public');
+            }
+        }
+
+        $autopart->foto = $fotosFinales;
+        $autopart->save();
+
+        return response()->json($autopart); // Devuelve la autoparte actualizada en formato JSON
     }
 
     // Método para eliminar una autoparte
@@ -81,15 +139,8 @@ class AutopartController extends Controller
     {
         $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
 
-        // Elimina las fotos asociadas a la autoparte del almacenamiento público
-        if (is_array($autopart->foto)) {
-            foreach ($autopart->foto as $foto) {
-                Storage::disk('public')->delete($foto); // Elimina la foto de la autoparte del almacenamiento público
-            }
-        }
-
         $autopart->delete(); // Elimina la autoparte
 
-        return redirect()->route('autopartes.index')->with('success', 'Autoparte eliminada exitosamente.'); // Redirige a la ruta 'autopartes.index' con un mensaje de éxito
+        return response()->json(null, 204);// Devuelve una respuesta sin contenido con el código de estado 204
     }
 }
