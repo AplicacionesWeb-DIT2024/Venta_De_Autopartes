@@ -91,11 +91,11 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="añoVehiculo">Año del Vehículo:</label>
-                <input type="text" id="añoVehiculo" name="anioVehiculo"
+                <label for="anioVehiculo">Año del Vehículo:</label>
+                <input type="text" id="anioVehiculo" name="anioVehiculo"
                     class="form-control @error('anioVehiculo') is-invalid @enderror"
-                    value="{{ old('anioVehiculo', $autopart->añoVehiculo) }}" required>
-                @error('añoVehiculo')
+                    value="{{ old('anioVehiculo', $autopart->anioVehiculo) }}" required>
+                @error('anioVehiculo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
