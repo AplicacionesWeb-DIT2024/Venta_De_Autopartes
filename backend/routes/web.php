@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\AutopartController;
-use App\Http\Controllers\Api\CarritoController;
-use App\Http\Controllers\Api\CompraController;
-use App\Http\Controllers\Api\PedidoController;
+use App\Http\Controllers\AutopartController;
+use App\Http\Controllers\CarritoController;
+use App\Http\Controllers\CompraController;
+use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
@@ -34,16 +34,16 @@ Route::middleware(['auth', 'role:empleado'])->group(function () {
 
 //Rutas para el rol Cliente
 Route::middleware(['auth', 'role:cliente'])->group(function () {
-    Route::get('/carrito', [CarritoController::class, 'index'])->name('carriot.index');
+    Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
     Route::post('carrito/store', [CarritoController::class, 'store'])->name('carrito.store');
     Route::delete('/carrito/{id}', [CarritoController::class, 'destroy'])->name('carrito.destroy');
     route::put('/carrito/{id}', [CarritoController::class, 'update'])->name('carrito.update');
 
-    Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedido.index');
+    Route::get('/pedidos', [PedidoController::class, 'index'])->name('pedidos.index');
     Route::get('/pedidos/{id}', [PedidoController::class, 'show'])->name('pedidos.show');
 
     Route::get('/pagar', [CompraController::class, 'pagar'])->name('pagar');
-    Route::get('/comprar', [CompraController::class, 'comprar'])->name('comrpar');
+    Route::post('/comprar', [CompraController::class, 'comprar'])->name('comprar');
 
     Route::get('/cliente', [HomeController::class, 'cliente'])->name('cliente');
 });
