@@ -23,7 +23,7 @@
                 <h5 class="card-title">{{ $autopart->autoparte }}</h5>
                 <p class="card-text"><strong>Marca:</strong> {{ $autopart->marca }}</p>
                 <p class="card-text"><strong>Modelo:</strong> {{ $autopart->modelo }}</p>
-                <p class="card-text"><strong>Año del Vehículo:</strong> {{ $autopart->añoVehiculo }}</p>
+                <p class="card-text"><strong>Año del Vehículo:</strong> {{ $autopart->anioVehiculo }}</p>
                 <p class="card-text"><strong>Código:</strong> {{ $autopart->codigo }}</p>
                 <p class="card-text"><strong>Estado:</strong> {{ $autopart->estado }}</p>
                 <p class="card-text"><strong>Precio:</strong> ${{ number_format($autopart->precio, 2) }}</p>
