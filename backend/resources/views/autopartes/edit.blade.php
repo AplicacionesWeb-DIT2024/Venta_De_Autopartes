@@ -95,7 +95,7 @@
                 <input type="text" id="anioVehiculo" name="anioVehiculo"
                     class="form-control @error('anioVehiculo') is-invalid @enderror"
                     value="{{ old('anioVehiculo', $autopart->anioVehiculo) }}" required>
-                @error('añoVehiculo')
+                @error('anioVehiculo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
