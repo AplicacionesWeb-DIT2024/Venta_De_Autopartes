@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controller\Api;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Carrito;
@@ -23,7 +23,7 @@ class CompraController extends Controller
             $pedido = DB::transaction(function () use ($request) {
 
                 $carritoItems = Carrito::where('user_id', Auth::id())
-                    ->with('autoparts')
+                    ->with('autopart')
                     ->get();
 
                 if ($carritoItems->isEmpty()) {
@@ -32,7 +32,7 @@ class CompraController extends Controller
 
                 // 1) Validar TODO el stock ANTES de empezar
                 foreach ($carritoItems as $item) {
-                    $autopart = Autopart::where('id', $item->autoparts_id)->lockForUpdate()->first();
+                    $autopart = Autopart::where('id', $item->autopart_id)->lockForUpdate()->first();
 
                     if (!$autopart) {
                         throw new \Exception('No se encontró una autoparte del carrito');
@@ -66,7 +66,7 @@ class CompraController extends Controller
                         'modelo' => $item->autopart->modelo,
                         'codigo' => $item->autopart->codigo,
                         'precio' => $item->autopart->precio,
-                        'cantidad' => $item->autopart->cantidad,
+                        'cantidad' => $item->stock,
                     ]);
 
                     $autopart = Autopart::find($item->autopart_id);
@@ -85,7 +85,7 @@ class CompraController extends Controller
             });
 
             return response()->json([
-                'message' => 'Comrpa procesada con éxito.',
+                'message' => 'Compra procesada con éxito.',
                 'pedido_id' => $pedido->id
             ]);
         } catch (\Exception $e) {
