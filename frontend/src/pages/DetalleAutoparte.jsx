@@ -1,3 +1,4 @@
+import { STORAGE_URL } from "../api";
 import { useParams, useNavigate } from "react-router-dom"; // Importamos useParams para obtener el ID de la autoparte desde la URL
 import { useState } from "react";
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
@@ -133,7 +134,7 @@ export default function DetalleAutoparte() {
                                         <div className="text-muted py-3">Cargando imagen...</div>
                                     )}
                                     <img
-                                        src={`http://127.0.0.1:8000/storage/${f}`}
+                                        src={`${STORAGE_URL}/${f}`}
                                         alt={`${autoparte.autoparte} ${index + 1}`}
                                         className="img-fluid rounded mb-2"
                                         style={{ width: '100%', display: loadedFotos.has(index) ? 'block' : 'none' }}
