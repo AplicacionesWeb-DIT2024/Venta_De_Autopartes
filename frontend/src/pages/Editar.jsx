@@ -123,7 +123,7 @@ export default function Editar() {
                     });
                     if (autoparte.foto) {
                         const fotosArray = Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto];
-                        setPreviewFotos(fotosArray.map(f => `{STORAGE_URL}/${f}`));
+                        setPreviewFotos(fotosArray.map(f => `${STORAGE_URL}/${f}`));
                         setExistingFotos(fotosArray);
                     }
                 }

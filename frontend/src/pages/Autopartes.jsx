@@ -1,4 +1,4 @@
-import { STRAGE_URL } from "../api";
+import { STORAGE_URL } from "../api";
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
