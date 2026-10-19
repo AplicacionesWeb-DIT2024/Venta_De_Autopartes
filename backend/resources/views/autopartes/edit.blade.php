@@ -91,11 +91,11 @@
                 @enderror
             </div>
             <div class="form-group">
-                <label for="añoVehiculo">Año del Vehículo:</label>
-                <input type="text" id="añoVehiculo" name="añoVehiculo"
-                    class="form-control @error('añoVehiculo') is-invalid @enderror"
-                    value="{{ old('añoVehiculo', $autopart->añoVehiculo) }}" required>
-                @error('añoVehiculo')
+                <label for="anioVehiculo">Año del Vehículo:</label>
+                <input type="text" id="anioVehiculo" name="anioVehiculo"
+                    class="form-control @error('anioVehiculo') is-invalid @enderror"
+                    value="{{ old('anioVehiculo', $autopart->anioVehiculo) }}" required>
+                @error('anioVehiculo')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -135,6 +135,14 @@
                 <input type="text" id="color" name="color" class="form-control @error('color') is-invalid @enderror"
                     value="{{ old('color', $autopart->color) }}" required>
                 @error('color')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="form-group">
+                <label for="stock">Stock:</label>
+                <input type="number" id="stock" name="stock" class="form-control @error('stock') is-invalid @enderror"
+                    required value="{{ old('stock', $autopart->stock) }}" min="1">
+                @error('stock')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
