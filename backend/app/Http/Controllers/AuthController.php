@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-
 class AuthController extends Controller
 {
 
@@ -67,6 +66,21 @@ class AuthController extends Controller
             'token' => $token,
         ]);
     }
+    public function logoutApi(Request $request)
+    {
+
+        $token = $request->user()->currentAccessToken();
+
+        if ($token instanceof \Laravel\Sanctum\PersonalAccessToken) {
+            $token->delete();
+        }
+
+        Auth::guard('web')->logout();
+
+        return response()->json(['message' => 'Sesión cerrada correctamente']);
+
+    }
+
 
     public function logout(Request $request)
     {

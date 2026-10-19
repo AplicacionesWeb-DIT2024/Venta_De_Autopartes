@@ -28,4 +28,14 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
+export const logout = async () => {
+    try {
+        await api.post('/logout');
+    } catch (e) {
+
+    } finally {
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user');
+    }
+};
 export default api;

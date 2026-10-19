@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum', 'role:empleado'])->prefix('autoparts')->group
 // Rutas públicas
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logoutApi']);
 
 // Rutas para la gestión del carrito de compras
 Route::middleware('auth:sanctum')->prefix('carrito')->group(function () {
