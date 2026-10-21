@@ -1,7 +1,7 @@
-import { STORAGE_URL } from "../api";
+import api, { STORAGE_URL } from "../api";
 import { useParams, useNavigate } from "react-router-dom"; // Importamos useParams para obtener el ID de la autoparte desde la URL
 import { useState } from "react";
-import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
+import { useAutoparte } from "../hooks/useAutoparte"; // Importamos el hook personalizado para obtener las autopartes
 import "./DetalleAutoparte.css"; // Importamos el archivo CSS para estilos
 import Swal from 'sweetalert2'; // Importamos SweetAlert2 para mostrar alertas bonitas
 
@@ -13,17 +13,7 @@ export default function DetalleAutoparte() {
     const [deleting, setDeleting] = useState(false); // Estado para controlar si se está eliminando la autoparte
     const [loadingCart, setLoadingCart] = useState(false); // Estado para controlar si se está agregando al carrito
     const [loadedFotos, setLoadedFotos] = useState(new Set());
-    const {
-        autopartes,
-        loading,
-        addToCart,
-        deleteAutoparte
-    } = useAutopartes(); // Obtenemos las autopartes y la función para agregar al carrito desde el hook personalizado
-
-    // Buscar la autoparte por id
-    const autoparte = autopartes?.find(
-        (a) => String(a.id) === String(id) // Comparamos como strings para evitar problemas de tipo
-    );
+    const { autoparte, loading, error } = useAutoparte(id);
 
     //usuario logueado
     const user = JSON.parse(localStorage.getItem("user") || "null"); // Obtenemos el usuario logueado desde el localStorage
@@ -38,16 +28,6 @@ export default function DetalleAutoparte() {
     // Verificamos si el usuario es un empleado
     const esEmpleado = user?.role === "Empleado"; // Verificamos si el usuario es un empleado
 
-    // Debug
-    console.log(
-        "ID de URL:",
-        id,
-        "Autopartes:",
-        autopartes,
-        "Encontrado:",
-        autoparte
-    );
-
     const handleDelete = async () => {
 
         const confirmar = window.confirm(
@@ -60,7 +40,7 @@ export default function DetalleAutoparte() {
 
             setDeleting(true); // Establecemos el estado de eliminación
 
-            await deleteAutoparte(autoparte.id);
+            await api.delete(`/autoparts/${autoparte.id}`);
 
             alert("Autoparte eliminada exitosamente.");
 
@@ -96,15 +76,15 @@ export default function DetalleAutoparte() {
         );
     }
 
-    // Si no hay autopartes cargadas
-    if (!autopartes || autopartes.length === 0) {
+    // Si no se encontró la autparte (ID inexistente o error de carga)
+    if (error || !autoparte) {
         return (
             <div className="container mt-5 text-center">
 
-                <h2>No hay autopartes disponibles</h2>
+                <h2>Autoparte no encontrada</h2>
 
                 <p>
-                    No se pudieron cargar las autopartes.
+                    No existe una autoparte con el ID solicitado.
                 </p>
 
                 <button
@@ -195,22 +175,22 @@ export default function DetalleAutoparte() {
                                 onClick={async () => {
                                     try {
                                         setLoadingCart(true); // Establecer el estado de carga del carrito
-
-                                        await addToCart(autoparte.id, 1); // Agregamos 1 unidad al carrito
-
+                                        await api.post('/carrito', {
+                                            autopart_id: autoparte.id,
+                                            stock: 1
+                                        });
                                         navigate("/carrito");
                                     } catch (err) {
                                         Swal.fire({
                                             icon: 'warning',
                                             title: 'Autoparte ya agregada',
-                                            text: err.message,
+                                            text: err.response?.data?.message || 'Error al agregar al carrito',
                                             confirmButtonText: 'Aceptar'
                                         });
                                     } finally {
                                         setLoadingCart(false); // Restablecer el estado de carga del carrito
                                     }
-                                }
-                                }
+                                }}
                             >
                                 {
                                     loadingCart ? (
@@ -235,7 +215,7 @@ export default function DetalleAutoparte() {
                         <button
                             className="btn btn-danger mt-4 d-flex align-items-center gap-2"
                             onClick={handleDelete}
-                            disabled={loading} // Deshabilitar el botón mientras se está eliminando
+                            disabled={deleting}
                         >
                             {deleting ? (
                                 <>
