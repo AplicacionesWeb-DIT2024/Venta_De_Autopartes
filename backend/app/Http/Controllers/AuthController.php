@@ -66,6 +66,23 @@ class AuthController extends Controller
             'token' => $token,
         ]);
     }
+
+    // Login del flujo web (Blade): inicia seesión y redirige según el rol
+    public function webLogin(Request $request)
+    {
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withhErrors(['email' => 'Usuario o contraseña incorrectos'])->withInput();
+        }
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+        $role = $user->getRoleNames()->first() ?? $user->role;
+
+        return $role === 'Empleado'
+            ? redirect()->route('empleado')
+            : redirect()->route('cliente');
+
+    }
     public function logoutApi(Request $request)
     {
 
