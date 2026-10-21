@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import api, { logout } from "../api";
 import "./ConfirmarCompra.css";
 import Swal from 'sweetalert2';
 
@@ -99,9 +99,9 @@ export default function ConfirmarCompra() {
                 <button
                     className="btn btn-danger"
                     disabled={procesando} // Deshabilitar el botón "Cerrar Sesión" si se está procesando la compra
-                    onClick={() => {
-                        localStorage.removeItem("user");
-                        navigate("/");
+                    onClick={async () => {
+                        await logout()
+                        navigate('/');
                     }}
                 >
                     Cerrar Sesión
