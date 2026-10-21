@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api";
+import api, { logout } from "../api";
 import "./Carrito.css";
 import "../index.css"; // importamos index.css para los estilos globales
 
@@ -168,9 +168,9 @@ export default function Carrito() {
                 <button
                     className="btn btn-danger"
                     disabled={deleting} // Deshabilitar el botón "Cerrar Sesión" si se está eliminando un item
-                    onClick={() => {
-                        localStorage.removeItem("user");
-                        navigate("/");
+                    onClick={async () => {
+                        await logout()
+                        navigate('/');
                     }}
                 >
                     Cerrar Sesión
