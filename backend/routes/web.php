@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/', [AuthController::class, 'login']);
+Route::post('/', [AuthController::class, 'webLogin']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Rutas accesibles para todos los usuario autenticados
