@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from "../api";
 import './Editar.css'; // Importa el CSS para el formulario
-import { STORAGE_URL } from "../api";
 
 export default function Editar() {
 
@@ -123,7 +122,7 @@ export default function Editar() {
                     });
                     if (autoparte.foto) {
                         const fotosArray = Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto];
-                        setPreviewFotos(fotosArray.map(f => `${STORAGE_URL}/${f}`));
+                        setPreviewFotos(autoparte.fotos_urls || fotosArray);
                         setExistingFotos(fotosArray);
                     }
                 }

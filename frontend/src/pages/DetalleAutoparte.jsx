@@ -1,4 +1,4 @@
-import api, { STORAGE_URL } from "../api";
+import api from "../api";
 import { useParams, useNavigate } from "react-router-dom"; // Importamos useParams para obtener el ID de la autoparte desde la URL
 import { useState } from "react";
 import { useAutoparte } from "../hooks/useAutoparte"; // Importamos el hook personalizado para obtener las autopartes
@@ -106,15 +106,15 @@ export default function DetalleAutoparte() {
                 <div className="card-body">
 
                     {/* FOTO  */}
-                    {autoparte.foto ? (
+                    {autoparte.fotos_urls && autoparte.fotos_urls.length > 0 ? (
                         <div className="fotos-grid">
-                            {(Array.isArray(autoparte.foto) ? autoparte.foto : [autoparte.foto]).map((f, index) => (
+                            {autoparte.fotos_urls.map((url, index) => (
                                 <div key={index} className="image-wrapper">
                                     {!loadedFotos.has(index) && (
                                         <div className="text-muted py-3">Cargando imagen...</div>
                                     )}
                                     <img
-                                        src={`${STORAGE_URL}/${f}`}
+                                        src={url}
                                         alt={`${autoparte.autoparte} ${index + 1}`}
                                         className="img-fluid rounded mb-2"
                                         style={{ width: '100%', display: loadedFotos.has(index) ? 'block' : 'none' }}

@@ -1,4 +1,4 @@
-import { STORAGE_URL, logout } from "../api";
+import { logout } from "../api";
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
@@ -169,7 +169,7 @@ export default function Autopartes() {
                                                 {autopart.foto ? (
                                                     <div className="image-wrapper">
                                                         <img
-                                                            src={`${STORAGE_URL}/${Array.isArray(autopart.foto) ? autopart.foto[0] : autopart.foto}`}
+                                                            src={autopart.fotos_urls?.[0] || ""}
                                                             alt={`${autopart.autoparte} ${autopart.marca} ${autopart.modelo}`}
                                                             className="card-img-top"
                                                             style={{ width: '100%' }}
