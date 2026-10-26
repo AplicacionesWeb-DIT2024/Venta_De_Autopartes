@@ -71,7 +71,7 @@ class AuthController extends Controller
     public function webLogin(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return back()->withhErrors(['email' => 'Usuario o contraseña incorrectos'])->withInput();
+            return back()->withErrors(['email' => 'Usuario o contraseña incorrectos'])->withInput();
         }
         $request->session()->regenerate();
 
