@@ -25,22 +25,26 @@ class AuthController extends Controller
 
         // Asegurar que el rol existe, si no, crearlo
         $role = Role::firstOrCreate(
-            ['name' => 'Cliente', 'guard_name' => 'web'],
-            ['name' => 'Cliente', 'guard_name' => 'web']
+            ['name' => 'Empleado', 'guard_name' => 'web'],
+            ['name' => 'Empleado', 'guard_name' => 'web']
         );
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'Cliente', //  Asignar el rol "Cliente" al usuario registrado
+            'role' => 'Empleado', //  Asignar el rol "Empleado" al usuario registrado desde el backend
         ]);
 
         // Asignar el rol al usuario en la tabla model_has_roles
         $user->assignRole($role);
         Auth::login($user);
 
-        return redirect()->route('autopartes.index');
+        $roleUser = $user->getRoleNames()->first() ?? $user->role;
+
+        return $roleUser === 'Empleado'
+            ? redirect()->route('empleado')
+            : redirect()->route('cliente');
     }
 
 
