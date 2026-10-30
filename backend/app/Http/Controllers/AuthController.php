@@ -38,13 +38,8 @@ class AuthController extends Controller
 
         // Asignar el rol al usuario en la tabla model_has_roles
         $user->assignRole($role);
-        Auth::login($user);
-
-        $roleUser = $user->getRoleNames()->first() ?? $user->role;
-
-        return $roleUser === 'Empleado'
-            ? redirect()->route('empleado')
-            : redirect()->route('cliente');
+        // NO loguear automáticamente. Ir a login para ingresar manualmente
+        return redirect()->route('login')->with('success', 'Empleado creado correctamente. Inicia sesión.');
     }
 
 
