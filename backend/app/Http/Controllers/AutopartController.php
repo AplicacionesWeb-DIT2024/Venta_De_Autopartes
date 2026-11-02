@@ -34,7 +34,21 @@ class AutopartController extends Controller
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
             'stock' => 'required|integer|min:0|max:99',
+            'foto*' => 'nullable|image|mime:jpg,jpeg,png,webp|max:2048'
         ]);
+
+        $fotoPaths = [];
+
+        if ($request->hasFile('foto')) {
+            foreach ($request->file('foto') as $file) {
+                if ($file->isValid()) {
+                    $path = $file->store('autoparts', 'public');
+                    $fotoPaths[] = $path;
+                }
+            }
+        }
+
+        $validated['foto'] = $fotoPaths;
 
         Autopart::create($validated);
 
@@ -44,7 +58,7 @@ class AutopartController extends Controller
     public function show($id)
     {
         $autopart = Autopart::findOrFail($id); // Busca la autoparte por su ID o lanza un error 404 si no se encuentra
-        return view('autopartes.show', compact('autopart')); // Retorna la vista con los detalles de la autoparte
+        return view('autopartes.producto', compact('autopart')); // Retorna la vista para mostrar los detalles de la autoparte
     }
 
     public function edit($id)

@@ -58,7 +58,8 @@
             </div>
         @endif
 
-        <form id="formAgregarAutoparte" action="{{ route('autopartes.store') }}" method="POST">
+        <form id="formAgregarAutoparte" action="{{ route('autopartes.store') }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="autoparte">Autoparte:</label>
@@ -140,6 +141,13 @@
                 @enderror
             </div>
     </div>
+
+    <div class="mb-3">
+        <label for="foto" class="form-label"> Fotos de la autoparte</label>
+        <input type="file" name="foto[]" id="foto" class="form-control" multiple accept="image/*">
+        <small class="text-muted">Pdoés seleccionar una o varias imágenes</small>
+    </div>
+
     <button type="submit" class="btn btn-primary btn-block">Agregar Autoparte</button>
     <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de
         Autopartes</a>
