@@ -125,7 +125,9 @@
             <div class="form-group">
                 <label for="precio">Precio:</label>
                 <input type="text" id="precio" name="precio" class="form-control @error('precio') is-invalid @enderror"
-                    value="{{ old('precio', $autopart->precio) }}" required>
+                    required
+                    value="{{ old('precio', isset($autopart) ? number_format($autopart->precio, 0, ',', '.') : '') }}"
+                    inputmode="numeric" placeholder="Ej: 100.000">
                 @error('precio')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -151,6 +153,38 @@
                 Autopartes</a>
         </form>
     </div>
+
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const precioInput = document.getElementById('precio');
+        const form = precioInput ? precioInput.closest('form') : null;
+
+        if (precioInput) {
+            function formatearPrecio() {
+                let valor = precioInput.value.replace(/\D/g, '');
+                if (valor === '') {
+                    precioInput.value = '';
+                    return;
+                }
+                // Agregar puntos cada 3 dígitos desde el final
+                precioInput.value = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            //Formatear al escribir y al salid del campo
+            precioInput.addEventListener('input', formatearPrecio);
+            precioInput.addEventListener('blur', formatearPrecio);
+            formatearPrecio(); //Foramtear valor inicial (por si viene con old() o desde edición)
+
+            // Al enviar el formulario, quitar los puntos para que llegue solo el número
+            if (form) {
+                form.addEventListener('submit', function () {
+                    // Quitar puntos antes de enviar al backend
+                    precioInput.value = precioInput.value.replace(/\./g, '');
+                });
+            }
+        }
+    })
+</script>
 
 </html>

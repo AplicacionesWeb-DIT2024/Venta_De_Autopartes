@@ -56,7 +56,7 @@
                                 <td>{{ $autopart->autoparte }}</td>
                                 <td>{{ $autopart->marca }}</td>
                                 <td>{{ $autopart->modelo }}</td>
-                                <td>{{ number_format($autopart->precio, 2) }}</td>
+                                <td>{{ number_format($autopart->precio, 0, ',', '.') }}</td>
                                 <td>
                                     @if(Auth::check() && Auth::user()->role == 'Empleado')
                                         <a href="{{ route('autopartes.edit', $autopart->id) }}"

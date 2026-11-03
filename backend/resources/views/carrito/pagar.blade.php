@@ -35,9 +35,7 @@
                             <td>{{ $item->autoparte->autoparte }}</td>
                             <td>{{ $item->autoparte->marca }}</td>
                             <td>{{ $item->autoparte->modelo }}</td>
-
-                            <td>{{ number_format($item->autoparte->precio, 2) }}</td>
-
+                            <td>{{ number_format($item->autoparte->precio, 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </tbody>

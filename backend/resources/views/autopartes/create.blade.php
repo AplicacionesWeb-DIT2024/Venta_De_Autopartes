@@ -50,7 +50,7 @@
                     class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
             </p>
         </div>
-        
+
         <h1 class="text-center">Agregar Nueva Autoparte</h1>
         <hr>
 
@@ -128,7 +128,7 @@
             <div class="form-group">
                 <label for="precio">Precio:</label>
                 <input type="text" id="precio" name="precio" class="form-control @error('precio') is-invalid @enderror"
-                    required value="{{ old('precio') }}">
+                    required value="{{ old('precio') }}" inputmode="numeric" placeholder="Ej: 100.000">
                 @error('precio')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -160,7 +160,8 @@
 
             <button type="submit" class="btn btn-primary btn-block">Agregar Autoparte</button>
 
-            <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de Autopartes</a>
+            <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de
+                Autopartes</a>
 
         </form>
     </div>
@@ -169,5 +170,38 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const precioInput = document.getElementById('precio');
+        const form = precioInput ? precioInput.closest('form') : null;
+
+        if (precioInput) {
+            function formatearPrecio() {
+                let valor = precioInput.value.replace(/\D/g, '');
+                if (valor === '') {
+                    precioInput.value = '';
+                    return;
+                }
+                // Agregar puntos cada 3 dígitos desde el final
+                precioInput.value = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            //Formatear al escribir y al salid del campo
+            precioInput.addEventListener('input', formatearPrecio);
+            precioInput.addEventListener('blur', formatearPrecio);
+            formatearPrecio(); //Foramtear valor inicial (por si viene con old() o desde edición)
+
+            // Al enviar el formulario, quitar los puntos para que llegue solo el número
+            if (form) {
+                form.addEventListener('submit', function () {
+                    // Quitar puntos antes de enviar al backend
+                    precioInput.value = precioInput.value.replace(/\./g, '');
+                });
+            }
+        }
+    })
+</script>
 
 </html>

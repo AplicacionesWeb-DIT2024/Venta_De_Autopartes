@@ -41,7 +41,7 @@
                             <td>{{ $detalle->marca }}</td>
                             <td>{{ $detalle->modelo }}</td>
                             <td>{{ $detalle->codigo }}</td>
-                            <td>{{ number_format($detalle->precio, 2) }}</td>
+                            <td>{{ number_format($detalle->precio, 0, ',', '.') }}</td> {* Formato de precio sin decimales y separador de miles *}
                         </tr>
                     @endforeach
                 </tbody>

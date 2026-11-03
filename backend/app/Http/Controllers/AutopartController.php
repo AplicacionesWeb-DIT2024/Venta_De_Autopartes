@@ -24,6 +24,13 @@ class AutopartController extends Controller
     // Almacena una nueva autoparte
     public function store(Request $request)
     {
+        // Limapiar puntos del precio para que pase la validación
+        if ($request->filled('precio')) {
+            $request->merge([
+                'precio' => str_replace('.', '', $request->precio)
+            ]);
+        }
+
         $validated = $request->validate([
             'autoparte' => 'required|string|max:255',
             'marca' => 'required|string|max:255',
@@ -70,6 +77,13 @@ class AutopartController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Limapiar puntos del precio para que pase la validación
+        if ($request->filled('precio')) {
+            $request->merge([
+                'precio' => str_replace('.', '', $request->precio)
+            ]);
+        }
+
         $autopart = Autopart::findOrFail($id); // Busca la autoparte por su ID o lanza un error 404 si no se encuentra
 
         $validated = $request->validate([

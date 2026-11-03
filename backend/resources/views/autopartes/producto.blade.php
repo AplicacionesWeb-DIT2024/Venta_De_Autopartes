@@ -35,7 +35,7 @@
                 <p class="card-text"><strong>Año del Vehículo:</strong> {{ $autopart->anioVehiculo }}</p>
                 <p class="card-text"><strong>Código:</strong> {{ $autopart->codigo }}</p>
                 <p class="card-text"><strong>Estado:</strong> {{ $autopart->estado }}</p>
-                <p class="card-text"><strong>Precio:</strong> ${{ number_format($autopart->precio, 2) }}</p>
+                <p class="card-text"><strong>Precio:</strong> ${{ number_format($autopart->precio, 0, ',', '.') }}</p>
                 <p class="card-text"><strong>Color:</strong> {{ $autopart->color }}</p>
                 <a href="{{ route('autopartes.index') }}" class="btn btn-primary">Volver a la Lista de Autopartes</a>
             </div>
