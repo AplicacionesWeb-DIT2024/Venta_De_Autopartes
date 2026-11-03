@@ -144,7 +144,7 @@
 
     <div class="mb-3">
         <label for="foto" class="form-label"> Fotos de la autoparte</label>
-        <input type="file" name="foto[]" id="foto" class="form-control" multiple accept="image/*">
+        <input type="file" name="foto[]" id="foto" class="form-control" multiple accept="image/*" required>
         <small class="text-muted">Pdoés seleccionar una o varias imágenes</small>
     </div>
 

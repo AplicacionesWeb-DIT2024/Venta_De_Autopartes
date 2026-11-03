@@ -34,6 +34,7 @@ class AutopartController extends Controller
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
             'stock' => 'required|integer|min:0|max:99',
+            'foto' => 'required|array|min:1',
             'foto*' => 'nullable|image|mime:jpg,jpeg,png,webp|max:2048'
         ]);
 

@@ -43,7 +43,22 @@ class Autopart extends Model
             $fotos = [$fotos];
         }
 
-        return array_map(fn($f) => Storage::disk('public')->url($f), $fotos);
+        return array_map(function ($f) {
+            if (!$f) {
+                return null;
+            }
+
+            // Si ya viene con la URL completa, no la modificamos
+            if (filter_var($f, FILTER_VALIDATE_URL)) {
+                return $f;
+            }
+
+            // Limpiamos posibles prefijos
+            $f = ltrim(str_replace(['storage/', 'public/'], '', $f), '/');
+
+            // Usamos asset() para que tome APP_URL
+            return asset('storage/' . $f);
+        }, $fotos);
     }
 
     public function carrito()

@@ -52,6 +52,7 @@
                     @else
                         @foreach ($autoparts as $autopart)
                             <tr>
+                                </td>
                                 <td>{{ $autopart->autoparte }}</td>
                                 <td>{{ $autopart->marca }}</td>
                                 <td>{{ $autopart->modelo }}</td>

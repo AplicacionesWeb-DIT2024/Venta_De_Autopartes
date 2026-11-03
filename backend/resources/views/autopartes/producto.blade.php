@@ -21,6 +21,15 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ $autopart->autoparte }}</h5>
+                @if($autopart->fotos_urls && count($autopart->fotos_urls) > 0)
+                    <div class="mb-3">
+                        @foreach($autopart->fotos_urls as $url)
+                            <img src="{{ $url }}" alt="{{ $autopart->autoparte }}" class="img-thumbnail mb-2 d-block mx-auto"
+                                style="max-width: 350px; max-height: 350px; object-fit: contain">
+                        @endforeach
+                    </div>
+                @else<p class="text-muted">Sin foto</p>
+                @endif
                 <p class="card-text"><strong>Marca:</strong> {{ $autopart->marca }}</p>
                 <p class="card-text"><strong>Modelo:</strong> {{ $autopart->modelo }}</p>
                 <p class="card-text"><strong>Año del Vehículo:</strong> {{ $autopart->anioVehiculo }}</p>
