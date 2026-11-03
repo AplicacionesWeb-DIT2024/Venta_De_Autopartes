@@ -43,12 +43,14 @@
 
 <body>
     <div class="container">
+
         <div class="text-right mr-3">
             <p class="mb-1"><strong>Usuario:</strong> {{ Auth::user()->name }}</p>
             <p class="mb-1"><strong>Rol:</strong> <span
                     class="badge badge-info">{{ Auth::user()->role == 'Empleado' ? 'Empleado' : 'Cliente' }}</span>
             </p>
         </div>
+        
         <h1 class="text-center">Agregar Nueva Autoparte</h1>
         <hr>
 
@@ -61,6 +63,7 @@
         <form id="formAgregarAutoparte" action="{{ route('autopartes.store') }}" method="POST"
             enctype="multipart/form-data">
             @csrf
+
             <div class="form-group">
                 <label for="autoparte">Autoparte:</label>
                 <input type="text" id="autoparte" name="autoparte"
@@ -70,6 +73,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
             <div class="form-group">
                 <label for="marca">Marca:</label>
                 <input type="text" id="marca" name="marca" class="form-control @error('marca') is-invalid @enderror"
@@ -78,6 +82,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
             <div class="form-group">
                 <label for="modelo">Modelo:</label>
                 <input type="text" id="modelo" name="modelo" class="form-control @error('modelo') is-invalid @enderror"
@@ -86,6 +91,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
             <div class="form-group">
                 <label for="anioVehiculo">Año del Vehículo:</label>
                 <input type="text" id="anioVehiculo" name="anioVehiculo"
@@ -95,6 +101,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
             <div class="form-group">
                 <label for="codigo">Código:</label>
                 <input type="text" id="codigo" name="codigo" class="form-control @error('codigo') is-invalid @enderror"
@@ -103,6 +110,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
             <div class="form-group">
                 <label for="estado">Estado:</label>
                 <select id="estado" name="estado" class="form-control @error('estado') is-invalid @enderror" required>
@@ -116,6 +124,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
             <div class="form-group">
                 <label for="precio">Precio:</label>
                 <input type="text" id="precio" name="precio" class="form-control @error('precio') is-invalid @enderror"
@@ -124,6 +133,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
             <div class="form-group">
                 <label for="color">Color:</label>
                 <input type="text" id="color" name="color" class="form-control @error('color') is-invalid @enderror"
@@ -132,6 +142,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
             <div class="form-group">
                 <label for="stock">Stock:</label>
                 <input type="number" id="stock" name="stock" class="form-control @error('stock') is-invalid @enderror"
@@ -140,18 +151,18 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-    </div>
 
-    <div class="mb-3">
-        <label for="foto" class="form-label"> Fotos de la autoparte</label>
-        <input type="file" name="foto[]" id="foto" class="form-control" multiple accept="image/*" required>
-        <small class="text-muted">Pdoés seleccionar una o varias imágenes</small>
-    </div>
+            <div class="mb-3">
+                <label for="foto" class="form-label"> Fotos de la autoparte</label>
+                <input type="file" name="foto[]" id="foto" class="form-control" multiple accept="image/*" required>
+                <small class="text-muted">Podés seleccionar una o varias imágenes</small>
+            </div>
 
-    <button type="submit" class="btn btn-primary btn-block">Agregar Autoparte</button>
-    <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de
-        Autopartes</a>
-    </form>
+            <button type="submit" class="btn btn-primary btn-block">Agregar Autoparte</button>
+
+            <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de Autopartes</a>
+
+        </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
