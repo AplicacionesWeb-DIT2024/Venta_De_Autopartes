@@ -158,7 +158,9 @@
                 <small class="text-muted">Podés seleccionar una o varias imágenes</small>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-block">Agregar Autoparte</button>
+            <button type="submit" id="btnAgregar" class="btn btn-primary btn-block">
+                Agregar Autoparte
+            </button>
 
             <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de
                 Autopartes</a>
@@ -175,7 +177,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const precioInput = document.getElementById('precio');
-        const form = precioInput ? precioInput.closest('form') : null;
+        const form = document.getElementById('formAgregarAutoparte');
 
         if (precioInput) {
             function formatearPrecio() {
@@ -188,16 +190,33 @@
                 precioInput.value = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
             }
 
-            //Formatear al escribir y al salid del campo
+            //Formatear al escribir y al salir del campo
             precioInput.addEventListener('input', formatearPrecio);
             precioInput.addEventListener('blur', formatearPrecio);
+
             formatearPrecio(); //Foramtear valor inicial (por si viene con old() o desde edición)
 
             // Al enviar el formulario, quitar los puntos para que llegue solo el número
             if (form) {
                 form.addEventListener('submit', function () {
+
                     // Quitar puntos antes de enviar al backend
-                    precioInput.value = precioInput.value.replace(/\./g, '');
+                    if (precioInput) {
+                        precioInput.value = precioInput.value.replace(/\./g, '');
+                    }
+
+                    const btn = document.getElementById('btnAgregar');
+
+                    if (btn) {
+                        btn.disabled = true;
+
+                        btn.innerHTML = `
+                        <span class="spinner-border spinner-border-sm" 
+                        role="status" 
+                        aria-hidden="true"></span> 
+                        Agregando...
+                        `;
+                    }
                 });
             }
         }
