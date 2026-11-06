@@ -111,7 +111,7 @@
                     <form id="deleteForm" method="POST" action="">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <button type="submit" id="btnConfirmarEliminar" class="btn btn-danger">Eliminar</button>
                     </form>
                 </div>
             </div>
@@ -133,7 +133,25 @@
             var form = $('#deleteForm');
             form.attr('action', action);
         });
+
+        // Spinner al confirmar la eliminación
+        document.getElementById('deleteForm').addEventListener('submit', function () {
+            
+        const btn = document.getElementById('btnConfirmarEliminar');
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `
+                <span class="spinner-border spinner-border-sm" 
+                role="status" 
+                aria-hidden="true"></span> 
+                Eliminando...
+                `;
+            }
+        });
     </script>
+
+
 </body>
 
 </html>
