@@ -148,7 +148,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Editar</button>
+            <button type="submit" id="btnEditar" class="btn btn-primary btn-block">Editar</button>
             <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de
                 Autopartes</a>
         </form>
@@ -181,6 +181,19 @@
                 form.addEventListener('submit', function () {
                     // Quitar puntos antes de enviar al backend
                     precioInput.value = precioInput.value.replace(/\./g, '');
+
+                    const btn = document.getElementById('btnEditar');
+
+                    if (btn) {
+                        btn.disabled = true;
+
+                        btn.innerHTML = `
+                        <span class="spinner-border spinner-border-sm" 
+                        role="status" 
+                        aria-hidden="true"></span> 
+                        Editando...
+                        `;
+                    }
                 });
             }
         }
