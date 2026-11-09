@@ -153,16 +153,23 @@
             </div>
 
             <div class="mb-3">
-                <label for="foto" class="form-label"> Fotos de la autoparte</label>
+                <label for="foto" class="form-label"> Fotos de la autoparte (hasta 5)</label>
                 <input type="file" name="foto[]" id="foto" class="form-control" multiple accept="image/*" required>
-                <small class="text-muted">Podés seleccionar una o varias imágenes</small>
+                <small class="text-muted">Podés seleccionar entre 1 y 5 imágenes (jpg, jpeg, png, webp).</small>
+                @error('foto')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+                @error('foto.*')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
             </div>
 
             <button type="submit" id="btnAgregar" class="btn btn-primary btn-block">
                 Agregar Autoparte
             </button>
 
-            <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de
+            <a href="{{ route('autopartes.index') }}" id="btnVolver" class="btn btn-secondary btn-block mt-2">Volver al
+                Listado de
                 Autopartes</a>
 
         </form>
@@ -198,24 +205,31 @@
 
             // Al enviar el formulario, quitar los puntos para que llegue solo el número
             if (form) {
-                form.addEventListener('submit', function () {
+                form.addEventListener('submit', function (e) {
+                    // Validación rápida: máximo 5 imágenes
+                    const fotoInput = document.getElementById('foto');
+                    if (fotoInput && fotoInput.files && fotoInput.files.length > 5) {
+                        e.preventDefault(); // Evitar el envío del formulario
+                        alert('Podés subir como m;aximo 5 imágenes.');
+                        //formatearPrecio(); //Reformatear el precio para que no se pierda el formato
+                        return; // Detener el envío del formulario
+                    }
 
-                    // Quitar puntos antes de enviar al backend
                     if (precioInput) {
-                        precioInput.value = precioInput.value.replace(/\./g, '');
+                        precioInput.value = precioInput.value.replace(/\./g, ''); // Quitar puntos antes de enviar al backend
                     }
 
                     const btn = document.getElementById('btnAgregar');
-
                     if (btn) {
                         btn.disabled = true;
+                        btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Agregando...`;
+                    }
 
-                        btn.innerHTML = `
-                        <span class="spinner-border spinner-border-sm" 
-                        role="status" 
-                        aria-hidden="true"></span> 
-                        Agregando...
-                        `;
+                    const btnVolver = document.getElementById('btnVolver');
+                    if (btnVolver) {
+                        btnVolver.classList.add('disabled');
+                        btnVolver.style.pointerEvents = 'none';
+                        btnVolver.setAttribute('aria-disabled', 'true');
                     }
                 });
             }

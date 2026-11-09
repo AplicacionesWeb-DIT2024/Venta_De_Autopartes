@@ -24,7 +24,7 @@ class AutopartController extends Controller
     // Almacena una nueva autoparte
     public function store(Request $request)
     {
-        // Limapiar puntos del precio para que pase la validación
+        // Limpiar puntos del precio para que pase la validación
         if ($request->filled('precio')) {
             $request->merge([
                 'precio' => str_replace('.', '', $request->precio)
@@ -41,8 +41,8 @@ class AutopartController extends Controller
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
             'stock' => 'required|integer|min:0|max:99',
-            'foto' => 'required|array|min:1',
-            'foto*' => 'nullable|image|mime:jpg,jpeg,png,webp|max:2048'
+            'foto' => 'required|array|min:1|max:5', // Asegura que se suba al menos una foto y no más de cinco
+            'foto.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
         $fotoPaths = [];
@@ -50,14 +50,12 @@ class AutopartController extends Controller
         if ($request->hasFile('foto')) {
             foreach ($request->file('foto') as $file) {
                 if ($file->isValid()) {
-                    $path = $file->store('autoparts', 'public');
-                    $fotoPaths[] = $path;
+                    $fotoPaths[] = $file->store('autoparts', 'public'); // Almacena cada foto en el disco público y guarda la ruta
                 }
             }
         }
 
         $validated['foto'] = $fotoPaths;
-
         Autopart::create($validated);
 
         return redirect()->route('autopartes.index')->with('success', 'Autoparte creada exitosamente.');
