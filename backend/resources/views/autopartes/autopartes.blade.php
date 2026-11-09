@@ -118,40 +118,50 @@
         </div>
     </div>
 
-    <!-- Agregar JS de Bootstrap y jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Aquí podrías agregar scripts adicionales si los necesitas -->
     <script>
-        // Script para manejar el modal de confirmación de eliminación
-        $('#deleteModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var id = button.data('id');
-            var action = '{{ route('autopartes.destroy', ':id') }}'.replace(':id', id);
-            var form = $('#deleteForm');
-            form.attr('action', action);
-        });
+        (function () {
+            var submitting = false;
+            var $modal = $('#deleteModal');
+            var form = document.getElementById('deleteForm');
+            var btnConfirmar = document.getElementById('btnConfirmarEliminar');
+            var btnCancelar = document.getElementById('btnCancelarEliminar');
+            var btnCerrar = document.getElementById('btnCerrarModal');
+            var textoOriginal = btnConfirmar ? btnConfirmar.innerHTML : 'Eliminar';
 
-        // Spinner al confirmar la eliminación
-        document.getElementById('deleteForm').addEventListener('submit', function () {
-            
-        const btn = document.getElementById('btnConfirmarEliminar');
+            // Configurar acción y resetear el estado del botón al abrir el modal
+            $modal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var action = '{{ route("autopartes.destroy", ":id") }}'.replace(':id', id);
+                form.setAttribute('action', action);
 
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = `
-                <span class="spinner-border spinner-border-sm" 
-                role="status" 
-                aria-hidden="true"></span> 
-                Eliminando...
-                `;
-            }
-        });
+                submitting = false;
+                if (btnConfirmar) { btnConfirmar.disabled = false; btnConfirmar.innerHTML = textoOriginal; }
+                if (btnCancelar) btnCancelar.disabled = false;
+                if (btnCerrar) btnCerrar.disabled = false;
+            });
+
+            // No permitir cerrar mientras se está eliminando
+            $modal.on('hide.bs.modal', function (e) {
+                if (submitting) e.preventDefault();
+            });
+
+           form.addEventListener('submit', function (e) {
+                if (submitting) { e.preventDefault(); return; }
+                submitting = true;
+                if (btnConfirmar) { 
+                    btnConfirmar.disabled = true; 
+                    btnConfirmar.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...'; 
+                }
+                if (btnCancelar) btnCancelar.disabled = true;
+                if (btnCerrar) btnCerrar.disabled = true;
+            });
+        })();       
     </script>
-
-
 </body>
 
 </html>
