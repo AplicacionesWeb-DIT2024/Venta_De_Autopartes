@@ -286,12 +286,21 @@
                         btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...`;
                     }
 
+                    // Deshabilito el botón "Volver" cuando se está guardando la autoparte
                     const btnVolver = document.getElementById('btnVolver');
                     if (btnVolver) {
                         btnVolver.classList.add('disabled');
                         btnVolver.style.pointerEvents = 'none';
                         btnVolver.setAttribute('aria-disabled', 'true');
                     }
+
+                    // Deshabilito el botón para cargar imágenes de autopartes mientras se esta agregando la parte.
+                    const fotoPickerEl = document.getElementById('fotoPicker');
+                    if (fotoPickerEl) {
+                        fotoPickerEl.disabled = true;
+                    }
+                    // Deshabilitar botones "quitar" de la lista
+                    document.querySelectorAll('#fotoLista [data-remove-foto]').forEach(function (b) { b.disabled = true; });
                 });
             }
         }
