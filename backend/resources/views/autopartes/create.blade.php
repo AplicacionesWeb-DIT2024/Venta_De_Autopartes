@@ -154,8 +154,12 @@
 
             <div class="mb-3">
                 <label for="foto" class="form-label"> Fotos de la autoparte (hasta 5)</label>
-                <input type="file" name="foto[]" id="foto" class="form-control" multiple accept="image/*" required>
-                <small class="text-muted">Podés seleccionar entre 1 y 5 imágenes (jpg, jpeg, png, webp).</small>
+                <input type="file" id="fotoPicker" class="form-control" multiple accept="image/*"> {{-- Este input es
+                solo para mostrar el selector de archivos, el input real está oculto --}}
+                <input type="file" name="foto[]" id="foto" multiple accept="image/*" required style="display: none;">
+                {{-- Este input es el que realmente se envía al backend --}}
+                <small class="text-muted">Selecciona hasta 5 imágenes de la autoparte.</small>
+                <div id="fotoLista" class="mt-2 small"></div>
                 @error('foto')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -168,7 +172,8 @@
                 Agregar Autoparte
             </button>
 
-            <a href="{{ route('autopartes.index') }}" id="btnVolver" class="btn btn-secondary btn-block mt-2">Volver al
+            <a href="{{ route('autopartes.index') }}" id="btnVolver" class="btn btn-secondary btn-block mt-2">Volver
+                al
                 Listado de
                 Autopartes</a>
 
@@ -178,63 +183,127 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const precioInput = document.getElementById('precio');
-        const form = document.getElementById('formAgregarAutoparte');
 
-        if (precioInput) {
-            function formatearPrecio() {
-                let valor = precioInput.value.replace(/\D/g, '');
-                if (valor === '') {
-                    precioInput.value = '';
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const precioInput = document.getElementById('precio');
+            const form = document.getElementById('formAgregarAutoparte');
+
+            // acumular fotos (no sobreescribir al elegir de a una)
+            const fotoPicker = document.getElementById('fotoPicker');
+            const fotoInput = document.getElementById('foto'); // oculto, se envía
+            const fotoLista = document.getElementById('fotoLista');
+            let fotosAcumuladas = new DataTransfer(); // Para acumular fotos seleccionadas
+
+            function syncFotos() {
+                if (fotoInput) {
+                    fotoInput.files = fotosAcumuladas.files; // Sincronizar con el input oculto
+                }
+
+                if (!fotoLista) return;
+
+                if (fotosAcumuladas.files.length === 0) {
+                    fotoLista.innerHTML = '<span class="text-muted">Ninguna imagen seleccionada.</span>';
                     return;
                 }
-                // Agregar puntos cada 3 dígitos desde el final
-                precioInput.value = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+                let html = '<ul class="mb-0 pl-3">';
+                Array.from(fotosAcumuladas.files).forEach((f, i) => {
+                    html += `<li>${f.name} <button type="button" class="btn btn-link btn-sm text-danger p-0" data-remove-foto="${i}">quitar</button></li>`;
+                });
+                html += '</ul>';
+                fotoLista.innerHTML = html;
+
+                fotoLista.querySelectorAll('[data-remove-foto]').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const idx = parseInt(this.getAttribute('data-remove-foto'), 10);
+                        const dt = new DataTransfer();
+
+                        Array.from(fotosAcumuladas.files).forEach((f, i) => {
+                            if (i !== idx) {
+                                dt.items.add(f);
+                            }
+                        });
+
+                        fotosAcumuladas = dt;
+                        syncFotos();
+                    });
+                });
+
             }
 
-            //Formatear al escribir y al salir del campo
-            precioInput.addEventListener('input', formatearPrecio);
-            precioInput.addEventListener('blur', formatearPrecio);
 
-            formatearPrecio(); //Foramtear valor inicial (por si viene con old() o desde edición)
+            syncFotos();
 
-            // Al enviar el formulario, quitar los puntos para que llegue solo el número
-            if (form) {
-                form.addEventListener('submit', function (e) {
-                    // Validación rápida: máximo 5 imágenes
-                    const fotoInput = document.getElementById('foto');
-                    if (fotoInput && fotoInput.files && fotoInput.files.length > 5) {
-                        e.preventDefault(); // Evitar el envío del formulario
-                        alert('Podés subir como m;aximo 5 imágenes.');
-                        //formatearPrecio(); //Reformatear el precio para que no se pierda el formato
-                        return; // Detener el envío del formulario
+            if (fotoPicker) {
+                fotoPicker.addEventListener('change', function () {
+                    const nuevos = Array.from(fotoPicker.files || []);
+                    for (const f of nuevos) {
+                        if (fotosAcumuladas.files.length >= 5) {
+                            alert('Podés subir como máximo 5 imágenes en total.');
+                            break;
+                        }
+                        fotosAcumuladas.items.add(f);
                     }
-
-                    if (precioInput) {
-                        precioInput.value = precioInput.value.replace(/\./g, ''); // Quitar puntos antes de enviar al backend
-                    }
-
-                    const btn = document.getElementById('btnAgregar');
-                    if (btn) {
-                        btn.disabled = true;
-                        btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Agregando...`;
-                    }
-
-                    const btnVolver = document.getElementById('btnVolver');
-                    if (btnVolver) {
-                        btnVolver.classList.add('disabled');
-                        btnVolver.style.pointerEvents = 'none';
-                        btnVolver.setAttribute('aria-disabled', 'true');
-                    }
+                    fotoPicker.value = ''; // Permite volver a elegir el mismo archivo
+                    syncFotos();
                 });
             }
-        }
-    })
-</script>
+
+
+
+            if (precioInput) {
+                function formatearPrecio() {
+                    let valor = precioInput.value.replace(/\D/g, '');
+                    if (valor === '') {
+                        precioInput.value = '';
+                        return;
+                    }
+                    // Agregar puntos cada 3 dígitos desde el final
+                    precioInput.value = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                }
+
+                //Formatear al escribir y al salir del campo
+                precioInput.addEventListener('input', formatearPrecio);
+                precioInput.addEventListener('blur', formatearPrecio);
+
+                formatearPrecio(); //Formatear valor inicial (por si viene con old() o desde edición)
+
+                // Al enviar el formulario, quitar los puntos para que llegue solo el número
+                if (form) {
+                    form.addEventListener('submit', function (e) {
+                        // Validación rápida: máximo 5 imágenes
+                        const fotoInput = document.getElementById('foto');
+                        if (fotoInput && fotoInput.files && fotoInput.files.length > 5) {
+                            e.preventDefault(); // Evitar el envío del formulario
+                            alert('Podés subir como máximo 5 imágenes.');
+                            return; // Detener el envío del formulario
+                        }
+
+                        if (precioInput) {
+                            precioInput.value = precioInput.value.replace(/\./g, ''); // Quitar puntos antes de enviar al backend
+                        }
+
+                        const btn = document.getElementById('btnAgregar');
+                        if (btn) {
+                            btn.disabled = true;
+                            btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Agregando...`;
+                        }
+
+                        const btnVolver = document.getElementById('btnVolver');
+                        if (btnVolver) {
+                            btnVolver.classList.add('disabled');
+                            btnVolver.style.pointerEvents = 'none';
+                            btnVolver.setAttribute('aria-disabled', 'true');
+                        }
+                    });
+                }
+            }
+        })
+    </script>
+
+</body>
 
 </html>
