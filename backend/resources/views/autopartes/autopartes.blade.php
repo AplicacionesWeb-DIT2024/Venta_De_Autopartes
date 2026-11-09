@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 
-</html>
 
 <head>
     <meta charset="UTF-8">
@@ -132,6 +131,31 @@
             var btnCerrar = document.getElementById('btnCerrarModal');
             var textoOriginal = btnConfirmar ? btnConfirmar.innerHTML : 'Eliminar';
 
+            var pageActions = document.querySelectorAll('table .btn, table a.btn, a[href="{{ route('autopartes.create') }}"]');
+            // Deshabilita los botones de acción mientras se está eliminando una autoparte.
+            function setPageActionsDisabled(disabled) {
+                pageActions.forEach(function (el) {
+                    if (el.tagName === 'A') {
+                        if (disabled) {
+                            el.dataset.href = el.getAttribute('href');
+                            el.removeAttribute('href');
+                            el.classList.add('disabled');
+                            el.style.pointerEvents = 'none';
+                            el.setAttribute('aria-disabled', 'true');
+                        } else {
+                            if (el.dataset.href) el.setAttribute('href', el.dataset.href);
+                            el.classList.remove('disabled');
+                            el.style.pointerEvents = '';
+                            el.removeAttribute('aria-disabled');
+                            el.style.pointerEvents = '';
+                            el.removeAttribute('aria-disabled');
+                        }
+                    } else {
+                        el.disabled = disabled;
+                    }
+                });
+            }
+
             // Configurar acción y resetear el estado del botón al abrir el modal
             $modal.on('show.bs.modal', function (event) {
                 var button = $(event.relatedTarget);
@@ -150,12 +174,12 @@
                 if (submitting) e.preventDefault();
             });
 
-           form.addEventListener('submit', function (e) {
+            form.addEventListener('submit', function (e) {
                 if (submitting) { e.preventDefault(); return; }
                 submitting = true;
-                if (btnConfirmar) { 
-                    btnConfirmar.disabled = true; 
-                    btnConfirmar.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...'; 
+                if (btnConfirmar) {
+                    btnConfirmar.disabled = true;
+                    btnConfirmar.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...';
                 }
                 if (btnCancelar) btnCancelar.disabled = true;
                 if (btnCerrar) btnCerrar.disabled = true;
