@@ -63,7 +63,8 @@
             </div>
         @endif
 
-        <form action="{{ route('autopartes.update', $autopart->id) }}" method="POST">
+        <form id="formEditarAutoparte" action="{{ route('autopartes.update', $autopart->id) }}" method="POST"
+            enctype="multipart/form-data">
             @method('PUT') @csrf
             <div class="form-group">
                 <label for="autoparte">Autoparte:</label>
@@ -148,17 +149,104 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="mb-3">
+                <label class="form-label">Fotos actuales</label>
+                <div class="mb-2">
+                    @forelse(($autopart->fotos_urls ?? []) as $url)
+                        <img src="{{  $url }}" alt="Foto"
+                            style="width:80px;height:80px;object-fit:cover;border-radius:6px;margin:0 6px 6px 0;">
+                    @empty
+                        <small class="text-muted"> Sin fotos </small>
+                    @endforelse
+                </div>
+
+                <label for="fotoPicker" class="form-label">Nuevas fotos (opcional, hasta 5) - reemplazan a las
+                    actuales</label>
+                <input type="file" id="fotoPicker" class="form-control" multiple accept="image/*"> {{-- Este input es
+                solo para mostrar el selector de archivos, el input real está oculto --}}
+                <input type="file" name="foto[]" id="foto" multiple accept="image/*" style="display: none;">
+                {{-- Este input es el que realmente se envía al backend --}}
+                <small class="text-muted">Selecciona hasta 5 imágenes de la autoparte.</small>
+                <div id="fotoLista" class="mt-2 small"></div>
+                @error('foto')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+                @error('foto.*')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
+            </div>
+
             <button type="submit" id="btnEditar" class="btn btn-primary btn-block">Editar</button>
-            <a href="{{ route('autopartes.index') }}" class="btn btn-secondary btn-block mt-2">Volver al Listado de
-                Autopartes</a>
+            <a href="{{  route('autopartes.index') }}" id="btnVolver" class="btn btn-secondary btn-block mt-2">Volver al
+                listado de Autopartes</a>
         </form>
     </div>
-
 </body>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const precioInput = document.getElementById('precio');
-        const form = precioInput ? precioInput.closest('form') : null;
+        const form = document.getElementById('formEditarAutoparte') || (precioInput) ? precioInput.closest('form') : null;
+
+        // acumular fotos (no sobreescribir al elegir de a una)
+        const fotoPicker = document.getElementById('fotoPicker');
+        const fotoInput = document.getElementById('foto'); // oculto, se envía
+        const fotoLista = document.getElementById('fotoLista');
+        let fotosAcumuladas = new DataTransfer(); // Para acumular fotos seleccionadas
+
+        function syncFotos() {
+            if (fotoInput) {
+                fotoInput.files = fotosAcumuladas.files; // Sincronizar con el input oculto
+            }
+
+            if (!fotoLista) return;
+
+            if (fotosAcumuladas.files.length === 0) {
+                fotoLista.innerHTML = '<span class="text-muted">Ninguna imagen seleccionada.</span>';
+                return;
+            }
+
+            let html = '<ul class="mb-0 pl-3">';
+            Array.from(fotosAcumuladas.files).forEach((f, i) => {
+                html += `<li>${f.name} <button type="button" class="btn btn-link btn-sm text-danger p-0" data-remove-foto="${i}">quitar</button></li>`;
+            });
+            html += '</ul>';
+            fotoLista.innerHTML = html;
+
+            fotoLista.querySelectorAll('[data-remove-foto]').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const idx = parseInt(this.getAttribute('data-remove-foto'), 10);
+                    const dt = new DataTransfer();
+
+                    Array.from(fotosAcumuladas.files).forEach((f, i) => {
+                        if (i !== idx) {
+                            dt.items.add(f);
+                        }
+                    });
+
+                    fotosAcumuladas = dt;
+                    syncFotos();
+                });
+            });
+
+        }
+
+        syncFotos();
+
+        if (fotoPicker) {
+            fotoPicker.addEventListener('change', function () {
+                const nuevos = Array.from(fotoPicker.files || []);
+                for (const f of nuevos) {
+                    if (fotosAcumuladas.files.length >= 5) {
+                        alert('Podés subir como máximo 5 imágenes en total.');
+                        break;
+                    }
+                    fotosAcumuladas.items.add(f);
+                }
+                fotoPicker.value = ''; // Permite volver a elegir el mismo archivo
+                syncFotos();
+            });
+        }
 
         if (precioInput) {
             function formatearPrecio() {
@@ -171,28 +259,38 @@
                 precioInput.value = valor.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
             }
 
-            //Formatear al escribir y al salid del campo
+            //Formatear al escribir y al salir del campo
             precioInput.addEventListener('input', formatearPrecio);
             precioInput.addEventListener('blur', formatearPrecio);
-            formatearPrecio(); //Foramtear valor inicial (por si viene con old() o desde edición)
+
+            formatearPrecio(); //Formatear valor inicial (por si viene con old() o desde edición)
 
             // Al enviar el formulario, quitar los puntos para que llegue solo el número
             if (form) {
-                form.addEventListener('submit', function () {
-                    // Quitar puntos antes de enviar al backend
-                    precioInput.value = precioInput.value.replace(/\./g, '');
+                form.addEventListener('submit', function (e) {
+                    // Validación rápida: máximo 5 imágenes
+                    const fotoInput = document.getElementById('foto');
+                    if (fotoInput && fotoInput.files && fotoInput.files.length > 5) {
+                        e.preventDefault(); // Evitar el envío del formulario
+                        alert('Podés subir como máximo 5 imágenes.');
+                        return; // Detener el envío del formulario
+                    }
+
+                    if (precioInput) {
+                        precioInput.value = precioInput.value.replace(/\./g, ''); // Quitar puntos antes de enviar al backend
+                    }
 
                     const btn = document.getElementById('btnEditar');
-
                     if (btn) {
                         btn.disabled = true;
+                        btn.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Guardando...`;
+                    }
 
-                        btn.innerHTML = `
-                        <span class="spinner-border spinner-border-sm" 
-                        role="status" 
-                        aria-hidden="true"></span> 
-                        Editando...
-                        `;
+                    const btnVolver = document.getElementById('btnVolver');
+                    if (btnVolver) {
+                        btnVolver.classList.add('disabled');
+                        btnVolver.style.pointerEvents = 'none';
+                        btnVolver.setAttribute('aria-disabled', 'true');
                     }
                 });
             }

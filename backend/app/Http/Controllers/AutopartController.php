@@ -94,7 +94,32 @@ class AutopartController extends Controller
             'precio' => 'required|numeric|min:1|max:5000000',
             'color' => 'required|string|max:255',
             'stock' => 'required|integer|min:0|max:99',
+            'foto' => 'nullable|array|max:5',
+            'foto.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        if ($request->hasFile('foto')) {
+            //Borrar fotos anteriores
+            $anteriores = $autopart->foto;
+            if (is_array($anteriores)) {
+                foreach ($anteriores as $ruta) {
+                    Storage::disk('public')->delete($ruta);
+                }
+            } elseif (!empty($anteriores)) {
+                Storage::disk('public')->delete($anteriores);
+            }
+
+            $fotoPaths = [];
+
+            foreach ($request->file('foto') as $file) {
+                if ($file->isValid()) {
+                    $fotoPaths[] = $file->store('autoparts', 'public');
+                }
+            }
+            $validated['foto'] = $fotoPaths;
+        } else {
+            unset($validated['foto']); // conservar las existentes
+        }
 
         $autopart->update($validated); // Actualiza la autoparte con los datos validados
 
