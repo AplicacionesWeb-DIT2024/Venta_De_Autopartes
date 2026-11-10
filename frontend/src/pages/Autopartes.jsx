@@ -319,7 +319,7 @@ export default function Autopartes() {
                             disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
                             onClick={() => navigate('/pedidos')}
                         >
-                            Ver Pedidos
+                            Ver Mis Pedidos
                         </button>
 
                     </div>

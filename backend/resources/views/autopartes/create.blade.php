@@ -156,10 +156,13 @@
                 <label for="foto" class="form-label"> Fotos de la autoparte (hasta 5)</label>
                 <input type="file" id="fotoPicker" class="form-control" multiple accept="image/*"> {{-- Este input es
                 solo para mostrar el selector de archivos, el input real está oculto --}}
-                <input type="file" name="foto[]" id="foto" multiple accept="image/*" required style="display: none;">
-                {{-- Este input es el que realmente se envía al backend --}}
+                <input type="file" name="foto[]" id="foto" multiple accept="image/*" style="display: none;"> {{-- Este
+                input es el que realmente se envía al backend --}}
                 <small class="text-muted">Selecciona hasta 5 imágenes de la autoparte.</small>
                 <div id="fotoLista" class="mt-2 small"></div>
+                <div id="fotoError" class="alert alert-danger py-2 px-3 mt-2" style="display: none;">
+                    Tenés que seleccionar al menos una foto
+                </div>
                 @error('foto')
                     <div class="text-danger small">{{ $message }}</div>
                 @enderror
@@ -203,7 +206,7 @@
                 if (!fotoLista) return;
 
                 if (fotosAcumuladas.files.length === 0) {
-                    fotoLista.innerHTML = '<span class="text-muted">Ninguna imagen seleccionada.</span>';
+                    fotoLista.innerHTML = '<span class="text-danger">Ninguna imagen seleccionada.</span>';
                     return;
                 }
 
@@ -246,6 +249,11 @@
                     }
                     fotoPicker.value = ''; // Permite volver a elegir el mismo archivo
                     syncFotos();
+
+                    const fotoError = document.getElementById('fotoError');
+                    if (fotoError && fotosAcumuladas.files.length > 0) {
+                        fotoError.style.display = 'none';
+                    }
                 });
             }
 
@@ -271,6 +279,28 @@
                     form.addEventListener('submit', function (e) {
                         // Validación rápida: máximo 5 imágenes
                         const fotoInput = document.getElementById('foto');
+                        const fotoError = document.getElementById('fotoError');
+
+                        // Sin fotos: mostrar mensaje y no enviar
+                        if (!fotoInput || !fotoInput.files || fotoInput.files.lenght === 0) {
+                            e.preventDefault();
+                            if (fotoError) {
+                                fotoError.style.display = 'block';
+                                fotoError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                            return;
+                        }
+
+                        // Ocultar error si ya hay fotos
+                        if (fotoError) fotoError.style.display = 'none';
+
+                        // Validación máxima 5 imágenes
+                        if (fotoInput.files.length > 5) {
+                            e.preventDefault();
+                            alert('Podés subir como máximo 5 imágenes.');
+                            return;
+                        }
+
                         if (fotoInput && fotoInput.files && fotoInput.files.length > 5) {
                             e.preventDefault(); // Evitar el envío del formulario
                             alert('Podés subir como máximo 5 imágenes.');
