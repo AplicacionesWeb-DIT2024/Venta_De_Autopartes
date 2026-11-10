@@ -13,8 +13,12 @@ use App\Http\Controllers\Api\PedidoController;
 // Rutas para la gestión de autopartes
 Route::middleware('auth:sanctum')->prefix('autoparts')->group(function () {
     Route::get('/', [AutopartController::class, 'index']);
-    Route::post('/', [AutopartController::class, 'store']);
     Route::get('/{id}', [AutopartController::class, 'show']);
+});
+
+// ABM exclusivo de Empleado
+Route::middleware(['auth:sanctum', 'role:empleado'])->prefix('autoparts')->group(function () {
+    Route::post('/', [AutopartController::class, 'store']);
     Route::put('/{id}', [AutopartController::class, 'update']);
     Route::delete('/{id}', [AutopartController::class, 'destroy']);
 });
@@ -22,6 +26,7 @@ Route::middleware('auth:sanctum')->prefix('autoparts')->group(function () {
 // Rutas públicas
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register']);
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logoutApi']);
 
 // Rutas para la gestión del carrito de compras
 Route::middleware('auth:sanctum')->prefix('carrito')->group(function () {

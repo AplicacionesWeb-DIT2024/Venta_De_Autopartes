@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useDetallePedido } from "../hooks/useDetallePedido"; // importo el hook
 import "./DetallePedido.css"; //importo el CSS
+import BotonCerrarSesion from "../components/BotonCerrarSesion";
 
 export default function DetallePedido() {
 
@@ -39,15 +40,7 @@ export default function DetallePedido() {
 
             {/* BOTÓN LOGOUT */}
             <div className="d-flex justify-content-end mb-3">
-                <button
-                    className="btn btn-danger"
-                    onClick={() => {
-                        localStorage.removeItem("user");
-                        navigate("/");
-                    }}
-                >
-                    Cerrar Sesión
-                </button>
+                <BotonCerrarSesion />
             </div>
 
             <h2>Detalle del Pedido #{pedido.id}</h2>

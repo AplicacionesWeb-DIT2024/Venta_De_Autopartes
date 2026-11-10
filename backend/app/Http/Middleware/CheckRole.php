@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class CheckRole
 {
@@ -12,16 +12,37 @@ class CheckRole
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string  $role
+     * @param  string  $roles
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
-        if (!Auth::check() || Auth::user()->role != $role) {
-            // Redirigir al usuario o mostrar un mensaje de error si no tiene el rol adecuado
-            return redirect('/')->with('error', 'No tienes acceso a esta sección.');
+        $user = $request->user();
+
+        if(!$user) {
+            return $this->denyAccess($request);
         }
 
-        return $next($request);
+        foreach ($roles as $role) {
+            $rolAuth = ucfirst(strtolower($role));
+
+            if ($user->hasRole($rolAuth) || $user->role === $rolAuth) {
+                return $next($request);
+            }
+        }
+
+        return $this->denyAccess($request);
+
+    }
+
+    private function denyAccess(Request $request)
+    {
+        if ($request->expectsJson()){
+            return response()->json([
+                'message' => 'No tienes permisos para realizar esta acción.'
+            ], 403);
+        }
+
+        return redirect('/')->with('error', 'No tienes acceso a esta sección.');
     }
 }

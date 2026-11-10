@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 
-</html>
 
 <head>
     <meta charset="UTF-8">
@@ -52,10 +51,11 @@
                     @else
                         @foreach ($autoparts as $autopart)
                             <tr>
+                                </td>
                                 <td>{{ $autopart->autoparte }}</td>
                                 <td>{{ $autopart->marca }}</td>
                                 <td>{{ $autopart->modelo }}</td>
-                                <td>{{ number_format($autopart->precio, 2) }}</td>
+                                <td>{{ number_format($autopart->precio, 0, ',', '.') }}</td>
                                 <td>
                                     @if(Auth::check() && Auth::user()->role == 'Empleado')
                                         <a href="{{ route('autopartes.edit', $autopart->id) }}"
@@ -110,28 +110,81 @@
                     <form id="deleteForm" method="POST" action="">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <button type="submit" id="btnConfirmarEliminar" class="btn btn-danger">Eliminar</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Agregar JS de Bootstrap y jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Aquí podrías agregar scripts adicionales si los necesitas -->
     <script>
-        // Script para manejar el modal de confirmación de eliminación
-        $('#deleteModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var id = button.data('id');
-            var action = '{{ route('autopartes.destroy', ':id') }}'.replace(':id', id);
-            var form = $('#deleteForm');
-            form.attr('action', action);
-        });
+        (function () {
+            var submitting = false;
+            var $modal = $('#deleteModal');
+            var form = document.getElementById('deleteForm');
+            var btnConfirmar = document.getElementById('btnConfirmarEliminar');
+            var btnCancelar = document.getElementById('btnCancelarEliminar');
+            var btnCerrar = document.getElementById('btnCerrarModal');
+            var textoOriginal = btnConfirmar ? btnConfirmar.innerHTML : 'Eliminar';
+
+            var pageActions = document.querySelectorAll('table .btn, table a.btn, a[href="{{ route('autopartes.create') }}"]');
+            // Deshabilita los botones de acción mientras se está eliminando una autoparte.
+            function setPageActionsDisabled(disabled) {
+                pageActions.forEach(function (el) {
+                    if (el.tagName === 'A') {
+                        if (disabled) {
+                            el.dataset.href = el.getAttribute('href');
+                            el.removeAttribute('href');
+                            el.classList.add('disabled');
+                            el.style.pointerEvents = 'none';
+                            el.setAttribute('aria-disabled', 'true');
+                        } else {
+                            if (el.dataset.href) el.setAttribute('href', el.dataset.href);
+                            el.classList.remove('disabled');
+                            el.style.pointerEvents = '';
+                            el.removeAttribute('aria-disabled');
+                            el.style.pointerEvents = '';
+                            el.removeAttribute('aria-disabled');
+                        }
+                    } else {
+                        el.disabled = disabled;
+                    }
+                });
+            }
+
+            // Configurar acción y resetear el estado del botón al abrir el modal
+            $modal.on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var id = button.data('id');
+                var action = '{{ route("autopartes.destroy", ":id") }}'.replace(':id', id);
+                form.setAttribute('action', action);
+
+                submitting = false;
+                if (btnConfirmar) { btnConfirmar.disabled = false; btnConfirmar.innerHTML = textoOriginal; }
+                if (btnCancelar) btnCancelar.disabled = false;
+                if (btnCerrar) btnCerrar.disabled = false;
+            });
+
+            // No permitir cerrar mientras se está eliminando
+            $modal.on('hide.bs.modal', function (e) {
+                if (submitting) e.preventDefault();
+            });
+
+            form.addEventListener('submit', function (e) {
+                if (submitting) { e.preventDefault(); return; }
+                submitting = true;
+                if (btnConfirmar) {
+                    btnConfirmar.disabled = true;
+                    btnConfirmar.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Eliminando...';
+                }
+                if (btnCancelar) btnCancelar.disabled = true;
+                if (btnCerrar) btnCerrar.disabled = true;
+            });
+        })();       
     </script>
 </body>
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../api";
 import "./Carrito.css";
 import "../index.css"; // importamos index.css para los estilos globales
+import BotonCerrarSesion from "../components/BotonCerrarSesion";
 
 export default function Carrito() {
 
@@ -165,16 +166,7 @@ export default function Carrito() {
 
             {/* BOTÓN LOGOUT */}
             <div className="d-flex justify-content-end mb-3">
-                <button
-                    className="btn btn-danger"
-                    disabled={deleting} // Deshabilitar el botón "Cerrar Sesión" si se está eliminando un item
-                    onClick={() => {
-                        localStorage.removeItem("user");
-                        navigate("/");
-                    }}
-                >
-                    Cerrar Sesión
-                </button>
+                <BotonCerrarSesion disabled={deleting} />
             </div>
 
             {items.length === 0 ? (
@@ -203,9 +195,12 @@ export default function Carrito() {
 
                         <table className="table table-bordered align-middle">
 
+                            {/* Cabecera de la tabla */}
                             <thead className="table-dark">
                                 <tr>
                                     <th>Autoparte</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
                                     <th>Precio</th>
                                     <th>Cantidad a pedir</th>
                                     <th>Total</th>
@@ -213,6 +208,7 @@ export default function Carrito() {
                                 </tr>
                             </thead>
 
+                            {/* Contenido de la tabla */}
                             <tbody>
 
                                 {items.map(item => (
@@ -221,6 +217,14 @@ export default function Carrito() {
 
                                         <td>
                                             {item.autopart.autoparte}
+                                        </td>
+
+                                        <td>
+                                            {item.autopart.marca}
+                                        </td>
+
+                                        <td>
+                                            {item.autopart.modelo}
                                         </td>
 
                                         <td>

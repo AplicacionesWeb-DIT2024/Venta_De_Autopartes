@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
-
 class AuthController extends Controller
 {
 
@@ -18,44 +17,41 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        // El registro web (Blade) es solo para Empleados.
+        // Si intentan registrarse como Cliente, rechazar y volver al login.
+        if ($request->filled('role') && strcasecmp($request->input('role'), 'Empleado') !== 0) {
+            return redirect()->route('login')
+                ->with('error', 'No podés registrarte como Cliente desde el backend. El registro web es solo para Empleados.');
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:Cliente,Empleado',
         ]);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        // Asegurar que el rol existe, si no, crearlo
+        $role = Role::firstOrCreate(
+            ['name' => 'Empleado', 'guard_name' => 'web'],
+            ['name' => 'Empleado', 'guard_name' => 'web']
+        );
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role, // Guardar el rol en la columna role de la tabla users
+            'role' => 'Empleado', //  Asignar el rol "Empleado" al usuario registrado desde el backend
         ]);
-
-        // Asegurar que el rol existe, si no, crearlo
-        $role = Role::firstOrCreate(
-            ['name' => $request->role, 'guard_name' => 'web'],
-            ['name' => $request->role, 'guard_name' => 'web']
-        );
 
         // Asignar el rol al usuario en la tabla model_has_roles
         $user->assignRole($role);
-
-        Auth::login($user);
-
-        // Generar token de autenticación
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        // Retornar los datos del usuario con el rol asignado
-        return response()->json([
-            'message' => 'Usuario registrado correctamente',
-            'user' => [
-                'name' => $user->name,
-                'email' => $user->email,
-                'role' => $request->role, // Retornar el rol que se acaba de asignar
-            ],
-            'token' => $token,
-        ]);
+        // NO loguear automáticamente. Ir a login para ingresar manualmente
+        return redirect()->route('login')->with('success', 'Empleado creado correctamente. Inicia sesión.');
     }
 
 
@@ -76,11 +72,49 @@ class AuthController extends Controller
             'user' => [
                 'name' => $user->name,
                 'email' => $user->email,
-                'role' => $user->getRoleNames()->first(), // Obtener el primer rol del usuario
+                'role' => $user->getRoleNames()->first() ?? $user->role,
             ],
             'token' => $token,
         ]);
     }
+
+    // Login del flujo web (Blade): inicia seesión y redirige según el rol
+    public function webLogin(Request $request)
+    {
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withErrors(['email' => 'Usuario o contraseña incorrectos'])->withInput();
+        }
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+        $role = $user->getRoleNames()->first() ?? $user->role;
+
+        // El backend (Blade) es solo para Empleados
+        if ($role !== 'Empleado') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->route('login')
+                ->with('error', 'El acceso por el backend es solo para Empleados. Los Clientes deben ingresar desde el frontend.');
+        }
+        return redirect()->route('empleado');
+    }
+    public function logoutApi(Request $request)
+    {
+
+        $token = $request->user()->currentAccessToken();
+
+        if ($token instanceof \Laravel\Sanctum\PersonalAccessToken) {
+            $token->delete();
+        }
+
+        Auth::guard('web')->logout();
+
+        return response()->json(['message' => 'Sesión cerrada correctamente']);
+
+    }
+
 
     public function logout(Request $request)
     {

@@ -4,6 +4,7 @@ import "./Autopartes.css"; // Importamos el archivo CSS para estilos
 import "../index.css"; // importamos index.css para los estilos globales
 import { useState } from "react";
 import Swal from 'sweetalert2'
+import BotonCerrarSesion from "../components/BotonCerrarSesion";
 
 // Componente Skeleton para las tarjetas de carga
 function SkeletonCard() {
@@ -115,16 +116,7 @@ export default function Autopartes() {
 
             {/* BOTÓN LOGOUT */}
             <div className="d-flex justify-content-end mb-3">
-                <button
-                    className="btn btn-danger"
-                    disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
-                    onClick={() => {
-                        localStorage.removeItem('user');
-                        navigate('/');
-                    }}
-                >
-                    Cerrar Sesión
-                </button>
+                <BotonCerrarSesion disabled={isDeleting || isAddingToCart} />
             </div>
 
             <h2 className="text-center mb-4">
@@ -168,7 +160,7 @@ export default function Autopartes() {
                                                 {autopart.foto ? (
                                                     <div className="image-wrapper">
                                                         <img
-                                                            src={`http://127.0.0.1:8000/storage/${Array.isArray(autopart.foto) ? autopart.foto[0] : autopart.foto}`}
+                                                            src={autopart.fotos_urls?.[0] || ""}
                                                             alt={`${autopart.autoparte} ${autopart.marca} ${autopart.modelo}`}
                                                             className="card-img-top"
                                                             style={{ width: '100%' }}
@@ -318,7 +310,7 @@ export default function Autopartes() {
                             disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
                             onClick={() => navigate('/pedidos')}
                         >
-                            Ver Pedidos
+                            Ver Mis Pedidos
                         </button>
 
                     </div>

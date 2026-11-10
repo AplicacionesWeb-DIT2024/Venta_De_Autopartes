@@ -6,6 +6,8 @@ use App\Models\Autopart;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
+
 
 class AutopartController extends Controller
 {
@@ -137,10 +139,17 @@ class AutopartController extends Controller
     // Método para eliminar una autoparte
     public function destroy($id)
     {
-        $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza una excepción si no se encuentra
+        $autopart = Autopart::findOrFail($id); // Busca la autoparte por ID o lanza un excepción si no se encuentra
+
+        // Eliminar las fotos asociadas del almacenamiento para no dejar archivos huérfanos
+        if (is_array($autopart->foto)) {
+            foreach ($autopart->foto as $foto) {
+                Storage::disk('public')->delete($foto);
+            }
+        }
 
         $autopart->delete(); // Elimina la autoparte
 
-        return response()->json(null, 204);// Devuelve una respuesta sin contenido con el código de estado 204
+        return response()->json(null, 204); // Devuelve una respuesta sin contenido con el código de estado 204
     }
 }

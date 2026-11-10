@@ -1,8 +1,8 @@
 import { usePedidos } from "../hooks/usePedidos";
 import { useNavigate } from "react-router-dom";
-
 import "./Pedidos.css"
 import "../index.css"
+import BotonCerrarSesion from "../components/BotonCerrarSesion";
 
 export default function Pedidos() {
 
@@ -47,15 +47,7 @@ export default function Pedidos() {
 
             {/* BOTÓN LOGOUT */}
             <div className="d-flex justify-content-end mb-3">
-                <button
-                    className="btn btn-danger"
-                    onClick={() => {
-                        localStorage.removeItem("user");
-                        navigate("/");
-                    }}
-                >
-                    Cerrar Sesión
-                </button>
+                <BotonCerrarSesion />
             </div>
 
             <h2 className="text-center mb-4">

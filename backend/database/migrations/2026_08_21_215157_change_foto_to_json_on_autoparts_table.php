@@ -10,14 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        DB::statement('ALTER TABLE autoparts ALTER COLUMN foto TYPE json USING foto::json');
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('ALTER TABLE autoparts ALTER COLUMN foto TYPE json USING foto::json');
+        }
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        DB::statement('ALTER TABLE autoparts ALTER COLUMN foto TYPE varchar(255)');
+        if (DB::getDriverName() === 'pgsql') {
+            DB::statement('ALTER TABLE autoparts ALTER COLUMN foto TYPE varchar(255)');
+        }
     }
 };

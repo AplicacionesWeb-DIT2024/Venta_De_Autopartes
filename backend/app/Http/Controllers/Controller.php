@@ -11,11 +11,3 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
 }
-
-class AutopartController extends Controller
-{
-    public function create()
-    {
-        return view('autopartes.crear');
-    }
-}

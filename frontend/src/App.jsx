@@ -1,6 +1,6 @@
 // Código para configurar las rutas de la aplicación utilizando React Router
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, NavigationType } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
@@ -14,6 +14,21 @@ import ConfirmarCompra from './pages/ConfirmarCompra'; // Importa la página de 
 import Pedidos from './pages/Pedidos';
 import DetallePedido from "./pages/DetallePedido";
 
+// Guard: rutas administrativas solo para Empleado
+function RutaEmpleado({ children }) {
+  const user = JSON.parse(localStorage.getItem("user") || "null");
+
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (user.role !== "Empleado") {
+    return <Navigate to="/autoparts" replace />;
+  }
+
+  return children;
+}
+
 function App() {
   return (
     <Router>
@@ -23,11 +38,11 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/autoparts" element={<Autopartes />} /> {/* Ruta para la página de Autopartes */}
-        <Route path="/autoparts/crear" element={<Crear />} /> {/* Ruta para crear - DEBE IR ANTES DEL :id */}
+        <Route path="/autoparts/crear" element={<RutaEmpleado><Crear /></RutaEmpleado>} /> {/* Ruta para crear */}
         <Route path="/autoparts/:id" element={<DetalleAutoparte />} /> {/* Ruta para la página de DetalleAutopartes */}
         <Route path="/carrito" element={<Carrito />} /> {/* Ruta para la página del Carrito */}
         <Route path="/pedidos" element={<Pedidos />} />
-        <Route path="/autoparts/:id/editar" element={<Editar />} /> {/* Ruta para la página de Editar */}
+        <Route path="/autoparts/:id/editar" element={<RutaEmpleado><Editar /></RutaEmpleado>} /> {/* Ruta para la página de Editar */}
         <Route path="/confirmar-compra" element={<ConfirmarCompra />} /> {/* Ruta para la página de Confirmar Compra */}
         <Route path="/pedidos/:id" element={<DetallePedido />} />
       </Routes>
