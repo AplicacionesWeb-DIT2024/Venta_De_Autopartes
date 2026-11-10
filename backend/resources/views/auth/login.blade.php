@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Login') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form id="loginForm" method="POST" action="{{ route('login') }}">
                             @csrf
 
                             <div class="form-group">
@@ -45,10 +45,10 @@
                             </div>
 
                             <div class="form-group mb-0">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" id="btnLogin" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-                                <a class="btn btn-link" href="{{ route('register') }}">
+                                <a id="btnRegister" class="btn btn-link" href="{{ route('register') }}">
                                     {{ __('Register') }}
                                 </a>
                             </div>
@@ -76,6 +76,29 @@
                         toggleIcon.classList.add('bi-eye');
                     }
                 })
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('loginForm');
+            const btnLogin = document.getElementById('btnLogin');
+            const btnRegister = document.getElementById('btnRegister');
+
+            if (loginForm) {
+                loginForm.addEventListener('submit', function () {
+                    // Deshabilitar Register mientras se espera el login
+                    if (btnRegister) {
+                        btnRegister.classList.add('disabled');
+                        btnRegister.style.pointerEvents = 'none';
+                        btnRegister.setAttribute('aria-disabled', 'true');
+                    }
+                    // Feedback en el botón login
+                    if (btnLogin) {
+                        btnLogin.disabled = true;
+                        btnLogin.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Ingresando...';
+                    }
+                });
             }
         });
     </script>
