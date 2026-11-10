@@ -17,6 +17,18 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        // El registro web (Blade) es solo para Empleados.
+        // Si intentan registrarse como Cliente, rechazar y volver al login.
+        if ($request->filled('role') && strcasecmp($request->input('role'), 'Empleado') !== 0) {
+            return redirect()->route('login')
+                ->with('error', 'No podés registrarte como Cliente desde el backend. El registro web es solo para Empleados.');
+        }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -77,10 +89,16 @@ class AuthController extends Controller
         $user = Auth::user();
         $role = $user->getRoleNames()->first() ?? $user->role;
 
-        return $role === 'Empleado'
-            ? redirect()->route('empleado')
-            : redirect()->route('cliente');
+        // El backend (Blade) es solo para Empleados
+        if ($role !== 'Empleado') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
+            return redirect()->route('login')
+                ->with('error', 'El acceso por el backend es solo para Empleados. Los Clientes deben ingresar desde el frontend.');
+        }
+        return redirect()->route('empleado');
     }
     public function logoutApi(Request $request)
     {
