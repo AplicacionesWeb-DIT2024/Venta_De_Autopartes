@@ -203,9 +203,12 @@ export default function Carrito() {
 
                         <table className="table table-bordered align-middle">
 
+                            {/* Cabecera de la tabla */}
                             <thead className="table-dark">
                                 <tr>
                                     <th>Autoparte</th>
+                                    <th>Marca</th>
+                                    <th>Modelo</th>
                                     <th>Precio</th>
                                     <th>Cantidad a pedir</th>
                                     <th>Total</th>
@@ -213,6 +216,7 @@ export default function Carrito() {
                                 </tr>
                             </thead>
 
+                            {/* Contenido de la tabla */}
                             <tbody>
 
                                 {items.map(item => (
@@ -221,6 +225,14 @@ export default function Carrito() {
 
                                         <td>
                                             {item.autopart.autoparte}
+                                        </td>
+
+                                        <td>
+                                            {item.autopart.marca}
+                                        </td>
+
+                                        <td>
+                                            {item.autopart.modelo}
                                         </td>
 
                                         <td>
