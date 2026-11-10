@@ -1,10 +1,10 @@
-import { logout } from "../api";
 import { useAutopartes } from "../hooks/useAutopartes"; // Importamos el hook personalizado para obtener las autopartes
 import { Link, useNavigate } from "react-router-dom"; // Importamos Link para la navegación
 import "./Autopartes.css"; // Importamos el archivo CSS para estilos
 import "../index.css"; // importamos index.css para los estilos globales
 import { useState } from "react";
 import Swal from 'sweetalert2'
+import BotonCerrarSesion from "../components/BotonCerrarSesion";
 
 // Componente Skeleton para las tarjetas de carga
 function SkeletonCard() {
@@ -116,16 +116,7 @@ export default function Autopartes() {
 
             {/* BOTÓN LOGOUT */}
             <div className="d-flex justify-content-end mb-3">
-                <button
-                    className="btn btn-danger"
-                    disabled={(isDeleting || isAddingToCart)} // Se activa la deshabilitación del botón cuando se está eliminando o agregando una autoparte.
-                    onClick={async () => {
-                        await logout()
-                        navigate('/');
-                    }}
-                >
-                    Cerrar Sesión
-                </button>
+                <BotonCerrarSesion disabled={isDeleting || isAddingToCart} />
             </div>
 
             <h2 className="text-center mb-4">

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api, { logout } from "../api";
+import api from "../api";
 import "./ConfirmarCompra.css";
 import Swal from 'sweetalert2';
+import BotonCerrarSesion from "../components/BotonCerrarSesion";
 
 export default function ConfirmarCompra() {
 
@@ -96,16 +97,7 @@ export default function ConfirmarCompra() {
 
             {/* BOTÓN LOGOUT */}
             <div className="d-flex justify-content-end mb-3">
-                <button
-                    className="btn btn-danger"
-                    disabled={procesando} // Deshabilitar el botón "Cerrar Sesión" si se está procesando la compra
-                    onClick={async () => {
-                        await logout()
-                        navigate('/');
-                    }}
-                >
-                    Cerrar Sesión
-                </button>
+                <BotonCerrarSesion disabled={procesando} />
             </div>
 
             <h2>Confirmar Compra</h2>
