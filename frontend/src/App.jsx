@@ -13,6 +13,7 @@ import Editar from './pages/Editar'; // Importa la página de Editar
 import ConfirmarCompra from './pages/ConfirmarCompra'; // Importa la página de ConfirmarCompra
 import Pedidos from './pages/Pedidos';
 import DetallePedido from "./pages/DetallePedido";
+import "./styles/esteticaGlobal.css"
 
 // Guard: rutas administrativas solo para Empleado
 function RutaEmpleado({ children }) {

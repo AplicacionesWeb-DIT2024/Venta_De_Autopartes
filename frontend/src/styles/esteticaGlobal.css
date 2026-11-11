@@ -1,0 +1,288 @@
+:root {
+    --fondo-pagina: #5086b8;
+    --superficie: #CDEFFD;
+    --superficie-hover: #A9E1F8;
+    --texto: #212529;
+    --texto-titulo: #343a40;
+    --texto-suave: #6c757d;
+    --total: #198754;
+    --radio: 12px;
+    --radio-boton: 8px;
+    --sombre: 0 4px 12px rgba(0, 0, 0, .08);
+}
+
+/*---------Página--------------*/
+
+body {
+    background-color: var(--fondo-pagina) !important;
+    color: var(--texto);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1rem;
+    line-height: 1.5;
+}
+
+/* index.css fuerza 1126px, centrado en texto de flex */
+#root {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100svh;
+    margin: 0 auto;
+    display: block;
+    text-align: left;
+}
+
+/* index.css le pone fondo gris y padding a este wrapper */
+.general-container {
+    background-color: transparent !important;
+    min-height: auto;
+    padding: 0;
+    border-radius: 0;
+}
+
+/*-------------Títulos--------------*/
+h1,
+h2 {
+    color: var(--texto-titulo);
+    font-weight: 700;
+}
+
+h2{
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.crear-container h2:after,
+.editar-container h2::after,
+.detalle-titulo::after {
+    content: none;
+}
+
+/*---------------Tablas---------*/
+
+.table-responsive {
+    background: var(--superficie) !important;
+    border-radius: var(--radio);
+    overflow: auto;
+    box-shadow: var(--sombre);
+    margin-bottom: 25px;
+}
+
+.table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.table thead th{
+    text-align: center;
+    vertical-align: middle;
+    font-weight: 600;
+}
+
+.table td,
+.table tbody th {
+    background-color: var(--superficie);
+    vertical-align: middle;
+}
+
+/* El hover lo pinta la celda */
+.table-hover > tbody > tr:hover > * {
+    --bs-table-accent-bg: transparent;
+}
+
+.table tbody tr:hover td {
+    background-color: var(--superficie-hover);
+    transition: background-color .2s ease-in-out;
+}
+
+.table-bordered > :not(caption) > * > * {
+    border-color: var(--superficie-hover);
+}
+
+.table td.text-success,
+.item-total {
+    color: var(--total) !important;
+    font-weight: 700;
+}
+
+/*--------------Trajetas y paneles ---------------*/
+
+.card,
+.detalle-card,
+.crear-container,
+.editar-container,
+.login-card,
+.register-card,
+.user-info,
+.pedido-info,
+.forma-pago,
+.carrito-footer,
+.total-box {
+    background-color: var(--superficie) !important;
+    border: none;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, .12);
+}
+
+.card .card-footer {
+    background-color: transparent !important;
+    border: none;
+}
+
+/*Contenedores de formularios */
+.crear-container,
+.editar-container {
+    border-top: none;
+    padding: 40px 20px;
+    margin: 40px auto;
+    max-width: 600px;
+}
+
+/* Confirmar Compra: página limpia y los bloques en celeste */
+.confirmar-container{
+    background: transparent !important;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+/* Barra de usuario, igual que .pedido-info */
+.user-info {
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    color: var(--texto)
+}
+
+.user-info p{
+    margin-bottom: 2px;
+}
+
+/*Selector de fotos de Crear / Editar */
+.foto-container {
+    background-color: #ffffff;
+    border: 1px solid var(--superficie-hover);
+    border-radius: var(--radio);
+}
+
+/*---------------Totales--------------------*/
+.total-box h3,
+.carrito-total,
+.confirmar-total h4 {
+    color: var(--total);
+    font-weight:700;
+}
+
+/*------------Botones--------------*/
+.btn,
+.login-button,
+.register-button,
+.crear-form button,
+.editar-form button {
+    border-radius: var(--radio-boton);
+    font-weight: 600;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-outline-primary,
+.btn-outline-secondary,
+.btn-outline-dark,
+.acciones-pedido .btn,
+.login-button,
+.register-button,
+.crear-form button:not(.foto-remove),
+.editar-form button:not(.foto-remove),
+.boton-carrito button {
+    background-color: var(--superficie) !important;
+    border-color: var(--superficie) !important;
+    color: var(--texto) !important;
+}
+
+.btn-primary:hover:not(:disabled),
+.btn-secondary:hover:not(:disabled),
+.btn-success:hover:not(:disabled),
+.btn-info:hover:not(:disabled),
+.btn-warning:hover:not(:disabled),
+.btn-outline-primary:hover:not(:disabled),
+.btn-outline-secondary:hover:not(:disabled),
+.btn-otunline-dark:hover:not(:disabled),
+.acciones-pedido .btn:hover,
+.login-button:hover:not(:disabled),
+.register-button:hover:not(:disabled),
+.crear-form button:not(.foto-remove):hover:not(:disabled),
+.editar-form button:not(.foto-remove):hover:not(:disabled),
+.boton-carrito button:hover:not(:disabled) {
+    background-color: var(--superficie) !important;
+    border-color: var(--superficie) !important;
+    color: var(--texto) !important;
+    transform: translateY(-1px);
+}
+
+.btn:disabled,
+.login-button:disabled,
+.register-button:disabled,
+.crear-form button:disabled,
+.editar-form button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Las acciones destructivas siguen en rojo */
+.btn-danger,
+.foto-remove {
+    border-radius: var(--radio-boton);
+}
+
+/*-------------Inputs-------------*/
+.crear-form input,
+.crear-form select,
+.editar-form input,
+.editar-form select,
+.login-form input,
+.login-form select,
+.login-input-group input,
+.register-input-group input,
+.register-select,
+.form-control {
+    background-color: #ffffff;
+    border: 1px solid var(--superficie-hover);
+    border-radius: var(--radio-boton);
+    color: var(--texto);
+}
+
+.crear-form input:focus,
+.crear-form select:focus,
+.editar-form input:focus,
+.editar-form select:focus,
+.login-form input:focus,
+.login-form select:focus,
+.login-input-group input:focus,
+.register-input-group input:focus,
+.register-select:focus,
+.form-control:focus {
+    background-color: #ffffff;
+    border-color: var(--superficie-hover);
+    box-shadow: 0 0 0 .2rem rgba(169, 225, 248, .55);
+    outline: none;
+}
+
+.crear-form input::placeholder,
+.editar-form input::placeholder,
+.login-form input::placeholder,
+.register-input-group input::placeholder {
+    color: var(--texto-suave);
+}
+
+/*--------------Login / Register --------------*/
+.login-container,
+.register-container {
+    background-color: var(--fondo-pagina);
+}
